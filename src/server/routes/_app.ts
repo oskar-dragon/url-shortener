@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
+import { prisma } from '../prisma';
 
 // TODO: Add routes here
 export const appRouter = router({
@@ -9,9 +10,14 @@ export const appRouter = router({
         text: z.string().nullish(),
       }),
     )
-    .query(({ input }) => {
+    .query(async ({ input }) => {
+      const test = await prisma.url.findMany()
+
+      console.log(test)
+
       return {
         greeting: `hello ${input?.text ?? 'world'}`,
+        urls: test
       };
     }),
 });
