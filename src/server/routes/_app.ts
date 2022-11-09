@@ -13,8 +13,6 @@ export const appRouter = router({
     .query(async ({ input }) => {
       const test = await prisma.url.findMany()
 
-      console.log(test)
-
       return {
         greeting: `hello ${input?.text ?? 'world'}`,
         urls: test
