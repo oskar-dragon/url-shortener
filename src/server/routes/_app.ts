@@ -11,11 +11,11 @@ export const appRouter = router({
       }),
     )
     .query(async ({ input }) => {
-      const test = await prisma.url.findMany()
+      const test = await prisma.url.findMany();
 
       return {
         greeting: `hello ${input?.text ?? 'world'}`,
-        urls: test
+        urls: test,
       };
     }),
 });
