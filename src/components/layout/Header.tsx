@@ -9,7 +9,7 @@ const navigation = [{ name: 'Main', href: '/', current: true }];
 
 function Header() {
   return (
-    <header>
+    <header className="flex-initial">
       <Disclosure as="nav" className="bg-gray-800">
         {({ open }) => (
           <>
