@@ -8,6 +8,8 @@
   "rules": {
     "@typescript-eslint/consistent-type-imports": "warn",
     "import/prefer-default-export": "off",
-    "prefer-destructuring": "off"
+    "prefer-destructuring": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off"
   }
 }
