@@ -3,7 +3,6 @@ import classnames from 'utils/classNames';
 type LabelProps = {
   children: React.ReactNode;
   htmlFor: string;
-  isDisabled?: boolean;
   isInvalid?: boolean;
   className?: string;
 };
@@ -11,7 +10,7 @@ type LabelProps = {
 const style = 'text-base';
 const invalid = 'text-red-500';
 
-function Label({ children, htmlFor, isDisabled, isInvalid, className }: LabelProps) {
+function Label({ children, htmlFor, isInvalid, className }: LabelProps) {
   return (
     <label htmlFor={htmlFor} className={classnames(style, className, isInvalid ? invalid : '')}>
       {children}
@@ -20,8 +19,7 @@ function Label({ children, htmlFor, isDisabled, isInvalid, className }: LabelPro
 }
 
 Label.defaultProps = {
-  isDisabled: false,
-  isInvalid: true,
+  isInvalid: false,
   className: '',
 };
 
