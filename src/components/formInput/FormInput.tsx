@@ -3,12 +3,12 @@ import { Label, Input } from 'components/elements';
 type FormValueProps = {
   id: string;
   name: string;
-  value: string;
+  value?: string;
   label: string;
   placeholder?: string;
   isDisabled?: boolean;
-  isInvalid?: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 function FormInput({
@@ -18,12 +18,12 @@ function FormInput({
   label,
   placeholder,
   isDisabled,
-  isInvalid,
+  error,
   onChange,
 }: FormValueProps) {
   return (
     <div className="form-control w-full max-w-xs">
-      <Label htmlFor={id} isInvalid={isInvalid}>
+      <Label htmlFor={id} isInvalid={!!error}>
         {label}
       </Label>
       <Input
@@ -32,18 +32,20 @@ function FormInput({
         value={value}
         placeholder={placeholder}
         onChange={onChange}
-        isInvalid={isInvalid}
+        isInvalid={!!error}
         isDisabled={isDisabled}
       />
-      {isInvalid && <span className="label label-text-alt text-error">Alt label</span>}
+      {!!error && <span className="label label-text-alt text-error">{error}</span>}
     </div>
   );
 }
 
 FormInput.defaultProps = {
+  value: '',
   isDisabled: false,
-  isInvalid: true,
+  error: '',
   placeholder: '',
+  onChange: () => {},
 };
 
 export default FormInput;

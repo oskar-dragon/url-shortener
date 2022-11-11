@@ -4,7 +4,7 @@ import classNames from 'utils/classNames';
 type ButtonProps = {
   className?: string;
   type?: 'button' | 'submit';
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   isDisabled?: boolean;
   isLoading?: boolean;
   children: ReactNode;
@@ -30,6 +30,7 @@ Button.defaultProps = {
   type: 'button',
   isDisabled: false,
   isLoading: false,
+  onClick: () => {},
 };
 
 export default Button;

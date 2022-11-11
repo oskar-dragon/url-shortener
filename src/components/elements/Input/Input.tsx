@@ -8,7 +8,7 @@ type InputProps = {
   placeholder?: string;
   isDisabled?: boolean;
   isInvalid?: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const defaultStyle = 'input input-bordered w-full max-w-xs';
@@ -34,6 +34,7 @@ Input.defaultProps = {
   placeholder: '',
   isDisabled: false,
   isInvalid: false,
+  onChange: () => {},
 };
 
 export default Input;
