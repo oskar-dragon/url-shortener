@@ -22,8 +22,10 @@ function FormInput({
   onChange,
 }: FormValueProps) {
   return (
-    <div className="space-y-0.5">
-      <Label htmlFor={id}>{label}</Label>
+    <div className="form-control w-full max-w-xs">
+      <Label htmlFor={id} isInvalid={isInvalid}>
+        {label}
+      </Label>
       <Input
         id={id}
         name={name}
@@ -33,13 +35,14 @@ function FormInput({
         isInvalid={isInvalid}
         isDisabled={isDisabled}
       />
+      {isInvalid && <span className="label label-text-alt text-error">Alt label</span>}
     </div>
   );
 }
 
 FormInput.defaultProps = {
   isDisabled: false,
-  isInvalid: false,
+  isInvalid: true,
   placeholder: '',
 };
 

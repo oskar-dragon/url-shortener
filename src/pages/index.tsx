@@ -14,7 +14,9 @@ export default function Home() {
   return (
     <div className="max-w-xl mx-auto">
       <FormInput label="label" id="id" name="name" value={val} onChange={(e) => handleChange(e)} />
-      <Button onClick={() => console.log('click')}>Button</Button>
+      <Button className="" onClick={() => console.log('click')}>
+        Button
+      </Button>
     </div>
   );
 }

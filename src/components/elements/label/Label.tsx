@@ -7,8 +7,8 @@ type LabelProps = {
   className?: string;
 };
 
-const style = 'text-base';
-const invalid = 'text-red-500';
+const style = 'label label-text';
+const invalid = 'text-error';
 
 function Label({ children, htmlFor, isInvalid, className }: LabelProps) {
   return (

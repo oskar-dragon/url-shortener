@@ -11,10 +11,8 @@ type InputProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const defaultStyle =
-  'block w-full rounded-md text-base border-solid border-2 px-2 py-1 text-md border-slate-200 focus:border-sky-500 focus:ring-sky-500';
-const errorStyle = 'border-red-300 text-red-500 focus:border-red-500 focus:ring-red-500';
-const disabledStyle = 'disabled:border-slate-200 disabled:bg-gray-100 cursor-not-allowed';
+const defaultStyle = 'input input-bordered w-full max-w-xs';
+const errorStyle = 'input-error';
 
 function Input({ value, name, id, placeholder, isDisabled, isInvalid, onChange }: InputProps) {
   return (
@@ -25,7 +23,7 @@ function Input({ value, name, id, placeholder, isDisabled, isInvalid, onChange }
       disabled={isDisabled}
       value={value}
       onChange={onChange}
-      className={classNames(defaultStyle, isInvalid ? errorStyle : defaultStyle, disabledStyle)}
+      className={classNames(defaultStyle, isInvalid ? errorStyle : '')}
       placeholder={placeholder}
     />
   );
@@ -35,7 +33,7 @@ Input.defaultProps = {
   value: '',
   placeholder: '',
   isDisabled: false,
-  isInvalid: true,
+  isInvalid: false,
 };
 
 export default Input;
