@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
+import classNames from 'utils/classNames';
 
 type ButtonProps = {
+  className?: string;
   type?: 'button' | 'submit';
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   isDisabled?: boolean;
@@ -8,26 +10,16 @@ type ButtonProps = {
   children: ReactNode;
 };
 
-/* 
+const buttonStyles = `font-semibold text-white text-base py-1 px-2 rounded-md bg-blue-600 hover:bg-blue-500 active:bg-blue-700 
+  focus:bg-blue-500 disabled:bg-gray-300 cursor-not-allowed transition-colors`;
 
-TODO: 
-Style behavours:
-button:hover
-button:active
-button:focus
-button:focus-visible
-button:disabled
-
-*/
-
-const buttonStyles = 'bg-blue-600 text-white py-1 px-2 rounded-md';
-
-function Button({ type, onClick, children }: ButtonProps) {
+function Button({ className, type, onClick, isDisabled, isLoading, children }: ButtonProps) {
   return (
     <button
       type={type === 'submit' ? 'submit' : 'button'}
       onClick={onClick}
-      className={buttonStyles}
+      className={classNames(buttonStyles, className)}
+      disabled={isDisabled || isLoading}
     >
       {children}
     </button>
@@ -35,6 +27,7 @@ function Button({ type, onClick, children }: ButtonProps) {
 }
 
 Button.defaultProps = {
+  className: '',
   type: 'button',
   isDisabled: false,
   isLoading: false,
