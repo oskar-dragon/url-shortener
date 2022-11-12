@@ -1,4 +1,5 @@
 import { Label, Input } from 'components/elements';
+import classNames from 'utils/classNames';
 
 type FormValueProps = {
   id: string;
@@ -8,6 +9,7 @@ type FormValueProps = {
   placeholder?: string;
   isDisabled?: boolean;
   error?: string;
+  className?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -19,10 +21,11 @@ function FormInput({
   placeholder,
   isDisabled,
   error,
+  className,
   onChange,
 }: FormValueProps) {
   return (
-    <div className="form-control w-full max-w-xs">
+    <div className={classNames('form-control w-full', className)}>
       <Label htmlFor={id} isInvalid={!!error}>
         {label}
       </Label>
@@ -45,6 +48,7 @@ FormInput.defaultProps = {
   isDisabled: false,
   error: '',
   placeholder: '',
+  className: '',
   onChange: () => {},
 };
 

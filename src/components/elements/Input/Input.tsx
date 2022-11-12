@@ -11,7 +11,7 @@ type InputProps = {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const defaultStyle = 'input input-bordered w-full max-w-xs';
+const defaultStyle = 'input input-bordered w-full';
 const errorStyle = 'input-error';
 
 function Input({ value, name, id, placeholder, isDisabled, isInvalid, onChange }: InputProps) {
