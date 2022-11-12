@@ -14,22 +14,6 @@ type FormProps<T> = {
   schema: ZodType<any, any, any>;
 };
 
-function DeepMapped<T>({ children }: FormProps<T>): ReactElement {
-  return (
-    <div>
-      {deepMap(children, (child: ReactNode) => {
-        if (child && (child as ReactElement).type === 'b') {
-          return cloneElement(child as ReactElement, {
-            ...(child as ReactElement).props,
-            className: 'mapped',
-          });
-        }
-        return child;
-      })}
-    </div>
-  );
-}
-
 function Form<T extends FieldValues>({
   children,
   defaultValues,
