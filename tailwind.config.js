@@ -36,6 +36,6 @@ module.exports = {
   plugins: [require('daisyui')],
   daisyui: {
     logs: true,
-    themes: [{ myTheme }, 'dark'],
+    themes: [{ myTheme }],
   },
 };
