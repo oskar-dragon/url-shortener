@@ -49,7 +49,7 @@ function Form<T extends FieldValues>({
                 onChange,
                 onBlur,
                 value,
-                error,
+                error: error?.message,
               } as Attributes,
             )
           }
