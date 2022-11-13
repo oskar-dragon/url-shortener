@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
 import { prisma } from '../prisma';
+import { shortLinkRouter } from './shortLink';
 
 // TODO: Add routes here
 export const appRouter = router({
@@ -18,6 +19,7 @@ export const appRouter = router({
         urls: test,
       };
     }),
+  shortLink: shortLinkRouter,
 });
 
 export type AppRouter = typeof appRouter;

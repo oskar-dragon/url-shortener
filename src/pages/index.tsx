@@ -1,20 +1,5 @@
-import { Form, FormInput } from 'components';
 import { Button } from 'components/elements';
-import { z } from 'zod';
-
-const formData = z.object({
-  firstName: z.string().min(1).max(18),
-  lastName: z.string().min(1).max(18),
-});
-
-type FormSchemaType = typeof formData;
-
-type FormFields = z.infer<FormSchemaType>;
-
-const defaultValues: FormFields = {
-  firstName: 'Oskar',
-  lastName: 'Dragon',
-};
+import ShortenerForm from 'features/shortener/components/shortenerForm/ShortenerForm';
 
 export default function Home() {
   return (
@@ -36,30 +21,7 @@ export default function Home() {
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <div className="card-body">
-            <Form<FormFields>
-              defaultValues={defaultValues}
-              onSubmit={() => console.log('submitted')}
-              schema={formData}
-            >
-              <div className="flex flex-col gap-4">
-                <FormInput
-                  name="longurl"
-                  id="longurl"
-                  label="Long url"
-                  placeholder="Enter your long url"
-                />
-                <FormInput
-                  name="shorturl"
-                  id="shorturl"
-                  label="Alias"
-                  placeholder="enter your alias"
-                  className="max-w-xs"
-                />
-                <Button className="mt-4" type="submit">
-                  Make your link shorter
-                </Button>
-              </div>
-            </Form>
+            <ShortenerForm />
           </div>
         </div>
       </div>

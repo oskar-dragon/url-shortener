@@ -9,8 +9,8 @@ import { deepMap } from 'react-children-utilities';
 
 type FormProps<T> = {
   children: ReactNode;
-  defaultValues: DeepPartial<T>;
-  onSubmit: () => void;
+  defaultValues?: DeepPartial<T>;
+  onSubmit: (data: T) => void;
   schema: ZodType<any, any, any>;
 };
 
@@ -64,5 +64,9 @@ function Form<T extends FieldValues>({
 
   return <form onSubmit={handleSubmit(onSubmit)}>{mappedChildren}</form>;
 }
+
+Form.defaultProps = {
+  defaultValues: {},
+};
 
 export default Form;
