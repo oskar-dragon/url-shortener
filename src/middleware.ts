@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
