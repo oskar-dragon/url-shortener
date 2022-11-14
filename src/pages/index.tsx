@@ -1,8 +1,5 @@
 import { Button } from 'components/elements';
 import ShortenerForm from 'features/shortener/components/shortenerForm/ShortenerForm';
-import dynamic from 'next/dynamic';
-
-const Portal = dynamic(() => import('../components/portal/Portal'), { ssr: false });
 
 export default function Home() {
   return (
