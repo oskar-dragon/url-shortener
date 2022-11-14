@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server';
-import { generateSlug, shortenerValidation } from 'features/shortener';
+import { shortenerValidation } from 'features/shortener';
 import generateShortUrl from 'server/helpers/generateShortUrl/generateShortUrl';
 import { prisma } from 'server/prisma';
 import { router, publicProcedure } from 'server/trpc';
@@ -29,6 +29,7 @@ export const shortLinkRouter = router({
       return createdUrlWIthDefinedSlug;
     }
 
+    // TODO: Refactor this function so it makes only one DB call
     const newSlug = await generateShortUrl();
 
     const createdUrlWithRandomSlug = await prisma.url.create({
@@ -36,16 +37,5 @@ export const shortLinkRouter = router({
     });
 
     return createdUrlWithRandomSlug;
-
-    // Check if slug is provided
-    // If it is, check if already exist in a DB
-    // If it isn't, create
-    // If it is, return an error
-
-    // If slug is not provided
-    // Generate a random one and check if it already exists
-    // If it does, generate a new one and check again
-
-    // Save in a database.
   }),
 });
