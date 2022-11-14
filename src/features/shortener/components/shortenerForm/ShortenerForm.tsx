@@ -6,6 +6,7 @@ import { trpc } from 'utils/trpc';
 
 function ShortenerForm(): JSX.Element {
   const { mutate } = trpc.shortLink.create.useMutation();
+
   return (
     <Form<ShortenerFormFields> onSubmit={(data) => mutate(data)} schema={shortenerValidation}>
       <div className="flex flex-col gap-4">
