@@ -1,5 +1,3 @@
-import { Fragment } from 'react';
-import Image from 'next/image';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import classNames from '../../utils/classNames';
@@ -27,20 +25,15 @@ function Header() {
                 </div>
                 <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                   <div className="flex flex-shrink-0 items-center">
-                    <Image
-                      className="block h-8 w-auto lg:hidden"
-                      width="8"
-                      height="8"
-                      src=""
-                      alt="Your Company"
-                    />
-                    <Image
+                    <h3
                       className="hidden h-8 w-auto lg:block"
                       height="8"
                       width="8"
                       src=""
                       alt="Your Company"
-                    />
+                    >
+                      Link shortener
+                    </h3>
                   </div>
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">
