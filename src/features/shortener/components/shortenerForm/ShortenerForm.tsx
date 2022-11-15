@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { Form, FormInput, Modal } from 'components';
 import { Button } from 'components/elements';
 import type { ShortenerFormFields } from 'features/shortener/types/shortenerForm';
@@ -13,7 +14,7 @@ function ShortenerForm(): JSX.Element {
 
   function updateForm(formData: ShortenerFormFields) {
     mutate(formData, {
-      onError: (data) => console.log(data),
+      onError: () => toast.error('Sorry. This alias has already been used. Try a different one'),
       onSuccess: (data) => {
         setModalUrl(`${getOrigin()}/${data.shortUrl}`);
         setIsModalOpen(true);
