@@ -2,12 +2,14 @@
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import type { ReactNode } from 'react';
+import classNames from 'utils/classNames';
 
 type PortalProps = {
   children: ReactNode;
+  className?: string;
 };
 
-function Portal({ children }: PortalProps) {
+function Portal({ children, className }: PortalProps) {
   const el = document.createElement('div');
   const wrapper: React.RefObject<HTMLElement> = useRef(el);
 
@@ -25,9 +27,20 @@ function Portal({ children }: PortalProps) {
     return <>{null}</>;
   }
   return createPortal(
-    <div className="block fixed pt-24 left-0 top-0 w-full h-full overflow-auto">{children}</div>,
+    <div
+      className={classNames(
+        'block fixed pt-24 left-0 top-0 w-full h-full overflow-auto',
+        className,
+      )}
+    >
+      {children}
+    </div>,
     wrapper.current,
   );
 }
+
+Portal.defaultProps = {
+  className: '',
+};
 
 export default Portal;
