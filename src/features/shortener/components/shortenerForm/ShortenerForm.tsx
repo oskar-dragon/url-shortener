@@ -21,6 +21,11 @@ function ShortenerForm(): JSX.Element {
     });
   }
 
+  function handleCloseModal() {
+    setIsModalOpen(false);
+    setModalUrl('');
+  }
+
   return (
     <Form<ShortenerFormFields> onSubmit={(data) => updateForm(data)} schema={shortenerValidation}>
       <div className="flex flex-col gap-4">
@@ -40,7 +45,7 @@ function ShortenerForm(): JSX.Element {
           title="Your URL has been successfully saved"
           body={`Your URL: ${modalUrl}`}
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => handleCloseModal()}
         />
       </div>
     </Form>
