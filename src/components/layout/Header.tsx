@@ -1,11 +1,14 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 import classNames from '../../utils/classNames';
 import Avatar from './Avatar';
 
-const navigation = [{ name: 'Main', href: '/', current: true }];
+const navigation = [{ name: 'Dashboard', href: '/', current: true }];
 
 function Header() {
+  const { user, isLoading } = useUser();
   return (
     <header className="flex-initial">
       <Disclosure as="nav" className="bg-gray-800">
@@ -25,15 +28,7 @@ function Header() {
                 </div>
                 <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                   <div className="flex flex-shrink-0 items-center">
-                    <h3
-                      className="hidden h-8 w-auto lg:block"
-                      height="8"
-                      width="8"
-                      src=""
-                      alt="Your Company"
-                    >
-                      Link shortener
-                    </h3>
+                    <h3 className="hidden h-8 w-auto lg:block">Link shortener</h3>
                   </div>
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">
@@ -57,6 +52,14 @@ function Header() {
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <Avatar />
+                  {!user && !isLoading && (
+                    <Link
+                      href="/api/auth/login"
+                      className="btn btn-ghost btn-sm rounded-md text-sm font-medium"
+                    >
+                      Sign in
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

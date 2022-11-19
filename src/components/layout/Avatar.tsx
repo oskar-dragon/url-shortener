@@ -1,15 +1,23 @@
+/* eslint-disable @next/next/no-img-element */
 import { Fragment } from 'react';
-import Image from 'next/image';
 import { Menu, Transition } from '@headlessui/react';
+import { useUser } from '@auth0/nextjs-auth0';
+import Link from 'next/link';
 import classNames from '../../utils/classNames';
 
 function Avatar() {
-  return (
+  const { user, isLoading } = useUser();
+
+  return !isLoading && user ? (
     <Menu as="div" className="relative ml-3">
       <div>
         <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
           <span className="sr-only">Open user menu</span>
-          <Image className="h-8 w-8 rounded-full" width="8" height="8" src="" alt="" />
+          <img
+            className="h-8 w-8 rounded-full"
+            src={user?.picture ? user.picture : ''}
+            alt="avatar"
+          />
         </Menu.Button>
       </div>
       <Transition
@@ -50,21 +58,21 @@ function Avatar() {
           </Menu.Item>
           <Menu.Item>
             {({ active }) => (
-              <a
-                href="http://google.com"
+              <Link
+                href="/api/auth/logout"
                 className={classNames(
                   active ? 'bg-gray-100' : '',
                   'block px-4 py-2 text-sm text-gray-700',
                 )}
               >
                 Sign out
-              </a>
+              </Link>
             )}
           </Menu.Item>
         </Menu.Items>
       </Transition>
     </Menu>
-  );
+  ) : null;
 }
 
 export default Avatar;
