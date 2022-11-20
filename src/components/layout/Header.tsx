@@ -1,6 +1,6 @@
-import { useUser } from '@auth0/nextjs-auth0';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Private } from 'components';
 import Link from 'next/link';
 import classNames from '../../utils/classNames';
 import Avatar from './Avatar';
@@ -9,7 +9,6 @@ import Navigation from './Navigation';
 const navigation = [{ name: 'Dashboard', href: '/dashboard', current: true }];
 
 function Header() {
-  const { user, isLoading } = useUser();
   return (
     <header className="flex-initial">
       <Disclosure as="nav" className="bg-gray-800">
@@ -38,15 +37,17 @@ function Header() {
                   </div>
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                  <Avatar />
-                  {!user && !isLoading && (
-                    <Link
-                      href="/api/auth/login"
-                      className="btn btn-ghost btn-sm rounded-md text-sm font-medium"
-                    >
-                      Sign in
-                    </Link>
-                  )}
+                  <Private
+                    privateComponent={<Avatar />}
+                    publicComponenet={
+                      <Link
+                        href="/api/auth/login"
+                        className="btn btn-ghost btn-sm rounded-md text-sm font-medium"
+                      >
+                        Sign in
+                      </Link>
+                    }
+                  />
                 </div>
               </div>
             </div>
