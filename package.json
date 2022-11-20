@@ -10,6 +10,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "^1.9.2",
     "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^2.0.13",
     "@hookform/resolvers": "^2.9.10",
@@ -25,8 +26,8 @@
     "@types/react-dom": "18.0.8",
     "daisyui": "^2.39.1",
     "eslint": "^8.2.0",
-    "eslint-config-next": "13.0.2",
-    "next": "13.0.2",
+    "eslint-config-next": "13.0.4",
+    "next": "13.0.4",
     "react": "18.2.0",
     "react-children-utilities": "^2.8.0",
     "react-dom": "18.2.0",
