@@ -1,12 +1,12 @@
 import { TRPCError } from '@trpc/server';
-import { shortenerValidation } from 'features/shortener';
+import { shortenerValidationWithUserId } from 'features/shortener';
 import generateShortUrl from 'server/helpers/generateShortUrl/generateShortUrl';
 import { prisma } from 'server/prisma';
 import { router, publicProcedure } from 'server/trpc';
 
 export const shortLinkRouter = router({
-  create: publicProcedure.input(shortenerValidation).mutation(async ({ input }) => {
-    const { url, slug } = input;
+  create: publicProcedure.input(shortenerValidationWithUserId).mutation(async ({ input }) => {
+    const { url, slug, email } = input;
 
     if (slug) {
       const urlInDB = await prisma.url.findUnique({
@@ -23,7 +23,7 @@ export const shortLinkRouter = router({
       }
 
       const createdUrlWIthDefinedSlug = await prisma.url.create({
-        data: { shortUrl: slug, longUrl: url },
+        data: { shortUrl: slug, longUrl: url, userId: email ?? null },
       });
 
       return createdUrlWIthDefinedSlug;
@@ -33,7 +33,7 @@ export const shortLinkRouter = router({
     const newSlug = await generateShortUrl();
 
     const createdUrlWithRandomSlug = await prisma.url.create({
-      data: { shortUrl: newSlug, longUrl: url },
+      data: { shortUrl: newSlug, longUrl: url, userId: email ?? null },
     });
 
     return createdUrlWithRandomSlug;

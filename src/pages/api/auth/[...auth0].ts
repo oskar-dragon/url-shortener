@@ -9,6 +9,8 @@ const afterCallback = async (req: NextApiRequest, res: NextApiResponse, session:
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { email, name, updated_at } = session.user;
 
+  console.log(session.user);
+
   if (email && typeof email === 'string') {
     try {
       const user = await prisma.user.findUnique({

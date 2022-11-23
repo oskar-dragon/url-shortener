@@ -6,20 +6,32 @@ import type { ShortenerFormFields } from 'features/shortener/types/shortenerForm
 import { shortenerValidation } from 'features/shortener/types/shortenerForm';
 import { trpc } from 'utils/trpc';
 import { getOrigin } from 'utils';
+import { useUser } from '@auth0/nextjs-auth0';
 
 function ShortenerForm(): JSX.Element {
+  const { user } = useUser();
   const { mutate, isLoading } = trpc.shortLink.create.useMutation();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalUrl, setModalUrl] = useState<string>('');
 
+  const email = user?.email ?? undefined;
+
+  console.log(user);
+
   function updateForm(formData: ShortenerFormFields) {
-    mutate(formData, {
-      onError: () => toast.error('Sorry. This alias has already been used. Try a different one'),
-      onSuccess: (data) => {
-        setModalUrl(`${getOrigin()}/${data.shortUrl}`);
-        setIsModalOpen(true);
+    mutate(
+      {
+        ...formData,
+        email,
       },
-    });
+      {
+        onError: () => toast.error('Sorry. This alias has already been used. Try a different one'),
+        onSuccess: (data) => {
+          setModalUrl(`${getOrigin()}/${data.shortUrl}`);
+          setIsModalOpen(true);
+        },
+      },
+    );
   }
 
   function handleCloseModal() {
