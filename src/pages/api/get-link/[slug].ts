@@ -23,6 +23,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
+  await prisma.url.update({
+    where: {
+      shortUrl: slug,
+    },
+
+    data: {
+      noOfVisits: data.noOfVisits + 1,
+    },
+  });
+
   res.setHeader('Content-Type', 'application/json');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=1000000000, stale-while-revalidate');

@@ -29,6 +29,7 @@ model Url {
   shortUrl    String   @id @unique @db.VarChar(7)
   longUrl     String   @db.VarChar(10000)
   dateCreated DateTime @default(now())
+  noOfVisits  Int      @default(0)
   name        String?
 
   User   User?   @relation(fields: [userId], references: [email])
