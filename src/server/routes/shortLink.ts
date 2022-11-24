@@ -1,8 +1,11 @@
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { TRPCError } from '@trpc/server';
 import { shortenerValidationWithUserId } from 'features/shortener';
 import generateShortUrl from 'server/helpers/generateShortUrl/generateShortUrl';
 import { prisma } from 'server/prisma';
-import { router, publicProcedure } from 'server/trpc';
+import { router, publicProcedure, privateProcedure } from 'server/trpc';
+import logger from 'server/utils/logger';
+import { z } from 'zod';
 
 export const shortLinkRouter = router({
   create: publicProcedure.input(shortenerValidationWithUserId).mutation(async ({ input }) => {
@@ -38,4 +41,57 @@ export const shortLinkRouter = router({
 
     return createdUrlWithRandomSlug;
   }),
+  getAllForUser: privateProcedure.query(async ({ ctx }) => {
+    const { user } = ctx.session;
+
+    try {
+      const urls = await prisma.url.findMany({
+        where: {
+          userId: user.email,
+        },
+      });
+
+      if (!urls) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'URLs not found' });
+      }
+
+      return urls;
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === 'P2025') {
+          throw new TRPCError({ code: 'NOT_FOUND', message: "URL doesn't exist" });
+        }
+      }
+
+      return err;
+    }
+  }),
+  removeOne: publicProcedure
+    .input(
+      z.object({
+        slug: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { slug } = input;
+
+      try {
+        await prisma.url.delete({
+          where: {
+            shortUrl: slug,
+          },
+        });
+
+        return;
+      } catch (err) {
+        logger.error(err);
+        if (err instanceof PrismaClientKnownRequestError) {
+          if (err.code === 'P2025') {
+            throw new TRPCError({ code: 'NOT_FOUND', message: "URL doesn't exist" });
+          }
+        }
+
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Something went wrong' });
+      }
+    }),
 });
