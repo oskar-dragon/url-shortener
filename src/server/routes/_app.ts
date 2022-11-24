@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { publicProcedure, router } from '../trpc';
+import { publicProcedure, privateProcedure, router } from '../trpc';
 import { prisma } from '../prisma';
 import { shortLinkRouter } from './shortLink';
 
@@ -19,6 +19,9 @@ export const appRouter = router({
         urls: test,
       };
     }),
+  private: privateProcedure.query(() => {
+    return 'works';
+  }),
   shortLink: shortLinkRouter,
 });
 
