@@ -16,8 +16,6 @@ function ShortenerForm(): JSX.Element {
 
   const email = user?.email ?? undefined;
 
-  console.log(user);
-
   function updateForm(formData: ShortenerFormFields) {
     mutate(
       {

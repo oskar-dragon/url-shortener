@@ -6,7 +6,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (!slug || typeof slug !== 'string') {
     res.status(404).json({ message: 'please provide a correct slug' });
-
     return;
   }
 
