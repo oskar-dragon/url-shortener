@@ -12,16 +12,16 @@ export default function Home() {
   }
   return (
     !isLoading && (
-      <div className="hero max-w-xl lg:max-w-4xl mx-auto bg-base-200 rounded-md shadow-xl py-6 px-8">
-        <div className="hero-content flex-col lg:flex-row-reverse ">
+      <div className="max-w-xl lg:max-w-4xl mx-auto border rounded-md shadow-sm py-6 px-8">
+        <div className="flex-col lg:flex-row-reverse ">
           <div className="text-center lg:text-left lg:pl-8">
-            <h1 className="text-white text-5xl font-bold">Link shortener</h1>
+            <h1 className="text-5xl font-bold">Link shortener</h1>
             <p className="py-2">
               Provide the following details to make your link shorter and easier to remember
             </p>
             {!user && (
               <div className="hidden lg:block space-y-3 py-9">
-                <p className="font-bold text-white">Create free account and enjoy:</p>
+                <p className="font-bold">Create free account and enjoy:</p>
                 <ul className="list-none">
                   <li>Link history</li>
                   <li>Customized TinyURLs</li>
@@ -32,8 +32,8 @@ export default function Home() {
               </div>
             )}
           </div>
-          <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-            <div className="card-body">
+          <div className="flex-shrink-0 w-full max-w-sm shadow bg-base-100">
+            <div className="py-4 px-6">
               <ShortenerForm />
             </div>
           </div>

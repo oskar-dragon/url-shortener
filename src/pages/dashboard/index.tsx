@@ -10,7 +10,9 @@ function Dashboard() {
 
   return (
     <div>
-      <Button onClick={() => mutate({ slug: 'rvs' })}>Remove</Button>
+      <Button className="btn-primary" onClick={() => mutate({ slug: 'rvs' })}>
+        Remove
+      </Button>
     </div>
   );
 }

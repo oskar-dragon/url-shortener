@@ -2,7 +2,7 @@
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import type { ReactNode } from 'react';
-import classNames from 'utils/classNames';
+import { cx } from 'class-variance-authority';
 
 type PortalProps = {
   children: ReactNode;
@@ -27,12 +27,7 @@ function Portal({ children, className }: PortalProps) {
     return <>{null}</>;
   }
   return createPortal(
-    <div
-      className={classNames(
-        'block fixed pt-24 left-0 top-0 w-full h-full overflow-auto',
-        className,
-      )}
-    >
+    <div className={cx('block fixed pt-24 left-0 top-0 w-full h-full overflow-auto', className)}>
       {children}
     </div>,
     wrapper.current,
