@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { useUser } from '@auth0/nextjs-auth0';
 import Link from 'next/link';
-import classNames from '../../utils/classNames';
+import { cx } from 'class-variance-authority';
 
 function Avatar() {
   const { user, isLoading } = useUser();
@@ -34,10 +34,7 @@ function Avatar() {
             {({ active }) => (
               <Link
                 href="/profile"
-                className={classNames(
-                  active ? 'bg-gray-100' : '',
-                  'block px-4 py-2 text-sm text-gray-700',
-                )}
+                className={cx(active ? 'bg-neutral-100' : '', 'block px-4 py-2 text-sm text-black')}
               >
                 Your Profile
               </Link>
@@ -47,10 +44,7 @@ function Avatar() {
             {({ active }) => (
               <Link
                 href="/api/auth/logout"
-                className={classNames(
-                  active ? 'bg-gray-100' : '',
-                  'block px-4 py-2 text-sm text-gray-700',
-                )}
+                className={cx(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
               >
                 Sign out
               </Link>

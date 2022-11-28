@@ -1,4 +1,4 @@
-import classNames from 'utils/classNames';
+import { cx } from 'class-variance-authority';
 import Header from './Header';
 
 type MainProps = {
@@ -8,7 +8,7 @@ type MainProps = {
 
 function Main({ className, children }: MainProps) {
   return (
-    <div className={classNames('min-h-screen flex flex-col', className)}>
+    <div className={cx('min-h-screen flex flex-col', className)}>
       <Header />
       <main className="flex-auto max-w-7xl py-6 sm:px-6 lg:px-8 px-4 container mx-auto">
         {children}

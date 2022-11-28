@@ -1,5 +1,41 @@
 import type { ReactNode } from 'react';
-import classNames from 'utils/classNames';
+import type { VariantProps } from 'class-variance-authority';
+import { cva } from 'class-variance-authority';
+
+const buttonStyles = cva(
+  'rounded-md text-sm font-semibold disabled:cursor-default cursor-pointer disabled:pointer-events-none select-none ease-in-out transition-all transition duration-200 uppercase border-solid border disabled:opacity-50',
+  {
+    variants: {
+      variant: {
+        dark: [
+          'bg-neutral-800',
+          'text-white',
+          'hover:bg-neutral-700',
+          'active:bg-neutral-900',
+          'disabled:bg-meutral-300',
+        ],
+        light: ['bg-white', 'text-black', 'border-neutral-300', 'hover:bg-neutral-100'],
+        blue: [
+          'bg-royal-700',
+          'text-white',
+          'hover:bg-royal-500',
+          'active:bg-royal-800',
+          'disabled:bg-meutral-300',
+        ],
+      },
+      size: {
+        sm: ['py-2', 'px-4'],
+        md: ['py-3', 'px-6'],
+        lg: ['py-4', 'px-8'],
+        fullWidth: ['py-3', 'w-full'],
+      },
+    },
+    defaultVariants: {
+      variant: 'dark',
+      size: 'md',
+    },
+  },
+);
 
 type ButtonProps = {
   className?: string;
@@ -8,16 +44,23 @@ type ButtonProps = {
   isDisabled?: boolean;
   isLoading?: boolean;
   children: ReactNode;
-};
+} & VariantProps<typeof buttonStyles>;
 
-const buttonDefaultStyles = `btn btn-primary`;
-
-function Button({ className, type, onClick, isDisabled, isLoading, children }: ButtonProps) {
+function Button({
+  className,
+  type,
+  onClick,
+  isDisabled,
+  isLoading,
+  children,
+  variant,
+  size,
+}: ButtonProps) {
   return (
     <button
       type={type === 'submit' ? 'submit' : 'button'}
       onClick={onClick}
-      className={classNames(buttonDefaultStyles, className)}
+      className={buttonStyles({ variant, size, className })}
       disabled={isDisabled || isLoading}
     >
       {children}

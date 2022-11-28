@@ -1,11 +1,11 @@
+import { cx } from 'class-variance-authority';
 import { Label, Input } from 'components/elements';
-import classNames from 'utils/classNames';
 
 type FormValueProps = {
   id: string;
   name: string;
   value?: string;
-  label: string;
+  label?: string;
   placeholder?: string;
   isDisabled?: boolean;
   error?: string;
@@ -25,10 +25,12 @@ function FormInput({
   onChange,
 }: FormValueProps) {
   return (
-    <div className={classNames('form-control w-full', className)}>
-      <Label htmlFor={id} isInvalid={!!error}>
-        {label}
-      </Label>
+    <div className={cx('w-full', className)}>
+      {label && (
+        <Label className="px-2" htmlFor={id} isInvalid={!!error}>
+          {label}
+        </Label>
+      )}
       <Input
         id={id}
         name={name}
@@ -38,13 +40,14 @@ function FormInput({
         isInvalid={!!error}
         isDisabled={isDisabled}
       />
-      {!!error && <span className="label label-text-alt text-error">{error}</span>}
+      {!!error && <span className="text-sm px-2 font-semibold text-error-500">{error}</span>}
     </div>
   );
 }
 
 FormInput.defaultProps = {
   value: '',
+  label: '',
   isDisabled: false,
   error: '',
   placeholder: '',

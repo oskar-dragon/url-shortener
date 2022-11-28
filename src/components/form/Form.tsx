@@ -37,6 +37,7 @@ function Form<T extends FieldValues>({
     const { name } = child.props;
     if (name) {
       const error = errors[name];
+
       return (
         <Controller
           control={control}

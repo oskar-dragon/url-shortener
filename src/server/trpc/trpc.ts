@@ -2,7 +2,7 @@ import { initTRPC } from '@trpc/server';
 import superjson from 'superjson';
 import type { Context } from './context';
 
-const t = initTRPC.context<Context>().create({
+export const t = initTRPC.context<Context>().create({
   /**
    * @see https://trpc.io/docs/v10/data-transformers
    */
@@ -14,9 +14,5 @@ const t = initTRPC.context<Context>().create({
     return shape;
   },
 });
-
-export const router = t.router;
-export const publicProcedure = t.procedure;
-export const middleware = t.middleware;
 
 // TODO: Create private procedure

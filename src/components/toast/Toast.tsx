@@ -13,8 +13,8 @@ function Toaster() {
         className: '',
         duration: 5000,
         style: {
-          background: '#2A303C',
-          color: '#fff',
+          background: 'rgb(250 250 250)',
+          color: '#000',
         },
 
         // Default options for specific types

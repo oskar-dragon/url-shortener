@@ -1,5 +1,25 @@
 import React from 'react';
-import classNames from 'utils/classNames';
+import type { VariantProps } from 'class-variance-authority';
+import { cva, cx } from 'class-variance-authority';
+
+const inputStyle = cva(
+  'w-full text-sm rounded border-solid border disabled:bg-neutral-200 disabled:cursor-default transition-all transition duration-200',
+  {
+    variants: {
+      variant: {
+        outline: ['border-neutral-200'],
+        filled: ['bg-neutral-50', 'border-neutral-200'],
+      },
+      size: {
+        md: ['py-3 px-2'],
+      },
+    },
+    defaultVariants: {
+      variant: 'filled',
+      size: 'md',
+    },
+  },
+);
 
 type InputProps = {
   value?: string;
@@ -8,13 +28,26 @@ type InputProps = {
   placeholder?: string;
   isDisabled?: boolean;
   isInvalid?: boolean;
+  className?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+} & VariantProps<typeof inputStyle>;
 
-const defaultStyle = 'input input-bordered w-full';
-const errorStyle = 'input-error';
+const errorStyle = 'text-error border-error';
 
-function Input({ value, name, id, placeholder, isDisabled, isInvalid, onChange }: InputProps) {
+function Input({
+  value,
+  name,
+  id,
+  placeholder,
+  isDisabled,
+  isInvalid,
+  onChange,
+  variant,
+  size,
+  className,
+}: InputProps) {
+  const concatClassName = cx(className, isInvalid ? errorStyle : '');
+
   return (
     <input
       type="text"
@@ -23,7 +56,7 @@ function Input({ value, name, id, placeholder, isDisabled, isInvalid, onChange }
       disabled={isDisabled}
       value={value}
       onChange={onChange}
-      className={classNames(defaultStyle, isInvalid ? errorStyle : '')}
+      className={inputStyle({ variant, size, className: concatClassName })}
       placeholder={placeholder}
     />
   );
@@ -34,6 +67,7 @@ Input.defaultProps = {
   placeholder: '',
   isDisabled: false,
   isInvalid: false,
+  className: '',
   onChange: () => {},
 };
 

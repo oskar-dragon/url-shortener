@@ -1,12 +1,17 @@
+import { cx } from 'class-variance-authority';
 import Private from 'components/private/Private';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { classNames } from 'utils';
 
 const navigation = [
   { name: 'Home', href: '/', private: false },
   { name: 'Dashboard', href: '/dashboard', private: true },
 ];
+
+const activeStyle = 'bg-neutral-900 text-white';
+const inactiveStyle = 'text-black hover:bg-neutral-200';
+const defaultStyle =
+  'block px-2 py-1 rounded-md text-sm font-medium ease-in-out transition-all transition duration-200';
 
 function Navigation() {
   const router = useRouter();
@@ -22,11 +27,9 @@ function Navigation() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={classNames(
-                    router.asPath === item.href
-                      ? 'bg-gray-900 text-white'
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block px-3 py-2 rounded-md text-sm font-medium',
+                  className={cx(
+                    router.asPath === item.href ? activeStyle : inactiveStyle,
+                    defaultStyle,
                   )}
                 >
                   {item.name}
@@ -40,12 +43,7 @@ function Navigation() {
           <Link
             key={item.name}
             href={item.href}
-            className={classNames(
-              router.asPath === item.href
-                ? 'bg-gray-900 text-white'
-                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-              'block px-3 py-2 rounded-md text-sm font-medium',
-            )}
+            className={cx(router.asPath === item.href ? activeStyle : inactiveStyle, defaultStyle)}
           >
             {item.name}
           </Link>

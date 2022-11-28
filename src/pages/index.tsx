@@ -1,44 +1,44 @@
-import { useUser } from '@auth0/nextjs-auth0';
-import { Button } from 'components/elements';
+import { AnimatedText } from 'features/shortener';
 import ShortenerForm from 'features/shortener/components/shortenerForm/ShortenerForm';
-import { useRouter } from 'next/router';
 
 export default function Home() {
-  const router = useRouter();
-  const { user, isLoading } = useUser();
-
-  function redirectToSignup() {
-    router.push('/api/auth/login');
-  }
   return (
-    !isLoading && (
-      <div className="hero max-w-xl lg:max-w-4xl mx-auto bg-base-200 rounded-md shadow-xl py-6 px-8">
-        <div className="hero-content flex-col lg:flex-row-reverse ">
-          <div className="text-center lg:text-left lg:pl-8">
-            <h1 className="text-white text-5xl font-bold">Link shortener</h1>
-            <p className="py-2">
-              Provide the following details to make your link shorter and easier to remember
-            </p>
-            {!user && (
-              <div className="hidden lg:block space-y-3 py-9">
-                <p className="font-bold text-white">Create free account and enjoy:</p>
-                <ul className="list-none">
-                  <li>Link history</li>
-                  <li>Customized TinyURLs</li>
-                </ul>
-                <Button onClick={() => redirectToSignup()} className="btn-secondary">
-                  Sign up for free!
-                </Button>
-              </div>
-            )}
-          </div>
-          <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-            <div className="card-body">
-              <ShortenerForm />
-            </div>
-          </div>
+    <>
+      <div className="max-w-xl mx-auto">
+        <div className="mt-16">
+          <h1 className="text-9xl font-bold text-center">
+            Link shortener{' '}
+            <span>
+              for{' '}
+              <AnimatedText
+                sequence={[
+                  'texting',
+                  5000,
+                  'engineers',
+                  5000,
+                  'designers',
+                  4000,
+                  'youtubers',
+                  4000,
+                  'marketing',
+                  4000,
+                ]}
+                speed={1}
+                repeat={Infinity}
+                className="text-indigo-700"
+              />
+            </span>
+          </h1>
+          <h4 className="text-2xl font-semibold max-w-[20rem] text-center mx-auto my-7">
+            Shorten, personalize and share easy to remember URLs.
+          </h4>
         </div>
       </div>
-    )
+      <div className="mt-20 mx-auto max-w-3xl shadow-2xl bg-base-100 rounded-md">
+        <div className="py-4 px-6">
+          <ShortenerForm />
+        </div>
+      </div>
+    </>
   );
 }
