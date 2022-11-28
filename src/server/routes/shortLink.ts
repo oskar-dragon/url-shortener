@@ -1,6 +1,6 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { TRPCError } from '@trpc/server';
-import { shortenerValidationWithUserId } from 'features/shortener';
+import { shortenerValidation, shortenerUrlOnly } from 'features/shortener';
 import generateShortUrl from 'server/helpers/generateShortUrl/generateShortUrl';
 import { prisma } from 'server/prisma';
 import { router, publicProcedure, privateProcedure } from 'server/trpc';
@@ -8,7 +8,22 @@ import logger from 'server/utils/logger';
 import { z } from 'zod';
 
 export const shortLinkRouter = router({
-  create: publicProcedure.input(shortenerValidationWithUserId).mutation(async ({ input }) => {
+  createRandom: publicProcedure.input(shortenerUrlOnly).mutation(async ({ input }) => {
+    const { url } = input;
+
+    try {
+      const randomSlug = await generateShortUrl();
+
+      const createdUrlWithRandomSlug = await prisma.url.create({
+        data: { shortUrl: randomSlug, longUrl: url },
+      });
+
+      return createdUrlWithRandomSlug;
+    } catch (err) {
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Something went wrong' });
+    }
+  }),
+  create: privateProcedure.input(shortenerValidation).mutation(async ({ input }) => {
     const { url, slug, email } = input;
 
     if (slug) {

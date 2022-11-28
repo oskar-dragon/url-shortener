@@ -1,16 +1,21 @@
 import { z } from 'zod';
 
 export const shortenerValidation = z.object({
-  url: z.string().url(),
+  url: z
+    .string({
+      required_error: 'Please provide a URL',
+      invalid_type_error: 'URL must be a string',
+    })
+    .url({
+      message: 'Incorrect url format',
+    }),
   slug: z.string().max(7, { message: 'Alias should conntain at most 7 characters(s)' }).optional(),
-});
-
-export const shortenerValidationWithUserId = z.object({
-  url: z.string().url(),
-  slug: z.string().max(7).optional(),
   email: z.string().email().optional(),
 });
 
-export type FormSchemaType = typeof shortenerValidation;
+export const shortenerUrlOnly = shortenerValidation.pick({ url: true });
+export const shortenerUrlAndSlug = shortenerValidation.omit({ email: true });
 
-export type ShortenerFormFields = z.infer<FormSchemaType>;
+export type ShortenerUrlOnlyFormType = typeof shortenerUrlOnly;
+export type FormSchemaType = typeof shortenerValidation;
+export type ShortenerFormFields = z.infer<ShortenerUrlOnlyFormType>;

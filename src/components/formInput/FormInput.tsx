@@ -5,7 +5,7 @@ type FormValueProps = {
   id: string;
   name: string;
   value?: string;
-  label: string;
+  label?: string;
   placeholder?: string;
   isDisabled?: boolean;
   error?: string;
@@ -26,9 +26,11 @@ function FormInput({
 }: FormValueProps) {
   return (
     <div className={cx('w-full', className)}>
-      <Label className="px-2" htmlFor={id} isInvalid={!!error}>
-        {label}
-      </Label>
+      {label && (
+        <Label className="px-2" htmlFor={id} isInvalid={!!error}>
+          {label}
+        </Label>
+      )}
       <Input
         id={id}
         name={name}
@@ -38,13 +40,14 @@ function FormInput({
         isInvalid={!!error}
         isDisabled={isDisabled}
       />
-      {!!error && <span className="text-sm px-2 font-semibold text-error">{error}</span>}
+      {!!error && <span className="text-sm px-2 font-semibold text-error-500">{error}</span>}
     </div>
   );
 }
 
 FormInput.defaultProps = {
   value: '',
+  label: '',
   isDisabled: false,
   error: '',
   placeholder: '',
