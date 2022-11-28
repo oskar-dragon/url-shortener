@@ -25,7 +25,7 @@ function Header() {
                 </div>
                 <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                   <div className="flex flex-shrink-0 items-center">
-                    <h3 className="hidden h-8 w-auto lg:block text-base-content">Link shortener</h3>
+                    <h3 className="hidden text-2xl font-semibold w-auto lg:block">Short.ly</h3>
                   </div>
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">
