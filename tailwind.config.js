@@ -92,8 +92,22 @@ module.exports = {
         '3xl': '1.5rem',
         '4xl': '2.125rem',
         '5xl': '2.625rem',
-        '6xl': '3.125rem',
-        '7xl': '3.75rem',
+        '6xl': [
+          '3.125rem',
+          {
+            lineHeight: '1',
+            letterSpacing: '-0.01em',
+            fontWeight: '500',
+          },
+        ],
+        '7xl': [
+          '3.75rem',
+          {
+            lineHeight: '1',
+            letterSpacing: '-0.01em',
+            fontWeight: '500',
+          },
+        ],
         '8xl': [
           '4.5rem',
           {

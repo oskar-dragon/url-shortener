@@ -35,9 +35,14 @@ function ShortenerForm(): JSX.Element {
 
   return (
     <Form<ShortenerFormFields> onSubmit={(data) => updateForm(data)} schema={shortenerUrlOnly}>
-      <div className="w-full flex items-start gap-4">
-        <FormInput name="url" id="url" placeholder="Enter your long url" />
-        <Button variant="dark" type="submit" isDisabled={isLoading}>
+      <div className="w-full flex flex-col md:flex-row md:items-start gap-4">
+        <FormInput
+          name="url"
+          id="url"
+          placeholder="Enter your long url"
+          className="flex-initials"
+        />
+        <Button variant="dark" type="submit" isDisabled={isLoading} className="">
           {isLoading ? 'Saving...' : 'Shorten'}
         </Button>
 
