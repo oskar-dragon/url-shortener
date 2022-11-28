@@ -1,3 +1,4 @@
+import { AnimatedText } from 'features/shortener';
 import ShortenerForm from 'features/shortener/components/shortenerForm/ShortenerForm';
 
 export default function Home() {
@@ -8,11 +9,28 @@ export default function Home() {
           <h1 className="text-9xl font-bold text-center">
             Link shortener{' '}
             <span>
-              for <span className="text-indigo-700">Engineers</span>
+              for{' '}
+              <AnimatedText
+                sequence={[
+                  'texting',
+                  5000,
+                  'engineers',
+                  5000,
+                  'designers',
+                  4000,
+                  'youtubers',
+                  4000,
+                  'marketing',
+                  4000,
+                ]}
+                speed={1}
+                repeat={Infinity}
+                className="text-indigo-700"
+              />
             </span>
           </h1>
           <h4 className="text-2xl font-semibold max-w-[20rem] text-center mx-auto my-7">
-            Shorten, personalize, share and easy to remember URLs.
+            Shorten, personalize and share easy to remember URLs.
           </h4>
         </div>
       </div>
