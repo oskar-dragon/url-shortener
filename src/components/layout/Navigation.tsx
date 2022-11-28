@@ -11,7 +11,7 @@ const navigation = [
 const activeStyle = 'bg-neutral-900 text-white';
 const inactiveStyle = 'text-black hover:bg-neutral-200';
 const defaultStyle =
-  'block px-3 py-2 rounded-md text-sm font-medium ease-in-out transition-all transition duration-200';
+  'block px-2 py-1 rounded-md text-sm font-medium ease-in-out transition-all transition duration-200';
 
 function Navigation() {
   const router = useRouter();

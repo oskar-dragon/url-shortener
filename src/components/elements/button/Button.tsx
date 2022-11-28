@@ -7,13 +7,26 @@ const buttonStyles = cva(
   {
     variants: {
       variant: {
-        dark: ['bg-neutral-800', 'text-white', 'hover:bg-neutral-900'],
+        dark: [
+          'bg-neutral-800',
+          'text-white',
+          'hover:bg-neutral-700',
+          'active:bg-neutral-900',
+          'disabled:bg-meutral-300',
+        ],
         light: ['bg-white', 'text-black', 'border-neutral-300', 'hover:bg-neutral-100'],
-        blue: ['bg-royal-700', 'text-white', 'hover:bg-royal-500', 'active:bg-royal-800'],
+        blue: [
+          'bg-royal-700',
+          'text-white',
+          'hover:bg-royal-500',
+          'active:bg-royal-800',
+          'disabled:bg-meutral-300',
+        ],
       },
       size: {
-        sm: ['py-3', 'px-4'],
-        md: ['py-3', 'px-12'],
+        sm: ['py-2', 'px-4'],
+        md: ['py-3', 'px-6'],
+        lg: ['py-4', 'px-8'],
         fullWidth: ['py-3', 'w-full'],
       },
     },

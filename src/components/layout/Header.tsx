@@ -1,7 +1,7 @@
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Private } from 'components';
-import Link from 'next/link';
+import { Button } from 'components/elements';
 import Avatar from './Avatar';
 import Navigation from './Navigation';
 
@@ -37,20 +37,16 @@ function Header() {
                   <Private
                     privateComponent={<Avatar />}
                     publicComponenet={
-                      <Link
-                        href="/api/auth/login"
-                        className="btn btn-ghost btn-sm rounded-md text-sm font-medium"
-                      >
+                      <Button variant="blue" size="sm">
                         Sign in
-                      </Link>
+                      </Button>
                     }
                   />
                 </div>
               </div>
             </div>
-
             <Disclosure.Panel className="sm:hidden">
-              <div className="space-y-1 px-2 pt-2 pb-3 bg-neutral-50">
+              <div className="space-y-1 px-2 pt-2 pb-2 bg-neutral-100">
                 <Navigation />
               </div>
             </Disclosure.Panel>
