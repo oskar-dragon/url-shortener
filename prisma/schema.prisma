@@ -1,12 +1,11 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
   provider             = "mysql"
   url                  = env("DATABASE_URL")
-  referentialIntegrity = "prisma"
+  relationMode = "prisma"
 }
 
 model User {
@@ -29,9 +28,47 @@ model Url {
   shortUrl    String   @id @unique @db.VarChar(7)
   longUrl     String   @db.VarChar(10000)
   dateCreated DateTime @default(now())
-  noOfVisits  Int      @default(0)
   name        String?
 
   User   User?   @relation(fields: [userId], references: [email])
   userId String?
+
+  statistics Statistics[]
+
+  @@index([userId])
+}
+
+model Statistics {
+  id String @id @unique @default(uuid())
+  visitDate DateTime @default(now())
+
+  Url Url @relation(fields: [slug], references: [shortUrl])
+  slug String
+
+  country Countries[]
+  device Devices[]
+
+  @@index([slug])
+}
+
+model Countries {
+  iso String @id @unique @db.VarChar(7)
+  name String @unique @db.VarChar(80)
+  nicename String @db.VarChar(80)
+
+  Statistics Statistics @relation(fields: [statisticId], references: [id])
+  statisticId String
+
+  @@index([statisticId])
+}
+
+model Devices {
+  id String @id @unique @default(uuid())
+  deviceName String @unique @db.VarChar(80)
+  type String @unique @db.VarChar(80)
+
+  Statistics Statistics @relation(fields: [statisticId], references: [id])
+  statisticId String
+
+  @@index([statisticId])
 }
