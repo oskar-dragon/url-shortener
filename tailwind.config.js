@@ -80,7 +80,6 @@ module.exports = {
         sm: '0.75rem',
         base: '0.875rem',
         xl: '1rem',
-        '2xl': '1.25rem',
         '2xl': [
           '1.25rem',
           {

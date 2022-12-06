@@ -1,9 +1,13 @@
 import { AnimatedText } from 'features/shortener';
 import ShortenerForm from 'features/shortener/components/shortenerForm/ShortenerForm';
+import Head from 'next/head';
 
 export default function Home() {
   return (
     <>
+      <Head>
+        <title>Short.ly</title>
+      </Head>
       <div className="max-w-xl mx-auto">
         <div className="mt-8 sm:mt-16">
           <h1 className="text-6xl font-bold text-center md:text-9xl md:font-bold">

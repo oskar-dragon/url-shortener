@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 
 const navigation = [
   { name: 'Home', href: '/', private: false },
-  { name: 'Dashboard', href: '/dashboard', private: true },
+  { name: 'Links', href: '/links', private: true },
 ];
 
 const activeStyle = 'bg-neutral-900 text-white';

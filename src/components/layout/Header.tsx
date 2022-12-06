@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Private } from 'components';
@@ -6,6 +7,12 @@ import Avatar from './Avatar';
 import Navigation from './Navigation';
 
 function Header() {
+  const router = useRouter();
+
+  function redirectToSignIn() {
+    router.push('/api/auth/login');
+  }
+
   return (
     <header className="flex-initial">
       <Disclosure as="nav" className="bg-base-100 shadow">
@@ -37,7 +44,7 @@ function Header() {
                   <Private
                     privateComponent={<Avatar />}
                     publicComponenet={
-                      <Button variant="blue" size="sm">
+                      <Button variant="blue" size="sm" onClick={() => redirectToSignIn()}>
                         Sign in
                       </Button>
                     }

@@ -3,7 +3,7 @@ import type { VariantProps } from 'class-variance-authority';
 import { cva } from 'class-variance-authority';
 
 const buttonStyles = cva(
-  'rounded-md text-sm font-semibold disabled:cursor-default cursor-pointer disabled:pointer-events-none select-none ease-in-out transition-all transition duration-200 uppercase border-solid border disabled:opacity-50',
+  'flex gap-1 rounded-md text-sm font-semibold disabled:cursor-default cursor-pointer disabled:pointer-events-none select-none ease-in-out transition-all transition duration-200 uppercase border-solid border disabled:opacity-50',
   {
     variants: {
       variant: {
@@ -44,6 +44,8 @@ type ButtonProps = {
   isDisabled?: boolean;
   isLoading?: boolean;
   children: ReactNode;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
 } & VariantProps<typeof buttonStyles>;
 
 function Button({
@@ -55,6 +57,8 @@ function Button({
   children,
   variant,
   size,
+  leftIcon,
+  rightIcon,
 }: ButtonProps) {
   return (
     <button
@@ -63,7 +67,9 @@ function Button({
       className={buttonStyles({ variant, size, className })}
       disabled={isDisabled || isLoading}
     >
+      {leftIcon && <span className="w-4 self-center">{leftIcon}</span>}
       {children}
+      {rightIcon && <span className="w-4 self-center">{leftIcon}</span>}
     </button>
   );
 }
@@ -73,6 +79,8 @@ Button.defaultProps = {
   type: 'button',
   isDisabled: false,
   isLoading: false,
+  leftIcon: null,
+  rightIcon: null,
   onClick: () => {},
 };
 
