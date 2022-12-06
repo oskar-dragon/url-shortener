@@ -67,9 +67,9 @@ function Button({
       className={buttonStyles({ variant, size, className })}
       disabled={isDisabled || isLoading}
     >
-      {leftIcon && <span className="w-4 self-center">{leftIcon}</span>}
+      {leftIcon && <span className="w-4 self-center text-current">{leftIcon}</span>}
       {children}
-      {rightIcon && <span className="w-4 self-center">{leftIcon}</span>}
+      {rightIcon && <span className="w-4 self-center text-current">{leftIcon}</span>}
     </button>
   );
 }
