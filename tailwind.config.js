@@ -76,51 +76,93 @@ module.exports = {
         sans: ['Inter', ...fontFamily.sans],
       },
       fontSize: {
-        xs: '0.7rem',
-        sm: '0.75rem',
-        base: '0.875rem',
-        xl: '1rem',
+        //   xs: [
+        //     '0.75rem',
+        //     {
+        //       lineHeight: '1.125rem',
+        //       letterSpacing: '',
+        //       fontWeight: '',
+        //     },
+        // ]
+        xs: [
+          '0.75rem',
+          {
+            lineHeight: '1.125rem',
+            letterSpacing: '',
+            fontWeight: '',
+          },
+        ],
+        sm: [
+          '0.875rem',
+          {
+            lineHeight: '1.25rem',
+            letterSpacing: '',
+            fontWeight: '',
+          },
+        ],
+        base: [
+          '1rem',
+          {
+            lineHeight: '1.5rem',
+          },
+        ],
+        xl: [
+          '1.125rem',
+          {
+            lineHeight: '1.75rem',
+          },
+        ],
         '2xl': [
           '1.25rem',
           {
-            lineHeight: '1.3',
-            letterSpacing: '-0.01em',
-            fontWeight: '500',
+            lineHeight: '1.875rem',
           },
         ],
-        '3xl': '1.5rem',
-        '4xl': '2.125rem',
-        '5xl': '2.625rem',
-        '6xl': [
-          '3.125rem',
+        '3xl': [
+          '1.5rem',
           {
-            lineHeight: '1',
+            lineHeight: '2rem',
+          },
+        ],
+        '4xl': [
+          '1.875rem',
+          {
+            lineHeight: '2.375rem',
+          },
+        ],
+        '5xl': [
+          '2.25rem',
+          {
+            lineHeight: '2.75rem',
             letterSpacing: '-0.01em',
-            fontWeight: '500',
+          },
+        ],
+        '6xl': [
+          '3rem',
+          {
+            lineHeight: '3.75rem',
+            letterSpacing: '-0.01em',
           },
         ],
         '7xl': [
           '3.75rem',
           {
-            lineHeight: '1',
+            lineHeight: '4.5rem',
             letterSpacing: '-0.01em',
-            fontWeight: '500',
           },
         ],
         '8xl': [
           '4.5rem',
           {
-            lineHeight: '1',
+            lineHeight: '5.625rem',
             letterSpacing: '-0.01em',
-            fontWeight: '500',
           },
         ],
         '9xl': [
           '5.125rem',
           {
-            lineHeight: '1',
+            lineHeight: '5.625rem',
             letterSpacing: '-0.01em',
-            fontWeight: '500',
           },
         ],
       },
