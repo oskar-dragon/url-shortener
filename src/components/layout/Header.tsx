@@ -34,7 +34,7 @@ function Header() {
                   <div className="flex flex-shrink-0 items-center">
                     <h3 className="hidden text-2xl font-semibold w-auto lg:block">Short.ly</h3>
                   </div>
-                  <div className="hidden sm:ml-6 sm:block">
+                  <div className="hidden sm:ml-6 sm:block self-center">
                     <div className="flex space-x-4">
                       <Navigation />
                     </div>

@@ -6,7 +6,7 @@ function LinksHeader() {
     <div className="flex flex-col gap-3 sm:flex-row sm:justify-between align-top">
       <div>
         <h1 className="text-2xl sm:text-3xl font-semibold">Links</h1>
-        <p className="text-base sm:text-xl text-neutral-500">
+        <p className="text-sm sm:text-base text-neutral-500">
           Lorem ipsum dolor, sit amet consectetur adipisicing elit.
         </p>
       </div>

@@ -8,10 +8,9 @@ const navigation = [
   { name: 'Links', href: '/links', private: true },
 ];
 
-const activeStyle = 'bg-neutral-900 text-white';
-const inactiveStyle = 'text-black hover:bg-neutral-200';
-const defaultStyle =
-  'block px-2 py-1 rounded-md text-sm font-medium ease-in-out transition-all transition duration-200';
+const activeStyle = 'text-royal-600 text-white';
+const inactiveStyle = 'text-black hover:text-neutral-600';
+const defaultStyle = 'block text-sm font-medium ease-in-out transition-all transition duration-200';
 
 function Navigation() {
   const router = useRouter();
