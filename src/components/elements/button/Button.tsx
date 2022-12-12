@@ -24,9 +24,10 @@ const buttonStyles = cva(
         ],
       },
       size: {
-        sm: ['py-2', 'px-4'],
-        md: ['py-3', 'px-6'],
-        lg: ['py-4', 'px-8'],
+        sm: ['py-2', 'px-3.5'],
+        md: ['py-2.5', 'px-4'],
+        lg: ['py-2.5', 'px-4'],
+        xl: ['py-3', 'px-5'],
         fullWidth: ['py-3', 'w-full'],
       },
     },

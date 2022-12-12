@@ -11,7 +11,7 @@ const inputStyle = cva(
         filled: ['bg-neutral-50', 'border-neutral-200'],
       },
       size: {
-        md: ['py-3 px-2'],
+        md: ['py-2.5 px-3'],
       },
     },
     defaultVariants: {
