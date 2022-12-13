@@ -8,7 +8,7 @@ const navigation = [
   { name: 'Links', href: '/links', private: true },
 ];
 
-const activeStyle = 'text-royal-600 text-white';
+const activeStyle = 'text-royal-600';
 const inactiveStyle = 'text-black hover:text-neutral-600';
 const defaultStyle = 'block text-sm font-medium ease-in-out transition-all transition duration-200';
 
