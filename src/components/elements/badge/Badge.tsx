@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import DotIcon from 'assets/icons/dot.svg';
+import { ArrowRightIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
-const badgeStyles = cva('rounded-full', {
+const badgeStyles = cva(['inline-flex', 'items-center', 'gap-1', 'rounded-full'], {
   variants: {
     colour: {
       grey: ['bg-neutral-100', 'text-neutral-700'],
@@ -23,12 +25,47 @@ const badgeStyles = cva('rounded-full', {
   },
 });
 
+const iconsMap = {
+  dot: <DotIcon />,
+  cross: <XMarkIcon className="h-3.5 stroke-2" />,
+  arrowRight: <ArrowRightIcon className="h-3.5 stroke-2" />,
+};
+
+type IconNames = keyof typeof iconsMap;
+
+const iconComponentMap = (iconName: IconNames | undefined) => {
+  if (iconName !== undefined) {
+    return iconsMap[iconName];
+  }
+  return undefined;
+};
+
 type BadgeProps = {
   children: ReactNode;
+  iconLeft?: IconNames;
+  iconRight?: IconNames;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 } & VariantProps<typeof badgeStyles>;
 
-function Badge({ children, colour, size }: BadgeProps) {
-  return <span className={badgeStyles({ colour, size })}>{children}</span>;
+function Badge({ children, colour, size, iconLeft, iconRight, onClick }: BadgeProps) {
+  return (
+    <span className={badgeStyles({ colour, size })}>
+      {iconLeft ? iconComponentMap(iconLeft) : null}
+      {children}
+      {iconRight && !onClick ? iconComponentMap(iconRight) : null}
+      {iconRight && onClick ? (
+        <button type="button" className="appearance-none" onClick={onClick}>
+          {iconComponentMap(iconRight)}
+        </button>
+      ) : null}
+    </span>
+  );
 }
+
+Badge.defaultProps = {
+  iconLeft: '',
+  iconRight: '',
+  onClick: undefined,
+};
 
 export default Badge;
