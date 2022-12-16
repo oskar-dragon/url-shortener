@@ -6,3 +6,13 @@
 #__next {
   min-height: 100vh;
 }
+
+@layer utilities {
+  .custom-transition {
+    @apply transition-all duration-200;
+  }
+
+  .custom-focus {
+    @apply ring ring-royal-300;
+  }
+}
