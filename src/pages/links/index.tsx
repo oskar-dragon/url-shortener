@@ -1,10 +1,17 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
-import { Input } from 'components/elements';
+
 import Head from 'next/head';
 import { LinksHeader } from 'features/links';
+import { SearchDropdown } from 'components';
 
 function Dashboard() {
   // const { data } = trpc.shortLink.getAllForUser.useQuery();
+
+  const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' },
+  ];
 
   return (
     <>
@@ -13,7 +20,7 @@ function Dashboard() {
       </Head>
       <div>
         <LinksHeader />
-        <Input leftAddon="test" rightAddon="test" placeholder="text" name="test" id="test" />
+        <SearchDropdown options={options} />
       </div>
     </>
   );

@@ -3,7 +3,6 @@ const { fontFamily } = require('tailwindcss/defaultTheme');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
-
   theme: {
     extend: {
       colors: {
@@ -76,14 +75,6 @@ module.exports = {
         sans: ['Inter', ...fontFamily.sans],
       },
       fontSize: {
-        //   xs: [
-        //     '0.75rem',
-        //     {
-        //       lineHeight: '1.125rem',
-        //       letterSpacing: '',
-        //       fontWeight: '',
-        //     },
-        // ]
         xs: [
           '0.75rem',
           {
