@@ -14,7 +14,7 @@ const root = cva(
         sm: ['h-5', 'w-9'],
         md: ['h-6', 'w-11'],
       },
-      enabled: {
+      isEnabled: {
         true: ['bg-royal-600', 'hover:bg-royal-600', 'focus:bg-royal-600'],
       },
     },
@@ -22,7 +22,7 @@ const root = cva(
     compoundVariants: [
       {
         variant: 'light',
-        enabled: true,
+        isEnabled: true,
         className: ['bg-royal-200', 'hover:bg-royal-200', 'focus:bg-royal-200'],
       },
     ],
@@ -46,14 +46,14 @@ const thumb = cva(
         sm: ['h-4', 'w-4'],
         md: ['h-5', 'w-5'],
       },
-      enabled: {
+      isEnabled: {
         true: ['translate-x-5'],
       },
     },
     compoundVariants: [
       {
         size: 'sm',
-        enabled: true,
+        isEnabled: true,
         className: 'translate-x-4',
       },
     ],
@@ -91,41 +91,58 @@ type StylingProps = LabeltextProps & ThumbProps & RootProps & SupportTextProps;
 
 type SwitchProps = {
   label?: string;
+  name?: string;
+  value?: boolean;
+  onChange?: (checked: boolean) => void;
 } & StylingProps;
 
-function Switch({ label, variant, size }: SwitchProps) {
-  const [enabled, setEnabled] = React.useState(false);
+function Switch({ label, variant, size, name, value, onChange, ...restProps }: SwitchProps) {
+  const [isEnabled, setIsEnabled] = React.useState(() => value);
 
   function toggleSwitch() {
-    setEnabled((prevValue) => !prevValue);
+    setIsEnabled((prevValue) => {
+      if (onChange) {
+        onChange(!prevValue);
+      }
+      return !prevValue;
+    });
   }
 
   return (
-    <div className="flex align-top gap-3">
-      <HeadlessUISwitch
-        checked={enabled}
-        onChange={() => toggleSwitch()}
-        className={root({ variant, size, enabled })}
-      >
-        <span
-          aria-hidden="true"
-          className={thumb({
-            variant,
-            size,
-            enabled,
-          })}
-        />
-      </HeadlessUISwitch>
+    <HeadlessUISwitch.Group>
+      <div className="flex align-top gap-3">
+        <HeadlessUISwitch
+          checked={isEnabled}
+          onChange={() => toggleSwitch()}
+          name={name}
+          className={root({ variant, size, isEnabled })}
+          {...restProps}
+        >
+          <span
+            aria-hidden="true"
+            className={thumb({
+              variant,
+              size,
+              isEnabled,
+            })}
+          />
+        </HeadlessUISwitch>
 
-      <div className="flex flex-col">
-        <span className={labeltext({ size })}>{label}</span>
-        <span className={supportText({ size })}>{label}</span>
+        <div className="flex flex-col">
+          <HeadlessUISwitch.Label passive className={labeltext({ size })}>
+            {label}
+          </HeadlessUISwitch.Label>
+          <span className={supportText({ size })}>{label}</span>
+        </div>
       </div>
-    </div>
+    </HeadlessUISwitch.Group>
   );
 }
 
 Switch.defaultProps = {
   label: '',
+  name: '',
+  value: false,
+  onChange: () => {},
 };
 export default Switch;
