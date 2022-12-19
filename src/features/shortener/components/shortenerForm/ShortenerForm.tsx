@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { Form, FormInput, Modal } from 'components';
+import { ConfirmationModal, Form, FormInput } from 'components';
 import { Button } from 'components/elements';
 import type { ShortenerFormFields } from 'features/shortener/types/shortenerForm';
 import { shortenerUrlOnly } from 'features/shortener/types/shortenerForm';
@@ -46,7 +46,7 @@ function ShortenerForm(): JSX.Element {
           {isLoading ? 'Saving...' : 'Shorten'}
         </Button>
 
-        <Modal
+        <ConfirmationModal
           title="Link created"
           body={`Your shortened link has been created: ${modalUrl}`}
           isOpen={isModalOpen}

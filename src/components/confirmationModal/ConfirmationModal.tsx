@@ -3,7 +3,7 @@ import { Button } from 'components/elements';
 import { Dialog, Transition } from '@headlessui/react';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 
-type ModalType = {
+type ConfirmationModalProps = {
   title: string;
   body: string;
   isOpen: boolean;
@@ -11,7 +11,13 @@ type ModalType = {
   secondAction: () => void;
 };
 
-function Modal({ title, body, isOpen, firstAction, secondAction }: ModalType) {
+function ConfirmationModal({
+  title,
+  body,
+  isOpen,
+  firstAction,
+  secondAction,
+}: ConfirmationModalProps) {
   const cancelButtonRef = useRef(null);
 
   if (!isOpen) return null;
@@ -33,7 +39,7 @@ function Modal({ title, body, isOpen, firstAction, secondAction }: ModalType) {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          <div className="fixed inset-0 bg-neutral-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -59,7 +65,7 @@ function Modal({ title, body, isOpen, firstAction, secondAction }: ModalType) {
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                       <Dialog.Title
                         as="h3"
-                        className="text-2xl font-medium leading-6 text-neutral-900"
+                        className="text-xl font-medium leading-6 text-neutral-900"
                       >
                         {title}
                       </Dialog.Title>
@@ -86,4 +92,4 @@ function Modal({ title, body, isOpen, firstAction, secondAction }: ModalType) {
   );
 }
 
-export default Modal;
+export default ConfirmationModal;
