@@ -1,5 +1,6 @@
 import { cx } from 'class-variance-authority';
 import { Label, Input } from 'components/elements';
+import FieldError from 'components/fieldError/FieldError';
 
 type FormValueProps = {
   id: string;
@@ -40,7 +41,7 @@ function FormInput({
         isInvalid={!!error}
         isDisabled={isDisabled}
       />
-      {!!error && <span className="text-sm px-2 font-semibold text-error-500">{error}</span>}
+      <FieldError name={name} />
     </div>
   );
 }

@@ -7,11 +7,16 @@ import { shortenerUrlOnly } from 'features/shortener/types/shortenerForm';
 import { trpc } from 'utils/trpc';
 import { getOrigin } from 'utils';
 import { copyToClipboard } from 'helpers';
+import { useForm } from 'hooks';
 
 function ShortenerForm(): JSX.Element {
   const { mutate, isLoading } = trpc.shortLink.createRandom.useMutation();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalUrl, setModalUrl] = useState<string>('');
+
+  const form = useForm({
+    schema: shortenerUrlOnly,
+  });
 
   function updateForm(formData: ShortenerFormFields) {
     mutate(formData, {
@@ -32,9 +37,8 @@ function ShortenerForm(): JSX.Element {
     copyToClipboard(modalUrl);
     handleCloseModal();
   }
-
   return (
-    <Form<ShortenerFormFields> onSubmit={(data) => updateForm(data)} schema={shortenerUrlOnly}>
+    <Form form={form} onSubmit={(data) => updateForm(data)}>
       <div className="w-full flex flex-col md:flex-row md:items-start gap-4">
         <FormInput
           name="url"
