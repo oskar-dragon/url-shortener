@@ -1,34 +1,15 @@
-/* eslint-disable no-param-reassign */
-import { isValidElement, cloneElement } from 'react';
-import type { FieldValues, DeepPartial } from 'react-hook-form';
-import type { ZodType } from 'zod';
-import type { Attributes, ReactNode, ReactElement } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import type { Attributes, ComponentProps, ReactElement, ReactNode } from 'react';
+import { cloneElement, isValidElement } from 'react';
 import { deepMap } from 'react-children-utilities';
+import type { FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
+import { Controller, FormProvider } from 'react-hook-form';
 
-type FormProps<T> = {
-  children: ReactNode;
-  defaultValues?: DeepPartial<T>;
-  onSubmit: (data: T) => void;
-  schema: ZodType<any, any, any>;
-};
+type FormProps<T extends FieldValues = any> = {
+  form: UseFormReturn<T>;
+  onSubmit: SubmitHandler<T>;
+} & Omit<ComponentProps<'form'>, 'onSubmit'>;
 
-function Form<T extends FieldValues>({
-  children,
-  defaultValues,
-  onSubmit,
-  schema,
-}: FormProps<T>): JSX.Element {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<T>({
-    defaultValues,
-    resolver: zodResolver(schema),
-  });
-
+function Form<T extends FieldValues>({ form, onSubmit, children, ...restProps }: FormProps<T>) {
   const mappedChildren = deepMap(children, (child: ReactNode) => {
     if (!isValidElement(child)) {
       return child;
@@ -36,11 +17,11 @@ function Form<T extends FieldValues>({
 
     const { name } = child.props;
     if (name) {
-      const error = errors[name];
+      const error = form.formState.errors[name];
 
       return (
         <Controller
-          control={control}
+          control={form.control}
           name={name}
           render={({ field: { onChange, onBlur, value } }) =>
             cloneElement(
@@ -50,7 +31,7 @@ function Form<T extends FieldValues>({
                 onChange,
                 onBlur,
                 value,
-                error: error?.message,
+                error,
               } as Attributes,
             )
           }
@@ -62,12 +43,13 @@ function Form<T extends FieldValues>({
       ...(child as ReactElement).props,
     });
   });
-
-  return <form onSubmit={handleSubmit(onSubmit)}>{mappedChildren}</form>;
+  return (
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} {...restProps}>
+        {mappedChildren}
+      </form>
+    </FormProvider>
+  );
 }
-
-Form.defaultProps = {
-  defaultValues: {},
-};
 
 export default Form;
