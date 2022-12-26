@@ -1,21 +1,24 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, type ReactNode } from 'react';
 import { Button } from 'components/elements';
 import { Dialog, Transition } from '@headlessui/react';
 import { Form } from 'components';
+import { useForm } from 'hooks';
+import type { ZodSchema } from 'zod';
+import type { SubmitHandler } from 'react-hook-form';
 
-type FormModalProps = {
+type FormModalProps<T> = {
   title: string;
   description: string;
   isOpen: boolean;
-  onSubmit: (data: any) => void;
+  onSubmit: SubmitHandler<any>;
   onSubmitText: string;
   onCancel: () => void;
   onCancelText: string;
+  schema: T;
   children: ReactNode;
 };
 
-function AddLinkFormModal({
+function FormModal<T extends ZodSchema<any>>({
   title,
   description,
   isOpen,
@@ -23,11 +26,21 @@ function AddLinkFormModal({
   onSubmit,
   onCancelText,
   onCancel,
+  schema,
   children,
-}: FormModalProps) {
+}: FormModalProps<T>) {
+  const form = useForm({
+    schema,
+  });
+
+  function handleClose() {
+    form.reset();
+    onCancel();
+  }
+
   return (
     <Transition.Root show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={() => onCancel()}>
+      <Dialog as="div" className="relative z-10" onClose={() => handleClose()}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -50,8 +63,8 @@ function AddLinkFormModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="relative transform overlfow-hidden overflow-y-auto rounded-lg bg-white transition-all w-full sm:w-fit">
-                {/* <Form onSubmit={(e) => onSubmit(e)}>
+              <Dialog.Panel className="relative transform overlfow-hidden overflow-y-auto rounded-lg bg-white transition-all w-full sm:w-[550px]">
+                <Form form={form} onSubmit={(e) => onSubmit(e)}>
                   <div className="px-4 sm:px-8 py-4">
                     <div className="space-y-2 mb-5">
                       <Dialog.Title as="h3" className="text-xl font-medium leading-6 text-black">
@@ -67,11 +80,11 @@ function AddLinkFormModal({
                     <Button type="submit" size="sm" variant="blue">
                       {onSubmitText}
                     </Button>
-                    <Button size="sm" variant="light" onClick={() => onCancel()}>
+                    <Button size="sm" variant="light" onClick={() => handleClose()}>
                       {onCancelText}
                     </Button>
                   </div>
-                </Form> */}
+                </Form>
               </Dialog.Panel>
             </Transition.Child>
           </div>
@@ -81,4 +94,4 @@ function AddLinkFormModal({
   );
 }
 
-export default AddLinkFormModal;
+export default FormModal;

@@ -11,6 +11,7 @@ type FormValueProps = {
   isDisabled?: boolean;
   error?: string;
   className?: string;
+  leftAddon?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -23,12 +24,13 @@ function FormInput({
   isDisabled,
   error,
   className,
+  leftAddon,
   onChange,
 }: FormValueProps) {
   return (
     <div className={cx('w-full', className)}>
       {label && (
-        <Label className="px-2" htmlFor={id} isInvalid={!!error}>
+        <Label htmlFor={id} isInvalid={!!error}>
           {label}
         </Label>
       )}
@@ -40,6 +42,7 @@ function FormInput({
         onChange={onChange}
         isInvalid={!!error}
         isDisabled={isDisabled}
+        leftAddon={leftAddon}
       />
       <FieldError name={name} />
     </div>
@@ -53,6 +56,7 @@ FormInput.defaultProps = {
   error: '',
   placeholder: '',
   className: '',
+  leftAddon: '',
   onChange: () => {},
 };
 
