@@ -14,6 +14,15 @@ function Dashboard() {
       <div>
         <LinksHeader />
         <Switch size="md" label="Airplane mode" />
+        {/* <FormModal
+          isOpen={!!'test'}
+          title="Add Link"
+          description="Provide all necessary information to create a link"
+          onSubmitText="Create Link"
+          onCancelText="Cancel"
+        >
+          Testing
+        </FormModal> */}
       </div>
     </>
   );
