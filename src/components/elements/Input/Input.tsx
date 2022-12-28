@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { InputHTMLAttributes } from 'react';
 import type { VariantProps } from 'class-variance-authority';
 import { cva, cx } from 'class-variance-authority';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
@@ -97,17 +97,12 @@ type StyleProps = VariantProps<typeof inputStyle> &
   VariantProps<typeof rightAddonStyle>;
 
 type InputProps = {
-  name: string;
-  id: string;
-  placeholder?: string;
   isDisabled?: boolean;
   isInvalid?: boolean;
   leftAddon?: string;
   rightAddon?: string;
-  className?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  [K: string]: unknown;
-} & StyleProps;
+} & StyleProps &
+  InputHTMLAttributes<HTMLInputElement>;
 
 function Input({
   name,
@@ -151,13 +146,10 @@ function Input({
 }
 
 Input.defaultProps = {
-  placeholder: '',
   isDisabled: false,
   isInvalid: false,
   leftAddon: '',
   rightAddon: '',
-  className: '',
-  onChange: () => {},
 };
 
 export default Input;

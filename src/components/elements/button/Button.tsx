@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import type { VariantProps } from 'class-variance-authority';
 import { cva } from 'class-variance-authority';
 
@@ -40,14 +40,12 @@ const buttonStyles = cva(
 
 type ButtonProps = {
   className?: string;
-  type?: 'button' | 'submit';
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   isDisabled?: boolean;
   isLoading?: boolean;
-  children: ReactNode;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
-} & VariantProps<typeof buttonStyles>;
+} & VariantProps<typeof buttonStyles> &
+  ButtonHTMLAttributes<HTMLButtonElement>;
 
 function Button({
   className,
@@ -77,12 +75,10 @@ function Button({
 
 Button.defaultProps = {
   className: '',
-  type: 'button',
   isDisabled: false,
   isLoading: false,
   leftIcon: null,
   rightIcon: null,
-  onClick: () => {},
 };
 
 export default Button;
