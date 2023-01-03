@@ -44,10 +44,11 @@ type BadgeProps = {
   children: ReactNode;
   iconLeft?: IconNames;
   iconRight?: IconNames;
+  id?: unknown;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 } & VariantProps<typeof badgeStyles>;
 
-function Badge({ children, colour, size, iconLeft, iconRight, onClick }: BadgeProps) {
+function Badge({ children, colour, size, iconLeft, iconRight, id, onClick }: BadgeProps) {
   return (
     <span className={badgeStyles({ colour, size })}>
       {iconLeft ? iconComponentMap(iconLeft) : null}
@@ -66,6 +67,7 @@ Badge.defaultProps = {
   iconLeft: '',
   iconRight: '',
   onClick: undefined,
+  id: undefined,
 };
 
 export default Badge;
