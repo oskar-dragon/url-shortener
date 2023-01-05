@@ -12,14 +12,20 @@ type MultiSelectProps<Opt> = {
   label?: string;
   options: Opt[];
   defaultValue?: Opt[];
-  onSelect: (data: Opt[]) => void;
+  onChange?: (data: Opt[]) => void;
+  onBlur?: (data: Opt[]) => void;
+  id?: string;
+  name?: string;
 };
 
 function MultiSelect<T extends Option>({
   label,
   options,
   defaultValue = [],
-  onSelect,
+  onChange = () => {},
+  onBlur = () => {},
+  id,
+  name,
 }: MultiSelectProps<T>) {
   const [selectedValues, setSelectedValues] = useState<typeof options>(defaultValue);
   const optionsToSelect = useMemo(
@@ -40,7 +46,8 @@ function MultiSelect<T extends Option>({
     const result = [...selectedValues, valueToAdd];
 
     setSelectedValues(result);
-    onSelect(result);
+    onChange(result);
+    onBlur(result);
   }
 
   function removeSelectedValue(valueToRemove: Option) {
@@ -54,6 +61,8 @@ function MultiSelect<T extends Option>({
     <div>
       {label && <Label>{label}</Label>}
       <SearchDropdown
+        id={id}
+        name={name}
         isClearable
         options={optionsToSelect}
         defaultValue={defaultValue}
