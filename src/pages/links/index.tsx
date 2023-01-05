@@ -9,6 +9,11 @@ const test = [
   { value: 'test2', label: 'test2' },
   { value: 'test3', label: 'test3' },
   { value: 'test4', label: 'test4' },
+  { value: 'test5', label: 'test5' },
+  { value: 'test6', label: 'test6' },
+  { value: 'test8', label: 'test8' },
+  { value: 'test9', label: 'test9' },
+  { value: 'test410', label: 'test410' },
 ];
 
 type Test = typeof test;
@@ -31,7 +36,7 @@ function Dashboard() {
       <div>
         <LinksHeader />
         <Switch size="md" label="Airplane mode" />
-        <MultiSelect options={test} onSelect={(data) => handleSelect(data)} />
+        <MultiSelect label="Category" options={test} onSelect={(data) => handleSelect(data)} />
       </div>
     </>
   );
