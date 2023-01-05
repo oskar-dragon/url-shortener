@@ -2,8 +2,20 @@ import { useState } from 'react';
 import { Button } from 'components/elements';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import addLinkSchema, { type AddLinkSchemaType } from 'features/links/types/addLinkForm';
-import { FormInput } from 'components';
+import { FormInput, MultiSelect } from 'components';
 import FormModal from '../formModal/FormModal';
+
+const test = [
+  { value: 123, label: 'test1' },
+  { value: 'test2', label: 'test2' },
+  { value: 'test3', label: 'test3' },
+  { value: 'test4', label: 'test4' },
+  { value: 'test5', label: 'test5' },
+  { value: 'test6', label: 'test6' },
+  { value: 'test8', label: 'test8' },
+  { value: 'test9', label: 'test9' },
+  { value: 'test410', label: 'test410' },
+];
 
 function LinksHeader() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -60,6 +72,7 @@ function LinksHeader() {
                 name="url"
               />
               <FormInput label="Name" placeholder="Google" id="name" name="name" />
+              <MultiSelect label="Category" options={test} id="category" name="category" />
             </div>
           </div>
         </FormModal>

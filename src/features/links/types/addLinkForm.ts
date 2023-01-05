@@ -19,6 +19,7 @@ const addLinkSchema = z.object({
     required_error: 'Please provide a name',
     invalid_type_error: 'Name must be a string',
   }),
+  category: z.array(z.object({ value: z.string(), label: z.string() })),
 });
 
 export type AddLinkSchemaType = z.infer<typeof addLinkSchema>;
