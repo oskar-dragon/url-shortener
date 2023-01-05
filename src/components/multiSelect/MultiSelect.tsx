@@ -1,7 +1,7 @@
 /* eslint-disable react/require-default-props */
 import { Badge, Label } from 'components/elements';
 import SearchDropdown from 'components/searchDropdown/SearchDropdown';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 type Option = {
   label: string;
@@ -22,6 +22,16 @@ function MultiSelect<T extends Option>({
   onSelect,
 }: MultiSelectProps<T>) {
   const [selectedValues, setSelectedValues] = useState<typeof options>(defaultValue);
+  const optionsToSelect = useMemo(
+    () =>
+      options.filter((option) =>
+        selectedValues.every(
+          (selectedValue) =>
+            selectedValue.label !== option.label && selectedValue.value !== option.value,
+        ),
+      ),
+    [options, selectedValues],
+  );
 
   function addSelectedValue(valueToAdd?: typeof options[number]) {
     if (typeof valueToAdd === 'undefined') return;
@@ -44,13 +54,20 @@ function MultiSelect<T extends Option>({
     <div>
       {label && <Label>{label}</Label>}
       <SearchDropdown
-        options={options}
+        isClearable
+        options={optionsToSelect}
         defaultValue={defaultValue}
         onChange={(newValue) => addSelectedValue(newValue ?? undefined)}
       />
-      <div>
+      <div className="mt-4 flex flex-wrap gap-2">
         {selectedValues.map((selectedValue) => (
-          <Badge onClick={() => removeSelectedValue(selectedValue)}>{selectedValue.label}</Badge>
+          <Badge
+            colour="indigo"
+            iconRight="cross"
+            onClick={() => removeSelectedValue(selectedValue)}
+          >
+            {selectedValue.label}
+          </Badge>
         ))}
       </div>
     </div>

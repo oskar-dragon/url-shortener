@@ -22,7 +22,6 @@ function SearchDropdown<
   return isClearable ? (
     <CreatableSelect
       {...restProps}
-      components={{ Control }}
       unstyled
       classNames={{
         container: ({ isFocused }) =>
