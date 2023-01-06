@@ -73,13 +73,15 @@ function LinksHeader() {
                 name="name"
                 isDisabled={isLoading}
               />
-              <MultiSelect
-                isDisabled={isLoading}
-                label="Category"
-                options={categories.data}
-                id="categories"
-                name="categories"
-              />
+              {categories.isSuccess && (
+                <MultiSelect
+                  isDisabled={isLoading}
+                  label="Category"
+                  options={categories.data}
+                  id="categories"
+                  name="categories"
+                />
+              )}
             </div>
           </div>
         </FormModal>

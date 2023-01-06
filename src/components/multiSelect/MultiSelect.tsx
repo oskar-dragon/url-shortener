@@ -10,7 +10,7 @@ type Option = {
 
 type MultiSelectProps<Opt> = {
   label?: string;
-  options: Opt[] | undefined;
+  options: Opt[];
   defaultValue?: Opt[];
   onChange?: (data: Opt[]) => void;
   onBlur?: (data: Opt[]) => void;
@@ -32,8 +32,8 @@ function MultiSelect<T extends Option>({
   const [selectedValues, setSelectedValues] = useState<typeof options>(defaultValue);
   const optionsToSelect = useMemo(
     () =>
-      options?.filter((option) =>
-        selectedValues?.every(
+      options.filter((option) =>
+        selectedValues.every(
           (selectedValue) =>
             selectedValue.label !== option.label && selectedValue.value !== option.value,
         ),
@@ -43,9 +43,9 @@ function MultiSelect<T extends Option>({
 
   function addSelectedValue(valueToAdd?: typeof options[number]) {
     if (typeof valueToAdd === 'undefined') return;
-    if (selectedValues?.includes(valueToAdd)) return;
+    if (selectedValues.includes(valueToAdd)) return;
 
-    const result = [...(selectedValues ?? []), valueToAdd];
+    const result = [...selectedValues, valueToAdd];
 
     setSelectedValues(result);
     onChange(result);
@@ -53,7 +53,7 @@ function MultiSelect<T extends Option>({
   }
 
   function removeSelectedValue(valueToRemove: Option) {
-    const result = selectedValues?.filter(
+    const result = selectedValues.filter(
       (selectedValue) => selectedValue.label !== valueToRemove.label,
     );
     setSelectedValues(result);
@@ -72,7 +72,7 @@ function MultiSelect<T extends Option>({
         onChange={(newValue) => addSelectedValue(newValue ?? undefined)}
       />
       <div className="mt-4 flex flex-wrap gap-2">
-        {selectedValues?.map((selectedValue) => (
+        {selectedValues.map((selectedValue) => (
           <Badge
             colour="indigo"
             iconRight="cross"
