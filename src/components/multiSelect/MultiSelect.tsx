@@ -63,6 +63,8 @@ function MultiSelect<T extends Option>({
     <div>
       {label && <Label>{label}</Label>}
       <SearchDropdown
+        menuPortalTarget={document.body}
+        styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
         isDisabled={isDisabled}
         id={id}
         name={name}

@@ -58,7 +58,7 @@ function SearchDropdown<
           cx(isDisabled ? 'text-neutral-500 cursor-not-allowed' : 'text-black'),
         indicatorsContainer: () => cx('w-0'),
         dropdownIndicator: () => cx('text-transparent'),
-        menu: () => 'mt-2 rounded-lg border border-neutral-100 shadow-xl',
+        menu: () => 'z-[9999] mt-2 rounded-lg border border-neutral-100 shadow-xl',
         option: ({ isSelected }) =>
           cx('py-2.5 px-3 custom-transition', isSelected ? 'bg-neutral-50' : 'hover:bg-neutral-50'),
         noOptionsMessage: () => cx('py-2.5 px-3'),
