@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from 'components/elements';
+import { Button, Divider } from 'components/elements';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import addLinkSchema, { type AddDetailedLinkSchema } from 'features/links/types/addLinkForm';
 import { FormInput, MultiSelect } from 'components';
@@ -49,7 +49,7 @@ function LinksHeader() {
           onCancel={() => handleCloseAddLinkModal()}
         >
           <div>
-            <div className="space-y-6">
+            <div className="space-y-6 mb-4">
               <FormInput
                 leftAddon="short.ly/"
                 label="Alias"
@@ -73,8 +73,10 @@ function LinksHeader() {
                 name="name"
                 isDisabled={isLoading}
               />
+              <Divider />
               {categories.isSuccess && (
                 <MultiSelect
+                  placeholder="Type to pick a category"
                   isDisabled={isLoading}
                   label="Category"
                   options={categories.data}

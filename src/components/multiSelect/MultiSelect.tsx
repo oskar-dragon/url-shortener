@@ -17,6 +17,7 @@ type MultiSelectProps<Opt> = {
   id?: string;
   name?: string;
   isDisabled: boolean;
+  placeholder?: string;
 };
 
 function MultiSelect<T extends Option>({
@@ -28,6 +29,7 @@ function MultiSelect<T extends Option>({
   id,
   name,
   isDisabled,
+  placeholder,
 }: MultiSelectProps<T>) {
   const [selectedValues, setSelectedValues] = useState<typeof options>(defaultValue);
   const optionsToSelect = useMemo(
@@ -63,12 +65,12 @@ function MultiSelect<T extends Option>({
     <div>
       {label && <Label>{label}</Label>}
       <SearchDropdown
+        placeholder={placeholder}
         menuPortalTarget={document.body}
         styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
         isDisabled={isDisabled}
         id={id}
         name={name}
-        isClearable
         options={optionsToSelect}
         defaultValue={defaultValue}
         onChange={(newValue) => addSelectedValue(newValue ?? undefined)}
@@ -76,8 +78,10 @@ function MultiSelect<T extends Option>({
       <div className="mt-4 flex flex-wrap gap-2">
         {selectedValues.map((selectedValue) => (
           <Badge
+            key={selectedValue.label}
             colour="indigo"
             iconRight="cross"
+            isDisabled={isDisabled}
             onClick={() => removeSelectedValue(selectedValue)}
           >
             {selectedValue.label}

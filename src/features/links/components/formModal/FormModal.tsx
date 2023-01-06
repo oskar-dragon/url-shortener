@@ -69,9 +69,9 @@ function FormModal<T extends ZodSchema<any>>({
             >
               <Dialog.Panel className="relative transform overlfow-hidden overflow-y-auto rounded-lg bg-white transition-all w-full sm:w-[550px]">
                 <Form form={form} onSubmit={(data) => handleSubmit(data)}>
-                  <div className="px-4 sm:px-8 py-4">
+                  <div className="px-4 sm:px-8 py-6">
                     <div className="space-y-2 mb-5">
-                      <Dialog.Title as="h3" className="text-xl font-medium leading-6 text-black">
+                      <Dialog.Title as="h3" className="text-3xl font-medium leading-6 text-black">
                         {title}
                       </Dialog.Title>
                       <Dialog.Description className="text-sm text-neutral-500">
