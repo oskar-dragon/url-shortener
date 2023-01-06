@@ -20,6 +20,10 @@ export async function middleware(req: NextRequest) {
 
   const data = await fetchSlug.json();
 
+  if (!data?.active) {
+    return NextResponse.redirect(req.nextUrl.origin);
+  }
+
   if (data?.longUrl) {
     return NextResponse.redirect(data.longUrl);
   }

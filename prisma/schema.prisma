@@ -28,6 +28,7 @@ model Url {
   longUrl     String   @db.VarChar(10000)
   dateCreated DateTime @default(now())
   name        String?
+  active      Boolean  @default(true)
 
   User   User?   @relation(fields: [userId], references: [email])
   userId String?
