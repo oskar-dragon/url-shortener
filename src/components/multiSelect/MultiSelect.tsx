@@ -16,6 +16,7 @@ type MultiSelectProps<Opt> = {
   onBlur?: (data: Opt[]) => void;
   id?: string;
   name?: string;
+  isDisabled: boolean;
 };
 
 function MultiSelect<T extends Option>({
@@ -26,6 +27,7 @@ function MultiSelect<T extends Option>({
   onBlur = () => {},
   id,
   name,
+  isDisabled,
 }: MultiSelectProps<T>) {
   const [selectedValues, setSelectedValues] = useState<typeof options>(defaultValue);
   const optionsToSelect = useMemo(
@@ -61,6 +63,7 @@ function MultiSelect<T extends Option>({
     <div>
       {label && <Label>{label}</Label>}
       <SearchDropdown
+        isDisabled={isDisabled}
         id={id}
         name={name}
         isClearable

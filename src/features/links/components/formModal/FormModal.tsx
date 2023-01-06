@@ -3,7 +3,7 @@ import { Button } from 'components/elements';
 import { Dialog, Transition } from '@headlessui/react';
 import { Form } from 'components';
 import { useForm } from 'hooks';
-import type { ZodSchema } from 'zod';
+import type { TypeOf, ZodSchema } from 'zod';
 import type { SubmitHandler } from 'react-hook-form';
 
 type FormModalProps<T> = {
@@ -38,6 +38,10 @@ function FormModal<T extends ZodSchema<any>>({
     onCancel();
   }
 
+  function handleSubmit(data: TypeOf<T>) {
+    onSubmit(data);
+  }
+
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={() => handleClose()}>
@@ -64,7 +68,7 @@ function FormModal<T extends ZodSchema<any>>({
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="relative transform overlfow-hidden overflow-y-auto rounded-lg bg-white transition-all w-full sm:w-[550px]">
-                <Form form={form} onSubmit={(e) => onSubmit(e)}>
+                <Form form={form} onSubmit={(data) => handleSubmit(data)}>
                   <div className="px-4 sm:px-8 py-4">
                     <div className="space-y-2 mb-5">
                       <Dialog.Title as="h3" className="text-xl font-medium leading-6 text-black">

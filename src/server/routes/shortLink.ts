@@ -1,6 +1,7 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { TRPCError } from '@trpc/server';
-import { shortenerValidation, shortenerUrlOnly } from 'features/shortener';
+import { addDetailedLinkSchema } from 'features/links';
+import { shortenerUrlOnly } from 'features/shortener';
 import generateShortUrl from 'server/helpers/generateShortUrl/generateShortUrl';
 import { prisma } from 'server/prisma';
 import { router, publicProcedure, privateProcedure } from 'server/trpc';
@@ -23,38 +24,61 @@ export const shortLinkRouter = router({
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Something went wrong' });
     }
   }),
-  create: privateProcedure.input(shortenerValidation).mutation(async ({ input }) => {
-    const { url, slug, email } = input;
+  create: privateProcedure.input(addDetailedLinkSchema).mutation(async ({ input, ctx }) => {
+    const { user } = ctx.session;
+    const { url, slug, name, categories } = input;
 
-    if (slug) {
-      const urlInDB = await prisma.url.findUnique({
-        where: {
-          shortUrl: input.slug,
+    let alias = slug as string;
+
+    if (!slug) {
+      alias = await generateShortUrl();
+    }
+
+    const urlInDB = await prisma.url.findUnique({
+      where: {
+        shortUrl: alias,
+      },
+    });
+
+    if (urlInDB) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Already exists',
+      });
+    }
+
+    const categoryIds = categories?.map(({ value: categoryId }) => ({
+      categoryId,
+    }));
+
+    if (categoryIds) {
+      const createdUrlWIthCategories = await prisma.url.create({
+        data: {
+          shortUrl: alias,
+          longUrl: url,
+          name,
+          userId: user.email,
+          categories: {
+            createMany: {
+              data: categoryIds,
+            },
+          },
         },
       });
 
-      if (urlInDB) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Already exists',
-        });
-      }
-
-      const createdUrlWIthDefinedSlug = await prisma.url.create({
-        data: { shortUrl: slug, longUrl: url, userId: email ?? null },
-      });
-
-      return createdUrlWIthDefinedSlug;
+      return createdUrlWIthCategories;
     }
 
-    // TODO: Refactor this function so it makes only one DB call
-    const newSlug = await generateShortUrl();
-
-    const createdUrlWithRandomSlug = await prisma.url.create({
-      data: { shortUrl: newSlug, longUrl: url, userId: email ?? null },
+    const createdUrlWithoutCategories = await prisma.url.create({
+      data: {
+        shortUrl: alias,
+        longUrl: url,
+        name,
+        userId: user.email,
+      },
     });
 
-    return createdUrlWithRandomSlug;
+    return createdUrlWithoutCategories;
   }),
   getAllForUser: privateProcedure.query(async ({ ctx }) => {
     const { user } = ctx.session;

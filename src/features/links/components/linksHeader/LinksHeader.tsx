@@ -1,28 +1,17 @@
 import { useState } from 'react';
 import { Button } from 'components/elements';
 import { PlusIcon } from '@heroicons/react/24/outline';
-import addLinkSchema, { type AddLinkSchemaType } from 'features/links/types/addLinkForm';
+import addLinkSchema, { type AddDetailedLinkSchema } from 'features/links/types/addLinkForm';
 import { FormInput, MultiSelect } from 'components';
+import { trpc } from 'utils';
 import FormModal from '../formModal/FormModal';
-
-const test = [
-  { value: 123, label: 'test1' },
-  { value: 'test2', label: 'test2' },
-  { value: 'test3', label: 'test3' },
-  { value: 'test4', label: 'test4' },
-  { value: 'test5', label: 'test5' },
-  { value: 'test6', label: 'test6' },
-  { value: 'test8', label: 'test8' },
-  { value: 'test9', label: 'test9' },
-  { value: 'test410', label: 'test410' },
-];
 
 function LinksHeader() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  function handleLinkSubmit(data: AddLinkSchemaType) {
-    console.log(data);
-  }
+  const { mutate, isLoading } = trpc.shortLink.create.useMutation();
+  const categories = trpc.categories.getAllCategories.useQuery(undefined, {
+    select: (data) => data.map(({ id: value, name: label }) => ({ value, label })),
+  });
 
   function handleOpenAddLinkModal() {
     setIsOpen(true);
@@ -30,6 +19,10 @@ function LinksHeader() {
 
   function handleCloseAddLinkModal() {
     setIsOpen(false);
+  }
+
+  function handleLinkSubmit(formData: AddDetailedLinkSchema) {
+    mutate(formData, { onSuccess: handleCloseAddLinkModal });
   }
 
   return (
@@ -63,6 +56,7 @@ function LinksHeader() {
                 placeholder="ggl"
                 id="slug"
                 name="slug"
+                isDisabled={isLoading}
               />
               <FormInput
                 leftAddon="http://"
@@ -70,9 +64,24 @@ function LinksHeader() {
                 label="Link"
                 id="url"
                 name="url"
+                isDisabled={isLoading}
               />
-              <FormInput label="Name" placeholder="Google" id="name" name="name" />
-              <MultiSelect label="Category" options={test} id="category" name="category" />
+              <FormInput
+                label="Name"
+                placeholder="Google"
+                id="name"
+                name="name"
+                isDisabled={isLoading}
+              />
+              {categories.isSuccess && (
+                <MultiSelect
+                  isDisabled={isLoading}
+                  label="Category"
+                  options={categories.data}
+                  id="categories"
+                  name="categories"
+                />
+              )}
             </div>
           </div>
         </FormModal>

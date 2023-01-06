@@ -3,8 +3,6 @@ import Head from 'next/head';
 import { LinksHeader } from 'features/links';
 
 function Dashboard() {
-  // const { data } = trpc.shortLink.getAllForUser.useQuery();
-
   return (
     <>
       <Head>

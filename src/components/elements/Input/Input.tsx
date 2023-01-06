@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from 'react';
+import React, { type InputHTMLAttributes } from 'react';
 import type { VariantProps } from 'class-variance-authority';
 import { cva, cx } from 'class-variance-authority';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
