@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const addLinkSchema = z.object({
+export const addDetailedLinkSchema = z.object({
   url: z
     .string({
       required_error: 'Please provide a URL',
@@ -9,19 +9,14 @@ const addLinkSchema = z.object({
     .url({
       message: 'Incorrect url format',
     }),
-  slug: z
-    .string({
-      required_error: 'Please provide an alias',
-      invalid_type_error: 'Alias must be a string',
-    })
-    .max(7, { message: 'Alias should conntain at most 7 characters(s)' }),
+  slug: z.string().max(7, { message: 'Alias should conntain at most 7 characters(s)' }).optional(),
   name: z.string({
     required_error: 'Please provide a name',
     invalid_type_error: 'Name must be a string',
   }),
-  category: z.array(z.object({ value: z.string(), label: z.string() })),
+  categories: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
 });
 
-export type AddLinkSchemaType = z.infer<typeof addLinkSchema>;
+export type AddDetailedLinkSchema = z.infer<typeof addDetailedLinkSchema>;
 
-export default addLinkSchema;
+export default addDetailedLinkSchema;

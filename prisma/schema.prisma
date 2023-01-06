@@ -38,16 +38,6 @@ model Url {
   @@index([userId])
 }
 
-model Statistics {
-  id        String   @id @unique @default(uuid())
-  visitDate DateTime @default(now())
-
-  Url  Url    @relation(fields: [slug], references: [shortUrl])
-  slug String
-
-  @@index([slug])
-}
-
 model Category {
   id        String   @id @unique @default(uuid())
   name      String   @unique
@@ -57,13 +47,23 @@ model Category {
 }
 
 model CategoriesOnUrls {
-  url        Url      @relation(fields: [slug], references: [shortUrl])
-  slug       String
+  url        Url      @relation(fields: [urlId], references: [shortUrl])
+  urlId      String
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
   createdAt  DateTime @default(now())
 
-  @@id([slug, categoryId])
-  @@index([slug])
+  @@id([urlId, categoryId])
+  @@index([urlId])
   @@index([categoryId])
+}
+
+model Statistics {
+  id        String   @id @unique @default(uuid())
+  visitDate DateTime @default(now())
+
+  Url  Url    @relation(fields: [slug], references: [shortUrl])
+  slug String
+
+  @@index([slug])
 }
