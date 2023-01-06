@@ -32,7 +32,7 @@ function MultiSelect<T extends Option>({
   const [selectedValues, setSelectedValues] = useState<typeof options>(defaultValue);
   const optionsToSelect = useMemo(
     () =>
-      options.filter((option) =>
+      options?.filter((option) =>
         selectedValues?.every(
           (selectedValue) =>
             selectedValue.label !== option.label && selectedValue.value !== option.value,
