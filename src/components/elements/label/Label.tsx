@@ -1,6 +1,6 @@
 import type { VariantProps } from 'class-variance-authority';
 import { cva } from 'class-variance-authority';
-import { LabelHTMLAttributes } from 'react';
+import type { LabelHTMLAttributes } from 'react';
 
 const labelStyles = cva('text-sm font-semibold', {
   variants: {
