@@ -30,6 +30,7 @@ function Form<T extends FieldValues>({ form, onSubmit, children, ...restProps }:
                 ...(child as ReactElement).props,
                 onChange,
                 onBlur,
+                checked: value,
                 value,
                 error,
               } as Attributes,

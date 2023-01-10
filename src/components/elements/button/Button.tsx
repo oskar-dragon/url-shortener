@@ -3,7 +3,7 @@ import type { VariantProps } from 'class-variance-authority';
 import { cva } from 'class-variance-authority';
 
 const buttonStyles = cva(
-  'leading-6 flex gap-1 rounded-md text-sm font-semibold cursor-pointer disabled:pointer-events-none select-none ease-in-out transition-all transition duration-200 border-solid border disabled:opacity-50',
+  'leading-6 flex gap-1 rounded-md text-sm font-semibold cursor-pointer disabled:pointer-events-none select-none ease-in-out transition-all transition duration-200 border-solid border border-transparent disabled:opacity-50',
   {
     variants: {
       variant: {

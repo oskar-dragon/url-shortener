@@ -7,3 +7,4 @@ export { default as SearchDropdown } from './searchDropdown/SearchDropdown';
 export { default as Switch } from './switch/Switch';
 export { default as FieldError } from './fieldError/FieldError';
 export { default as MultiSelect } from './multiSelect/MultiSelect';
+export { default as Checkbox } from './checkbox/Checkbox';
