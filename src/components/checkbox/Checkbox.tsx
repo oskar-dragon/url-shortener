@@ -1,7 +1,6 @@
 /* eslint-disable react/require-default-props */
 import * as RadixCheckbox from '@radix-ui/react-checkbox';
 import { CheckIcon, MinusSmallIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const rootStyles = cva('', {
@@ -92,19 +91,11 @@ function Checkbox(props: CheckboxProps) {
     ...restProps
   } = props;
 
-  function handleCheck(v: RadixCheckbox.CheckboxProps['checked']) {
-    if (typeof v === 'undefined') return;
-
-    if (onChange) {
-      onChange(v);
-    }
-  }
-
   return (
     <div className="flex align-top gap-3">
       <RadixCheckbox.Root
         className={rootStyles({ variant, size, className })}
-        onCheckedChange={(val) => handleCheck(val)}
+        onCheckedChange={onChange}
         checked={checked}
         disabled={isDisabled}
         required={isRequired}
