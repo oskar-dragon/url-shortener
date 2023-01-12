@@ -1,10 +1,10 @@
 import { createContext, useContext, useMemo, type ComponentPropsWithoutRef } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const tableStyle = cva('', {
+const tableStyle = cva('block whitespace-nowrap overflow-x-auto overflow-y-hidden', {
   variants: {
     variant: {
-      primary: '',
+      primary: ['border', 'border-neutral-300', 'rounded-md'],
     },
   },
   defaultVariants: {
@@ -36,9 +36,11 @@ function Table({ children, variant, className, ...restProps }: TableProps) {
 
   return (
     <TableContext.Provider value={value}>
-      <table className={tableStyle({ variant, className })} {...restProps}>
-        {children}
-      </table>
+      <div className={tableStyle({ variant, className })}>
+        <table className="border-collapse w-full" {...restProps}>
+          {children}
+        </table>
+      </div>
     </TableContext.Provider>
   );
 }
@@ -46,7 +48,14 @@ function Table({ children, variant, className, ...restProps }: TableProps) {
 const theadStyle = cva('', {
   variants: {
     variant: {
-      primary: '',
+      primary: [
+        'bg-neutral-50',
+        'border-b',
+        'border-neutral-200',
+        'text-xs',
+        'font-medium',
+        'text-neutral-500',
+      ],
     },
   },
   defaultVariants: {
@@ -70,7 +79,7 @@ Table.Thead = function Thead({ children, className, ...restProps }: TheadProps) 
 const tbodyStyle = cva('', {
   variants: {
     variant: {
-      primary: '',
+      primary: [],
     },
   },
   defaultVariants: {
@@ -94,7 +103,7 @@ Table.Tbody = function Tbody({ children, className, ...restProps }: TbodyProps) 
 const tfootStyle = cva('', {
   variants: {
     variant: {
-      primary: '',
+      primary: ['border-t', 'border-neutral-200', 'text-sm', 'font-medium', 'text-neutral-500'],
     },
   },
   defaultVariants: {
@@ -118,7 +127,7 @@ Table.Tfoot = function Tfoot({ children, className, ...restProps }: TfootProps) 
 const trStyle = cva('', {
   variants: {
     variant: {
-      primary: '',
+      primary: ['border-solid', 'border-b', 'border-neutra-200', 'last:border-b-0'],
     },
   },
   defaultVariants: {
@@ -138,10 +147,10 @@ Table.Tr = function Tr({ children, className, ...restProps }: TrProps) {
   );
 };
 
-const thStyle = cva('', {
+const thStyle = cva('text-start', {
   variants: {
     variant: {
-      primary: '',
+      primary: ['px-6', 'py-2'],
     },
   },
   defaultVariants: {
@@ -164,7 +173,7 @@ Table.Th = function Th({ children, className, ...restProps }: ThProps) {
 const tdStyle = cva('', {
   variants: {
     variant: {
-      primary: '',
+      primary: ['px-6', 'py-4', 'text-neutral-500', 'text-sm'],
     },
   },
   defaultVariants: {
