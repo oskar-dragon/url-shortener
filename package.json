@@ -23,6 +23,7 @@
     "@prisma/client": "^4.7.1",
     "@radix-ui/react-checkbox": "^1.0.1",
     "@tanstack/react-query": "^4.18.0",
+    "@tanstack/react-table": "^8.7.6",
     "@trpc/client": "^10.4.1",
     "@trpc/next": "^10.4.1",
     "@trpc/react-query": "^10.4.1",
@@ -42,7 +43,6 @@
     "react-hook-form": "^7.39.3",
     "react-hot-toast": "^2.4.0",
     "react-select": "^5.7.0",
-    "react-table": "^7.8.0",
     "react-type-animation": "^2.1.2",
     "superjson": "^1.11.0",
     "zod": "^3.19.1"

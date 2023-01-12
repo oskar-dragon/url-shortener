@@ -1,13 +1,15 @@
 import { faker } from '@faker-js/faker';
+import { formatDate } from 'utils';
 
-type UrlData = {
+export type UrlData = {
   id: string;
   urlName: string;
   slug: string;
   status: 'active' | 'inactive';
   numberOfVisits: number;
-  dateCreated: Date;
-  dateUpdated: Date;
+  dateCreated: string;
+  dateUpdated: string;
+  categories: Array<string>;
 };
 
 function createTableDummyData(max: number): UrlData[] {
@@ -17,8 +19,9 @@ function createTableDummyData(max: number): UrlData[] {
     slug: faker.lorem.word(5),
     status: faker.helpers.arrayElement(['active', 'inactive']),
     numberOfVisits: faker.datatype.number({ min: 10, max: 100000 }),
-    dateCreated: faker.date.past(),
-    dateUpdated: faker.date.past(),
+    dateCreated: formatDate(faker.date.past(), { dateStyle: 'medium' }),
+    dateUpdated: formatDate(faker.date.past(), { dateStyle: 'medium' }),
+    categories: faker.helpers.arrayElements(['Design', 'Personal', 'Test', 'Test2']),
   }));
 }
 
