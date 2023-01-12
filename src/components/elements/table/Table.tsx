@@ -1,33 +1,65 @@
-import { type ComponentPropsWithoutRef } from 'react';
+import { createContext, useContext, useMemo, type ComponentPropsWithoutRef } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const tableStyle = cva('', {
   variants: {
-    variant: {},
+    variant: {
+      primary: '',
+    },
   },
-  defaultVariants: {},
+  defaultVariants: {
+    variant: 'primary',
+  },
 });
 
 type TableProps = ComponentPropsWithoutRef<'table'> & VariantProps<typeof tableStyle>;
 
+const TableContext = createContext<VariantProps<typeof tableStyle>>({ variant: 'primary' });
+
+function useTableContext() {
+  const context = useContext(TableContext);
+
+  if (context === undefined) {
+    throw new Error('useTableContext must be used within TableContext');
+  }
+
+  return context;
+}
+
 function Table({ children, variant, className, ...restProps }: TableProps) {
+  const value = useMemo(
+    () => ({
+      variant,
+    }),
+    [variant],
+  );
+
   return (
-    <table className={tableStyle({ variant, className })} {...restProps}>
-      {children}
-    </table>
+    <TableContext.Provider value={value}>
+      <table className={tableStyle({ variant, className })} {...restProps}>
+        {children}
+      </table>
+    </TableContext.Provider>
   );
 }
 
 const theadStyle = cva('', {
   variants: {
-    variant: {},
+    variant: {
+      primary: '',
+    },
   },
-  defaultVariants: {},
+  defaultVariants: {
+    variant: 'primary',
+  },
 });
 
-type TheadProps = ComponentPropsWithoutRef<'thead'> & VariantProps<typeof theadStyle>;
+type TheadProps = ComponentPropsWithoutRef<'thead'> &
+  Omit<VariantProps<typeof theadStyle>, 'variant'>;
 
-Table.Thead = function Thead({ children, variant, className, ...restProps }: TheadProps) {
+Table.Thead = function Thead({ children, className, ...restProps }: TheadProps) {
+  const { variant } = useTableContext();
+
   return (
     <thead className={theadStyle({ variant, className })} {...restProps}>
       {children}
@@ -37,14 +69,21 @@ Table.Thead = function Thead({ children, variant, className, ...restProps }: The
 
 const tbodyStyle = cva('', {
   variants: {
-    variant: {},
+    variant: {
+      primary: '',
+    },
   },
-  defaultVariants: {},
+  defaultVariants: {
+    variant: 'primary',
+  },
 });
 
-type TbodyProps = ComponentPropsWithoutRef<'tbody'> & VariantProps<typeof tbodyStyle>;
+type TbodyProps = ComponentPropsWithoutRef<'tbody'> &
+  Omit<VariantProps<typeof tbodyStyle>, 'variant'>;
 
-Table.Tbody = function Tbody({ children, className, variant, ...restProps }: TbodyProps) {
+Table.Tbody = function Tbody({ children, className, ...restProps }: TbodyProps) {
+  const { variant } = useTableContext();
+
   return (
     <tbody className={tbodyStyle({ variant, className })} {...restProps}>
       {children}
@@ -54,14 +93,21 @@ Table.Tbody = function Tbody({ children, className, variant, ...restProps }: Tbo
 
 const tfootStyle = cva('', {
   variants: {
-    variant: {},
+    variant: {
+      primary: '',
+    },
   },
-  defaultVariants: {},
+  defaultVariants: {
+    variant: 'primary',
+  },
 });
 
-type TfootProps = ComponentPropsWithoutRef<'tfoot'> & VariantProps<typeof tfootStyle>;
+type TfootProps = ComponentPropsWithoutRef<'tfoot'> &
+  Omit<VariantProps<typeof tfootStyle>, 'variant'>;
 
-Table.Tfoot = function Tfoot({ children, className, variant, ...restProps }: TfootProps) {
+Table.Tfoot = function Tfoot({ children, className, ...restProps }: TfootProps) {
+  const { variant } = useTableContext();
+
   return (
     <tfoot className={tfootStyle({ variant, className })} {...restProps}>
       {children}
@@ -71,14 +117,20 @@ Table.Tfoot = function Tfoot({ children, className, variant, ...restProps }: Tfo
 
 const trStyle = cva('', {
   variants: {
-    variant: {},
+    variant: {
+      primary: '',
+    },
   },
-  defaultVariants: {},
+  defaultVariants: {
+    variant: 'primary',
+  },
 });
 
-type TrProps = ComponentPropsWithoutRef<'tr'> & VariantProps<typeof trStyle>;
+type TrProps = ComponentPropsWithoutRef<'tr'> & Omit<VariantProps<typeof trStyle>, 'variant'>;
 
-Table.Tr = function Tr({ children, className, variant, ...restProps }: TrProps) {
+Table.Tr = function Tr({ children, className, ...restProps }: TrProps) {
+  const { variant } = useTableContext();
+
   return (
     <tr className={trStyle({ variant, className })} {...restProps}>
       {children}
@@ -88,14 +140,20 @@ Table.Tr = function Tr({ children, className, variant, ...restProps }: TrProps) 
 
 const thStyle = cva('', {
   variants: {
-    variant: {},
+    variant: {
+      primary: '',
+    },
   },
-  defaultVariants: {},
+  defaultVariants: {
+    variant: 'primary',
+  },
 });
 
-type ThProps = ComponentPropsWithoutRef<'th'> & VariantProps<typeof thStyle>;
+type ThProps = ComponentPropsWithoutRef<'th'> & Omit<VariantProps<typeof thStyle>, 'variant'>;
 
-Table.Th = function Th({ children, className, variant, ...restProps }: ThProps) {
+Table.Th = function Th({ children, className, ...restProps }: ThProps) {
+  const { variant } = useTableContext();
+
   return (
     <th className={thStyle({ variant, className })} {...restProps}>
       {children}
@@ -105,14 +163,20 @@ Table.Th = function Th({ children, className, variant, ...restProps }: ThProps) 
 
 const tdStyle = cva('', {
   variants: {
-    variant: {},
+    variant: {
+      primary: '',
+    },
   },
-  defaultVariants: {},
+  defaultVariants: {
+    variant: 'primary',
+  },
 });
 
-type TdProps = ComponentPropsWithoutRef<'td'> & VariantProps<typeof tdStyle>;
+type TdProps = ComponentPropsWithoutRef<'td'> & Omit<VariantProps<typeof tdStyle>, 'variant'>;
 
-Table.Td = function Td({ children, className, variant, ...restProps }: TdProps) {
+Table.Td = function Td({ children, className, ...restProps }: TdProps) {
+  const { variant } = useTableContext();
+
   return (
     <td className={tdStyle({ variant, className })} {...restProps}>
       {children}
