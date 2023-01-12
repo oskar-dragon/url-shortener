@@ -71,7 +71,7 @@ type CheckboxProps = {
   supportingText?: string;
   className?: string;
   checked: RadixCheckbox.CheckboxProps['checked'];
-  onChange?: RadixCheckbox.CheckboxProps['onCheckedChange'];
+  onChange: RadixCheckbox.CheckboxProps['onCheckedChange'];
   isDisabled?: RadixCheckbox.CheckboxProps['disabled'];
   isRequired?: RadixCheckbox.CheckboxProps['required'];
   name?: RadixCheckbox.CheckboxProps['name'];
@@ -91,12 +91,13 @@ function Checkbox(props: CheckboxProps) {
     name,
     ...restProps
   } = props;
-  const [checkedState, setCheckedState] = useState<RadixCheckbox.CheckboxProps['checked']>(
-    checked || false,
-  );
 
   function handleCheck(v: RadixCheckbox.CheckboxProps['checked']) {
-    setCheckedState(v);
+    if (typeof v === 'undefined') return;
+
+    if (onChange) {
+      onChange(v);
+    }
   }
 
   return (
@@ -104,15 +105,15 @@ function Checkbox(props: CheckboxProps) {
       <RadixCheckbox.Root
         className={rootStyles({ variant, size, className })}
         onCheckedChange={(val) => handleCheck(val)}
-        checked={checkedState}
+        checked={checked}
         disabled={isDisabled}
         required={isRequired}
         id={name}
         {...restProps}
       >
         <RadixCheckbox.Indicator className="text-indigo-600 data-[disabled]:text-neutral-200">
-          {checkedState === 'indeterminate' && <MinusSmallIcon />}
-          {checkedState === true && <CheckIcon />}
+          {checked === 'indeterminate' && <MinusSmallIcon />}
+          {checked === true && <CheckIcon />}
         </RadixCheckbox.Indicator>
       </RadixCheckbox.Root>
 
