@@ -1,15 +1,24 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/no-unstable-nested-components */
 import { Badge, Table, IconButton } from 'components/elements';
 import createTableDummyData, { type UrlData } from 'features/links/helpers/createTableDummyData';
 import { useMemo, useState } from 'react';
-import type { ColumnDef } from '@tanstack/react-table';
-import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table';
+import type { ColumnDef, SortingState } from '@tanstack/react-table';
+import {
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+  getSortedRowModel,
+} from '@tanstack/react-table';
 import { Checkbox } from 'components';
 import parseCategories from 'features/links/helpers/parseCategories/parseCategories';
 import { capitalize } from 'utils';
+import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/outline';
+import { cx } from 'class-variance-authority';
 
 function LinksTable() {
   const [dummyData] = useState(() => createTableDummyData(10));
+  const [sorting, setSorting] = useState<SortingState>([]);
   // const { data } = trpc.shortLink.getAllForUser.useQuery();
 
   console.log();
@@ -70,16 +79,19 @@ function LinksTable() {
       {
         header: 'Date created',
         accessorKey: 'dateCreated',
+        enableSorting: false,
         cell: (info) => info.getValue(),
       },
       {
         header: 'Date updated',
         accessorKey: 'dateUpdated',
+        enableSorting: false,
         cell: (info) => info.getValue(),
       },
       {
         header: 'Category',
         accessorKey: 'categories',
+        enableSorting: false,
         cell: (info) =>
           parseCategories(info.getValue() as Array<string>, 3).map((category, index) => (
             <Badge colour={index >= 3 ? 'grey' : 'indigo'} className="mr-1">
@@ -107,6 +119,11 @@ function LinksTable() {
     columns,
     data: dummyData,
     getCoreRowModel: getCoreRowModel(),
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     debugTable: true,
   });
 
@@ -117,9 +134,20 @@ function LinksTable() {
           <Table.Tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
               <Table.Th key={header.id}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(header.column.columnDef.header, header.getContext())}
+                <button
+                  type="button"
+                  onClick={header.column.getToggleSortingHandler()}
+                  className={cx(
+                    header.column.getCanSort() ? 'cursor-pointer select-none' : '',
+                    'flex flex-row gap-1 justify-center items-center',
+                  )}
+                >
+                  {flexRender(header.column.columnDef.header, header.getContext())}
+                  {{
+                    asc: <ArrowUpIcon className="h-3 w-3" />,
+                    desc: <ArrowDownIcon className="h-3 w-3" />,
+                  }[header.column.getIsSorted() as string] ?? null}
+                </button>
               </Table.Th>
             ))}
           </Table.Tr>
