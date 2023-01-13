@@ -150,7 +150,7 @@ Table.Tr = function Tr({ children, className, ...restProps }: TrProps) {
 const thStyle = cva('text-start', {
   variants: {
     variant: {
-      primary: ['px-6', 'py-2'],
+      primary: ['px-5', 'py-2'],
     },
   },
   defaultVariants: {
@@ -173,7 +173,7 @@ Table.Th = function Th({ children, className, ...restProps }: ThProps) {
 const tdStyle = cva('', {
   variants: {
     variant: {
-      primary: ['px-6', 'py-4', 'text-neutral-500', 'text-sm'],
+      primary: ['px-5', 'py-4', 'text-neutral-500', 'text-sm'],
     },
   },
   defaultVariants: {

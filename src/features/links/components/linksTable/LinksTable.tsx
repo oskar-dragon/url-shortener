@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { Badge, Table } from 'components/elements';
+import { Badge, Table, IconButton } from 'components/elements';
 import createTableDummyData, { type UrlData } from 'features/links/helpers/createTableDummyData';
 import { useMemo, useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
@@ -77,7 +77,6 @@ function LinksTable() {
         accessorKey: 'dateUpdated',
         cell: (info) => info.getValue(),
       },
-
       {
         header: 'Category',
         accessorKey: 'categories',
@@ -87,6 +86,17 @@ function LinksTable() {
               {capitalize(category)}
             </Badge>
           )),
+      },
+      {
+        id: 'delete or edit',
+        header: '',
+        accessorKey: 'id',
+        cell: (info) => (
+          <div className="flex gap-4">
+            <IconButton icon="trash" onClick={() => console.log(info.getValue())} />
+            <IconButton icon="pencil" onClick={() => console.log(info.getValue())} />
+          </div>
+        ),
       },
     ],
 
