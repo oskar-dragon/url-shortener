@@ -35,6 +35,7 @@ const iconsMap = {
 };
 
 type IconNames = keyof typeof iconsMap;
+export type BadgeColours = VariantProps<typeof badgeStyles>['colour'];
 
 const iconComponentMap = (iconName: IconNames | undefined) => {
   if (iconName !== undefined) {
@@ -48,14 +49,22 @@ type BadgeProps = {
   iconLeft?: IconNames;
   iconRight?: IconNames;
   isDisabled?: boolean;
+  className?: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 } & VariantProps<typeof badgeStyles>;
 
-function Badge({ children, colour, size, iconLeft, iconRight, onClick, isDisabled }: BadgeProps) {
-  console.log(isDisabled);
-
+function Badge({
+  children,
+  colour,
+  size,
+  iconLeft,
+  iconRight,
+  onClick,
+  isDisabled,
+  className,
+}: BadgeProps) {
   return (
-    <span className={badgeStyles({ colour, size })}>
+    <span className={badgeStyles({ colour, size, className })}>
       {iconLeft ? iconComponentMap(iconLeft) : null}
       {children}
       {iconRight && !onClick ? iconComponentMap(iconRight) : null}
@@ -73,6 +82,7 @@ Badge.defaultProps = {
   iconRight: '',
   onClick: undefined,
   isDisabled: false,
+  className: '',
 };
 
 export default Badge;

@@ -1,7 +1,6 @@
 /* eslint-disable react/require-default-props */
 import * as RadixCheckbox from '@radix-ui/react-checkbox';
 import { CheckIcon, MinusSmallIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const rootStyles = cva('', {
@@ -71,7 +70,7 @@ type CheckboxProps = {
   supportingText?: string;
   className?: string;
   checked: RadixCheckbox.CheckboxProps['checked'];
-  onChange?: RadixCheckbox.CheckboxProps['onCheckedChange'];
+  onChange: RadixCheckbox.CheckboxProps['onCheckedChange'];
   isDisabled?: RadixCheckbox.CheckboxProps['disabled'];
   isRequired?: RadixCheckbox.CheckboxProps['required'];
   name?: RadixCheckbox.CheckboxProps['name'];
@@ -91,28 +90,21 @@ function Checkbox(props: CheckboxProps) {
     name,
     ...restProps
   } = props;
-  const [checkedState, setCheckedState] = useState<RadixCheckbox.CheckboxProps['checked']>(
-    checked || false,
-  );
-
-  function handleCheck(v: RadixCheckbox.CheckboxProps['checked']) {
-    setCheckedState(v);
-  }
 
   return (
     <div className="flex align-top gap-3">
       <RadixCheckbox.Root
         className={rootStyles({ variant, size, className })}
-        onCheckedChange={(val) => handleCheck(val)}
-        checked={checkedState}
+        onCheckedChange={onChange}
+        checked={checked}
         disabled={isDisabled}
         required={isRequired}
         id={name}
         {...restProps}
       >
         <RadixCheckbox.Indicator className="text-indigo-600 data-[disabled]:text-neutral-200">
-          {checkedState === 'indeterminate' && <MinusSmallIcon />}
-          {checkedState === true && <CheckIcon />}
+          {checked === 'indeterminate' && <MinusSmallIcon />}
+          {checked === true && <CheckIcon />}
         </RadixCheckbox.Indicator>
       </RadixCheckbox.Root>
 
