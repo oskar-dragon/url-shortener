@@ -82,8 +82,8 @@ function LinksTable() {
         header: 'Category',
         accessorKey: 'categories',
         cell: (info) =>
-          parseCategories(info.getValue() as Array<string>, 3).map((category) => (
-            <Badge colour="indigo" className="ml-1">
+          parseCategories(info.getValue() as Array<string>, 3).map((category, index) => (
+            <Badge colour={index >= 3 ? 'grey' : 'indigo'} className="mr-1">
               {capitalize(category)}
             </Badge>
           )),
