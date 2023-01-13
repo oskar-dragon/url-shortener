@@ -4,13 +4,11 @@ import React, { type ComponentPropsWithoutRef } from 'react';
 
 const iconStyles = cva('', {
   variants: {
-    variant: {},
     size: {
       md: ['w-5', 'h-5'],
     },
   },
   defaultVariants: {
-    variant: '',
     size: 'md',
   },
 });
