@@ -1,17 +1,18 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { Table } from 'components/elements';
+import { Badge, Table } from 'components/elements';
 import createTableDummyData, { type UrlData } from 'features/links/helpers/createTableDummyData';
 import { useMemo, useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table';
 import { Checkbox } from 'components';
-import { formatDate } from 'utils';
+import parseCategories from 'features/links/helpers/parseCategories/parseCategories';
+import { capitalize } from 'utils';
 
 function LinksTable() {
   const [dummyData] = useState(() => createTableDummyData(10));
   // const { data } = trpc.shortLink.getAllForUser.useQuery();
 
-  console.log(dummyData);
+  console.log();
 
   const columns = useMemo<ColumnDef<UrlData>[]>(
     () => [
@@ -33,13 +34,33 @@ function LinksTable() {
       },
       {
         header: 'Link',
-        accessorKey: 'slug',
-        cell: (info) => info.getValue(),
+        accessorKey: 'urlName',
+        cell: (info) => {
+          const { urlName, slug } = info.row.original;
+
+          return (
+            <div className="flex flex-col">
+              <span className="text-shades-900 font-medium">{urlName}</span>
+              <span>/{slug}</span>
+            </div>
+          );
+        },
       },
       {
         header: 'Status',
         accessorKey: 'status',
-        cell: (info) => info.getValue(),
+        cell: (info) => {
+          const value = info.getValue();
+          const badgeColour = value === 'inactive' ? 'grey' : 'success';
+
+          return (
+            typeof value === 'string' && (
+              <Badge size="sm" iconLeft="dot" colour={badgeColour}>
+                {capitalize(value)}
+              </Badge>
+            )
+          );
+        },
       },
       {
         header: 'Number of visits',
@@ -60,7 +81,12 @@ function LinksTable() {
       {
         header: 'Category',
         accessorKey: 'categories',
-        cell: (info) => info.getValue(),
+        cell: (info) =>
+          parseCategories(info.getValue() as Array<string>, 3).map((category) => (
+            <Badge colour="indigo" className="ml-1">
+              {capitalize(category)}
+            </Badge>
+          )),
       },
     ],
 
