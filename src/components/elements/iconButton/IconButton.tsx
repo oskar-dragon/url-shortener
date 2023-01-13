@@ -21,10 +21,10 @@ const ComponentsMap = {
 type IconButtonProps = { icon: keyof typeof ComponentsMap } & ComponentPropsWithoutRef<'button'> &
   VariantProps<typeof iconStyles>;
 
-function IconButton({ icon, className, variant, ...restProps }: IconButtonProps) {
+function IconButton({ icon, className, size, ...restProps }: IconButtonProps) {
   return (
     <button {...restProps} type="button">
-      {React.cloneElement(ComponentsMap[icon], { className: iconStyles({ variant, className }) })}
+      {React.cloneElement(ComponentsMap[icon], { className: iconStyles({ size, className }) })}
     </button>
   );
 }
