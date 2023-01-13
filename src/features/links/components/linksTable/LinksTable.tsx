@@ -144,8 +144,8 @@ function LinksTable() {
                 >
                   {flexRender(header.column.columnDef.header, header.getContext())}
                   {{
-                    asc: <ArrowUpIcon className="h-3 w-3" />,
-                    desc: <ArrowDownIcon className="h-3 w-3" />,
+                    asc: <ArrowDownIcon className="h-3 w-3" />,
+                    desc: <ArrowUpIcon className="h-3 w-3" />,
                   }[header.column.getIsSorted() as string] ?? null}
                 </button>
               </Table.Th>
