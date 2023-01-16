@@ -1,11 +1,15 @@
-function getSidePages(values: Array<number>, referencialValue: number): Array<number> {
+function getSidePages(
+  values: Array<number>,
+  referencialValue: number,
+  maxLength: number = 3,
+): Array<number> {
   const indexOfParentValue = values.indexOf(referencialValue);
 
   if (indexOfParentValue < 0) {
     throw new Error('Referencecial value does not exist in an array');
   }
 
-  if (values.length <= 3) {
+  if (values.length <= maxLength) {
     return values;
   }
 

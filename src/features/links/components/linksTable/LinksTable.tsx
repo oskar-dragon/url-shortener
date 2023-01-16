@@ -9,19 +9,18 @@ import {
   getCoreRowModel,
   flexRender,
   getSortedRowModel,
+  getPaginationRowModel,
 } from '@tanstack/react-table';
-import { Checkbox } from 'components';
+import { Checkbox, Pagination } from 'components';
 import parseCategories from 'features/links/helpers/parseCategories/parseCategories';
 import { capitalize } from 'utils';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/outline';
 import { cx } from 'class-variance-authority';
 
 function LinksTable() {
-  const [dummyData] = useState(() => createTableDummyData(10));
+  const [dummyData] = useState(() => createTableDummyData(300));
   const [sorting, setSorting] = useState<SortingState>([]);
   // const { data } = trpc.shortLink.getAllForUser.useQuery();
-
-  console.log();
 
   const columns = useMemo<ColumnDef<UrlData>[]>(
     () => [
@@ -124,6 +123,7 @@ function LinksTable() {
     },
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     debugTable: true,
   });
 
@@ -167,7 +167,16 @@ function LinksTable() {
           ))}
         </Table.Tbody>
       </Table.Wrapper>
-      <Table.Pagination />
+      <Pagination
+        resultsCount={dummyData.length}
+        currentPage={table.getState().pagination.pageIndex + 1}
+        totalPages={table.getPageCount()}
+        onPageChange={(page) => table.setPageIndex(page - 1)}
+        onNextPage={() => table.nextPage()}
+        onPreviousPage={() => table.previousPage()}
+        canNextPage={table.getCanNextPage()}
+        canPreviousPage={table.getCanPreviousPage()}
+      />
     </Table>
   );
 }
