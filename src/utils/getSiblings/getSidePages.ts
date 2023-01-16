@@ -10,14 +10,14 @@ function getSidePages(values: Array<number>, referencialValue: number): Array<nu
   }
 
   if (indexOfParentValue === 0) {
-    return [referencialValue, values[indexOfParentValue + 1], values[indexOfParentValue + 2]];
+    return values.slice(0, 3);
   }
 
   if (indexOfParentValue === values.length - 1) {
-    return [values[indexOfParentValue - 2], values[indexOfParentValue - 1], referencialValue];
+    return values.slice(-3);
   }
 
-  return [values[indexOfParentValue - 1], referencialValue, values[indexOfParentValue + 1]];
+  return values.slice(indexOfParentValue - 1, indexOfParentValue + 2);
 }
 
 export default getSidePages;
