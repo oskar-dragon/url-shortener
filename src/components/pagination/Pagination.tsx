@@ -33,6 +33,7 @@ function Pagination({
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-2 py-3 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden">
         <Button
+          size="sm"
           variant="outline"
           onClick={() => onPreviousPage()}
           isDisabled={!canPreviousPage}
@@ -41,6 +42,7 @@ function Pagination({
           Previous
         </Button>
         <Button
+          size="sm"
           variant="outline"
           onClick={() => onNextPage()}
           isDisabled={!canNextPage}
@@ -51,7 +53,7 @@ function Pagination({
       </div>
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
-          <p className="text-sm text-gray-700">
+          <p className="text-sm text-neutral-700">
             Showing <span className="font-medium">{currentPage}</span> to{' '}
             <span className="font-medium">{totalPages}</span> of{' '}
             <span className="font-medium">{resultsCount}</span> results
@@ -62,36 +64,38 @@ function Pagination({
             className="isolate inline-flex -space-x-px rounded-md shadow-sm"
             aria-label="Pagination"
           >
-            <button
-              type="button"
+            <Button
+              size="xs"
+              variant="outline"
+              isDisabled={!canPreviousPage}
               onClick={() => onPreviousPage()}
-              disabled={!canPreviousPage}
-              className="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20"
+              className="rounded-r-none flex justify-center items-center"
             >
               <span className="sr-only">Previous</span>
-              <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-            </button>
+              <ChevronLeftIcon className="h-4 w-4" aria-hidden="true" />
+            </Button>
 
             {pagesToShow.map((page) => (
-              <button
-                key={page}
+              <Button
+                size="sm"
+                variant={page === currentPage ? 'lightBlue' : 'outline'}
                 onClick={() => onPageChange(page)}
-                type="button"
-                className="relative hidden items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20 md:inline-flex"
+                className="rounded-none hidden items-center border px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20 md:inline-flex"
               >
-                {currentPage === page ? `+${page}` : page}
-              </button>
+                {page}
+              </Button>
             ))}
 
-            <button
+            <Button
+              size="xs"
+              variant="outline"
+              isDisabled={!canNextPage}
               onClick={() => onNextPage()}
-              disabled={!canNextPage}
-              type="button"
-              className="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20"
+              className="rounded-l-none  flex justify-center items-center"
             >
               <span className="sr-only">Next</span>
-              <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-            </button>
+              <ChevronRightIcon className="h-4 w-4" aria-hidden="true" />
+            </Button>
           </nav>
         </div>
       </div>

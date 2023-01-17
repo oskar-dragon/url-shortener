@@ -33,8 +33,10 @@ const buttonStyles = cva(
           'active:bg-royal-800',
           'disabled:bg-meutral-300',
         ],
+        lightBlue: ['bg-royal-50', 'text-royal-700', 'border-stone-300', 'hover:bg-royal-50'],
       },
       size: {
+        xs: ['py-2', 'px-2.5'],
         sm: ['py-2', 'px-3.5'],
         md: ['py-2.5', 'px-4'],
         lg: ['py-2.5', 'px-4'],
@@ -49,7 +51,7 @@ const buttonStyles = cva(
   },
 );
 
-type ButtonProps = {
+export type ButtonProps = {
   className?: string;
   isDisabled?: boolean;
   isLoading?: boolean;
