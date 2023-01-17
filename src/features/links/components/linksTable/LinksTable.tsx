@@ -128,45 +128,47 @@ function LinksTable() {
   });
 
   return (
-    <Table>
-      <Table.Wrapper>
-        <Table.Thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <Table.Tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <Table.Th key={header.id}>
-                  <button
-                    type="button"
-                    onClick={header.column.getToggleSortingHandler()}
-                    className={cx(
-                      header.column.getCanSort() ? 'cursor-pointer select-none' : '',
-                      'flex flex-row gap-1 justify-center items-center',
-                    )}
-                  >
-                    {flexRender(header.column.columnDef.header, header.getContext())}
-                    {{
-                      asc: <ArrowDownIcon className="h-3 w-3" />,
-                      desc: <ArrowUpIcon className="h-3 w-3" />,
-                    }[header.column.getIsSorted() as string] ?? null}
-                  </button>
-                </Table.Th>
-              ))}
-            </Table.Tr>
-          ))}
-        </Table.Thead>
+    <>
+      <Table>
+        <Table.Wrapper>
+          <Table.Thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <Table.Tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <Table.Th key={header.id}>
+                    <button
+                      type="button"
+                      onClick={header.column.getToggleSortingHandler()}
+                      className={cx(
+                        header.column.getCanSort() ? 'cursor-pointer select-none' : '',
+                        'flex flex-row gap-1 justify-center items-center',
+                      )}
+                    >
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                      {{
+                        asc: <ArrowDownIcon className="h-3 w-3" />,
+                        desc: <ArrowUpIcon className="h-3 w-3" />,
+                      }[header.column.getIsSorted() as string] ?? null}
+                    </button>
+                  </Table.Th>
+                ))}
+              </Table.Tr>
+            ))}
+          </Table.Thead>
 
-        <Table.Tbody>
-          {table.getRowModel().rows.map((row) => (
-            <Table.Tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <Table.Td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Table.Td>
-              ))}
-            </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table.Wrapper>
+          <Table.Tbody>
+            {table.getRowModel().rows.map((row) => (
+              <Table.Tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <Table.Td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Table.Td>
+                ))}
+              </Table.Tr>
+            ))}
+          </Table.Tbody>
+        </Table.Wrapper>
+      </Table>
       <Pagination
         resultsCount={dummyData.length}
         currentPage={table.getState().pagination.pageIndex + 1}
@@ -177,7 +179,7 @@ function LinksTable() {
         canNextPage={table.getCanNextPage()}
         canPreviousPage={table.getCanPreviousPage()}
       />
-    </Table>
+    </>
   );
 }
 
