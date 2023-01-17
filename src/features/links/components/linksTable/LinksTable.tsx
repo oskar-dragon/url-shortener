@@ -18,7 +18,7 @@ import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/outline';
 import { cx } from 'class-variance-authority';
 
 function LinksTable() {
-  const [dummyData] = useState(() => createTableDummyData(300));
+  const [dummyData] = useState(() => createTableDummyData(100));
   const [sorting, setSorting] = useState<SortingState>([]);
   // const { data } = trpc.shortLink.getAllForUser.useQuery();
 
