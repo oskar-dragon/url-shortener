@@ -9,19 +9,18 @@ import {
   getCoreRowModel,
   flexRender,
   getSortedRowModel,
+  getPaginationRowModel,
 } from '@tanstack/react-table';
-import { Checkbox } from 'components';
+import { Checkbox, Pagination } from 'components';
 import parseCategories from 'features/links/helpers/parseCategories/parseCategories';
 import { capitalize } from 'utils';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/outline';
 import { cx } from 'class-variance-authority';
 
 function LinksTable() {
-  const [dummyData] = useState(() => createTableDummyData(10));
+  const [dummyData] = useState(() => createTableDummyData(100));
   const [sorting, setSorting] = useState<SortingState>([]);
   // const { data } = trpc.shortLink.getAllForUser.useQuery();
-
-  console.log();
 
   const columns = useMemo<ColumnDef<UrlData>[]>(
     () => [
@@ -30,7 +29,7 @@ function LinksTable() {
         header: ({ table }) => (
           <Checkbox
             checked={
-              table.getIsSomeRowsSelected() ? 'indeterminate' : table.getIsAllPageRowsSelected()
+              table.getIsSomePageRowsSelected() ? 'indeterminate' : table.getIsAllPageRowsSelected()
             }
             onChange={(value) =>
               value !== 'indeterminate' ? table.toggleAllPageRowsSelected(value) : () => {}
@@ -124,51 +123,63 @@ function LinksTable() {
     },
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     debugTable: true,
   });
 
   return (
-    <Table>
-      <Table.Wrapper>
-        <Table.Thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <Table.Tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <Table.Th key={header.id}>
-                  <button
-                    type="button"
-                    onClick={header.column.getToggleSortingHandler()}
-                    className={cx(
-                      header.column.getCanSort() ? 'cursor-pointer select-none' : '',
-                      'flex flex-row gap-1 justify-center items-center',
-                    )}
-                  >
-                    {flexRender(header.column.columnDef.header, header.getContext())}
-                    {{
-                      asc: <ArrowDownIcon className="h-3 w-3" />,
-                      desc: <ArrowUpIcon className="h-3 w-3" />,
-                    }[header.column.getIsSorted() as string] ?? null}
-                  </button>
-                </Table.Th>
-              ))}
-            </Table.Tr>
-          ))}
-        </Table.Thead>
+    <>
+      <Table>
+        <Table.Wrapper>
+          <Table.Thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <Table.Tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <Table.Th key={header.id}>
+                    <button
+                      type="button"
+                      onClick={header.column.getToggleSortingHandler()}
+                      className={cx(
+                        header.column.getCanSort() ? 'cursor-pointer select-none' : '',
+                        'flex flex-row gap-1 justify-center items-center',
+                      )}
+                    >
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                      {{
+                        asc: <ArrowDownIcon className="h-3 w-3" />,
+                        desc: <ArrowUpIcon className="h-3 w-3" />,
+                      }[header.column.getIsSorted() as string] ?? null}
+                    </button>
+                  </Table.Th>
+                ))}
+              </Table.Tr>
+            ))}
+          </Table.Thead>
 
-        <Table.Tbody>
-          {table.getRowModel().rows.map((row) => (
-            <Table.Tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <Table.Td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Table.Td>
-              ))}
-            </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table.Wrapper>
-      <Table.Pagination />
-    </Table>
+          <Table.Tbody>
+            {table.getRowModel().rows.map((row) => (
+              <Table.Tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <Table.Td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Table.Td>
+                ))}
+              </Table.Tr>
+            ))}
+          </Table.Tbody>
+        </Table.Wrapper>
+      </Table>
+      <Pagination
+        resultsCount={dummyData.length}
+        currentPage={table.getState().pagination.pageIndex + 1}
+        totalPages={table.getPageCount()}
+        onPageChange={(page) => table.setPageIndex(page - 1)}
+        onNextPage={() => table.nextPage()}
+        onPreviousPage={() => table.previousPage()}
+        canNextPage={table.getCanNextPage()}
+        canPreviousPage={table.getCanPreviousPage()}
+      />
+    </>
   );
 }
 
