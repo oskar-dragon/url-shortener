@@ -1,4 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { Button } from 'components/elements';
 import { getPageNeighbours } from 'features/links';
 import React, { useMemo } from 'react';
 
@@ -31,22 +32,22 @@ function Pagination({
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-2 py-3 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden">
-        <button
-          type="button"
+        <Button
+          variant="outline"
           onClick={() => onPreviousPage()}
-          disabled={!canPreviousPage}
+          isDisabled={!canPreviousPage}
           className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Previous
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          variant="outline"
           onClick={() => onNextPage()}
-          disabled={!canNextPage}
+          isDisabled={!canNextPage}
           className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Next
-        </button>
+        </Button>
       </div>
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
