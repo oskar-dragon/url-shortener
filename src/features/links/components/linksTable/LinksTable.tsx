@@ -29,7 +29,7 @@ function LinksTable() {
         header: ({ table }) => (
           <Checkbox
             checked={
-              table.getIsSomeRowsSelected() ? 'indeterminate' : table.getIsAllPageRowsSelected()
+              table.getIsSomePageRowsSelected() ? 'indeterminate' : table.getIsAllPageRowsSelected()
             }
             onChange={(value) =>
               value !== 'indeterminate' ? table.toggleAllPageRowsSelected(value) : () => {}
