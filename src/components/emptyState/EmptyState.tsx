@@ -1,3 +1,4 @@
+import { cx } from 'class-variance-authority';
 import { Button, type ButtonProps } from 'components/elements';
 
 type EmptyStateProps = {
@@ -8,8 +9,12 @@ type EmptyStateProps = {
 
 type EmptyStateRootProps = Pick<EmptyStateProps, 'children' | 'className'>;
 
-function EmptyState({ children, variant, className }: EmptyStateRootProps) {
-  return <div className="flex flex-col justify-center items-center w-96">{children}</div>;
+function EmptyState({ children, className }: EmptyStateRootProps) {
+  return (
+    <div className={cx('flex flex-col justify-center items-center w-96', className)}>
+      {children}
+    </div>
+  );
 }
 
 type EmptyStateIconProps = Pick<EmptyStateProps, 'icon'>;

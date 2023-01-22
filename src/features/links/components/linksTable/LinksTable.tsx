@@ -1,7 +1,6 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/no-unstable-nested-components */
 import { Badge, Table, IconButton } from 'components/elements';
-import createTableDummyData, { type UrlData } from 'features/links/helpers/createTableDummyData';
 import { useMemo, useState } from 'react';
 import type { ColumnDef, SortingState } from '@tanstack/react-table';
 import {
@@ -13,9 +12,10 @@ import {
 } from '@tanstack/react-table';
 import { Checkbox, Pagination } from 'components';
 import parseCategories from 'features/links/helpers/parseCategories/parseCategories';
-import { capitalize } from 'utils';
+import { capitalize, formatDate, trpc } from 'utils';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/outline';
 import { cx } from 'class-variance-authority';
+import type { TableWithLinks } from 'features/links/types';
 import LinksTableEmptyState from '../linksTableEmptyState/LinksTableEmptyState';
 
 type LinskTableProps = {
@@ -23,11 +23,13 @@ type LinskTableProps = {
 };
 
 function LinksTable({ className }: LinskTableProps) {
-  const [dummyData] = useState(() => createTableDummyData(1));
   const [sorting, setSorting] = useState<SortingState>([]);
-  // const { data } = trpc.shortLink.getAllForUser.useQuery();
+  const { data, isLoading } = trpc.shortLink.getAllForUser.useQuery(undefined, {
+    select: (urls) =>
+      urls.map(({ active, ...rest }) => ({ ...rest, status: active ? 'active' : 'inactive' })),
+  });
 
-  const columns = useMemo<ColumnDef<UrlData>[]>(
+  const columns = useMemo<ColumnDef<TableWithLinks>[]>(
     () => [
       {
         id: 'select',
@@ -49,12 +51,12 @@ function LinksTable({ className }: LinskTableProps) {
         header: 'Link',
         accessorKey: 'urlName',
         cell: (info) => {
-          const { urlName, slug } = info.row.original;
+          const { name, shortUrl } = info.row.original;
 
           return (
             <div className="flex flex-col">
-              <span className="text-shades-900 font-medium">{urlName}</span>
-              <span>/{slug}</span>
+              <span className="text-shades-900 font-medium">{name}</span>
+              <span>/{shortUrl}</span>
             </div>
           );
         },
@@ -84,13 +86,13 @@ function LinksTable({ className }: LinskTableProps) {
         header: 'Date created',
         accessorKey: 'dateCreated',
         enableSorting: false,
-        cell: (info) => info.getValue(),
+        cell: (info) => formatDate(info.getValue() as Date, { dateStyle: 'medium' }),
       },
       {
         header: 'Date updated',
         accessorKey: 'dateUpdated',
         enableSorting: false,
-        cell: (info) => info.getValue(),
+        cell: (info) => formatDate(info.getValue() as Date, { dateStyle: 'medium' }),
       },
       {
         header: 'Category',
@@ -121,7 +123,7 @@ function LinksTable({ className }: LinskTableProps) {
 
   const table = useReactTable({
     columns,
-    data: dummyData,
+    data: data ?? [],
     getCoreRowModel: getCoreRowModel(),
     state: {
       sorting,
@@ -132,9 +134,16 @@ function LinksTable({ className }: LinskTableProps) {
     debugTable: true,
   });
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (data?.length === 0) {
+    return <LinksTableEmptyState className="mx-auto my-5" />;
+  }
+
   return (
     <>
-      <LinksTableEmptyState />
       <Table className={className}>
         <Table.Wrapper>
           <Table.Thead>
@@ -176,7 +185,7 @@ function LinksTable({ className }: LinskTableProps) {
         </Table.Wrapper>
       </Table>
       <Pagination
-        resultsCount={dummyData.length}
+        resultsCount={data.length}
         currentPage={table.getState().pagination.pageIndex + 1}
         totalPages={table.getPageCount()}
         onPageChange={(page) => table.setPageIndex(page - 1)}

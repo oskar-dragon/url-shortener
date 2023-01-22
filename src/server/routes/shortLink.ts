@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable no-underscore-dangle */
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { TRPCError } from '@trpc/server';
 import { addDetailedLinkSchema } from 'features/links';
@@ -83,28 +85,45 @@ export const shortLinkRouter = router({
   getAllForUser: privateProcedure.query(async ({ ctx }) => {
     const { user } = ctx.session;
 
-    try {
-      const urls = await prisma.url.findMany({
-        where: {
-          userId: user.email,
+    const urls = await prisma.url.findMany({
+      where: {
+        userId: user.email,
+      },
+      include: {
+        categories: {
+          include: {
+            category: {
+              select: {
+                name: true,
+              },
+            },
+          },
         },
-      });
+        _count: {
+          select: {
+            statistics: true,
+          },
+        },
+      },
+    });
 
-      if (!urls) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'URLs not found' });
-      }
-
-      return urls;
-    } catch (err) {
-      if (err instanceof PrismaClientKnownRequestError) {
-        if (err.code === 'P2025') {
-          throw new TRPCError({ code: 'NOT_FOUND', message: "URL doesn't exist" });
-        }
-      }
-
-      return err;
+    if (!urls) {
+      return [];
     }
+
+    const parsedUrls = urls.map((url) => {
+      const { _count, categories, userId, ...rest } = url;
+
+      return {
+        ...rest,
+        categories: categories.map((category) => category.category.name),
+        numberOfVisits: _count.statistics,
+      };
+    });
+
+    return parsedUrls;
   }),
+
   removeOne: publicProcedure
     .input(
       z.object({

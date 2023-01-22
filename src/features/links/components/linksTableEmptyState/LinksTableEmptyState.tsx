@@ -1,12 +1,17 @@
+/* eslint-disable react/require-default-props */
 import { EmptyState } from 'components';
 import { MagnifyingGlassIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { useAddLinkModalStore } from 'features/links/stores';
 
-function LinksTableEmptyState() {
+type LinksTableEmptyStateProps = {
+  className?: string;
+};
+
+function LinksTableEmptyState({ className }: LinksTableEmptyStateProps) {
   const openModal = useAddLinkModalStore((state) => state.open);
 
   return (
-    <EmptyState>
+    <EmptyState className={className}>
       <EmptyState.Icon icon={<MagnifyingGlassIcon className="w-7" />} />
       <EmptyState.Title>No links found</EmptyState.Title>
       <EmptyState.Body>
