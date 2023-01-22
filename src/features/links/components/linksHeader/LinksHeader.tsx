@@ -10,20 +10,29 @@ function LinksHeader() {
   const isModalOpen = useAddLinkModalStore((state) => state.isOpen);
   const openModal = useAddLinkModalStore((state) => state.open);
   const closeModal = useAddLinkModalStore((state) => state.close);
+  const utils = trpc.useContext();
 
-  const { mutate, isLoading } = trpc.shortLink.create.useMutation();
+  const { mutate, isLoading } = trpc.shortLink.create.useMutation({
+    onSuccess() {
+      closeModal();
+      utils.shortLink.getAllForUser.invalidate();
+    },
+  });
+
   const categories = trpc.categories.getAllCategories.useQuery(undefined, {
     select: (data) => data.map(({ id: value, name: label }) => ({ value, label })),
   });
 
   function handleLinkSubmit(formData: AddDetailedLinkSchema) {
-    mutate(formData, { onSuccess: closeModal });
+    mutate(formData);
   }
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:justify-between align-top">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-semibold">Links</h1>
+        <span>
+          <h1 className="text-2xl sm:text-3xl font-semibold">Links</h1>
+        </span>
         <p className="text-sm sm:text-base text-neutral-500">
           Lorem ipsum dolor, sit amet consectetur adipisicing elit.
         </p>
