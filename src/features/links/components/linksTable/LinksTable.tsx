@@ -1,4 +1,4 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/require-default-props */
 /* eslint-disable react/no-unstable-nested-components */
 import { Badge, Table, IconButton } from 'components/elements';
 import createTableDummyData, { type UrlData } from 'features/links/helpers/createTableDummyData';
@@ -16,9 +16,14 @@ import parseCategories from 'features/links/helpers/parseCategories/parseCategor
 import { capitalize } from 'utils';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/outline';
 import { cx } from 'class-variance-authority';
+import LinksTableEmptyState from '../linksTableEmptyState/LinksTableEmptyState';
 
-function LinksTable() {
-  const [dummyData] = useState(() => createTableDummyData(100));
+type LinskTableProps = {
+  className?: string;
+};
+
+function LinksTable({ className }: LinskTableProps) {
+  const [dummyData] = useState(() => createTableDummyData(1));
   const [sorting, setSorting] = useState<SortingState>([]);
   // const { data } = trpc.shortLink.getAllForUser.useQuery();
 
@@ -129,7 +134,8 @@ function LinksTable() {
 
   return (
     <>
-      <Table>
+      <LinksTableEmptyState />
+      <Table className={className}>
         <Table.Wrapper>
           <Table.Thead>
             {table.getHeaderGroups().map((headerGroup) => (

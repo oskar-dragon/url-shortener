@@ -1,28 +1,23 @@
-import { useState } from 'react';
 import { Button, Divider } from 'components/elements';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import addLinkSchema, { type AddDetailedLinkSchema } from 'features/links/types/addLinkForm';
 import { FormInput, MultiSelect } from 'components';
 import { trpc } from 'utils';
+import { useAddLinkModalStore } from 'features/links/stores';
 import FormModal from '../formModal/FormModal';
 
 function LinksHeader() {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const isModalOpen = useAddLinkModalStore((state) => state.isOpen);
+  const openModal = useAddLinkModalStore((state) => state.open);
+  const closeModal = useAddLinkModalStore((state) => state.close);
+
   const { mutate, isLoading } = trpc.shortLink.create.useMutation();
   const categories = trpc.categories.getAllCategories.useQuery(undefined, {
     select: (data) => data.map(({ id: value, name: label }) => ({ value, label })),
   });
 
-  function handleOpenAddLinkModal() {
-    setIsOpen(true);
-  }
-
-  function handleCloseAddLinkModal() {
-    setIsOpen(false);
-  }
-
   function handleLinkSubmit(formData: AddDetailedLinkSchema) {
-    mutate(formData, { onSuccess: handleCloseAddLinkModal });
+    mutate(formData, { onSuccess: closeModal });
   }
 
   return (
@@ -34,19 +29,19 @@ function LinksHeader() {
         </p>
       </div>
       <div>
-        <Button variant="dark" leftIcon={<PlusIcon />} onClick={() => handleOpenAddLinkModal()}>
+        <Button variant="dark" leftIcon={<PlusIcon />} onClick={() => openModal()}>
           Add
         </Button>
 
         <FormModal
           schema={addLinkSchema}
-          isOpen={isOpen}
+          isOpen={isModalOpen}
           title="Add Link"
           description="Provide all necessary information to create a link"
           onSubmitText="Create Link"
           onCancelText="Cancel"
           onSubmit={(data) => handleLinkSubmit(data)}
-          onCancel={() => handleCloseAddLinkModal()}
+          onCancel={() => closeModal()}
         >
           <div>
             <div className="space-y-6 mb-4">

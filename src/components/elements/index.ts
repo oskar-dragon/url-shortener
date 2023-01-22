@@ -6,3 +6,6 @@ export { default as Badge } from './badge/Badge';
 export { default as Divider } from './divider/Divider';
 export { default as Table } from './table/Table';
 export { default as IconButton } from './iconButton/IconButton';
+
+// Types
+export type { ButtonProps } from './button/Button';
