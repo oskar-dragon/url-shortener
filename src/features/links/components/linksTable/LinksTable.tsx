@@ -193,7 +193,7 @@ function LinksTable({ className }: LinskTableProps) {
         </Table.Wrapper>
       </Table>
       <Pagination
-        resultsCount={data.length}
+        resultsCount={data?.length ?? 0}
         currentPage={table.getState().pagination.pageIndex + 1}
         totalPages={table.getPageCount()}
         onPageChange={(page) => table.setPageIndex(page - 1)}
