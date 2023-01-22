@@ -39,7 +39,7 @@ function LinksHeader() {
       </div>
       <div>
         <Button variant="dark" leftIcon={<PlusIcon />} onClick={() => openModal()}>
-          Add
+          Add Link
         </Button>
 
         <FormModal

@@ -53,7 +53,7 @@ EmptyState.PrimaryAction = function EmptyStatePrimaryAction({
   ...restProps
 }: EmptyStatePrimaryActionProps) {
   return (
-    <Button size="sm" onClick={onClick} {...restProps}>
+    <Button onClick={onClick} {...restProps}>
       {children}
     </Button>
   );
@@ -67,7 +67,7 @@ EmptyState.SecondaryAction = function EmptyStateSecondaryAction({
   ...restProps
 }: EmptyStateSecondaryActionProps) {
   return (
-    <Button variant="outline" size="sm" onClick={onClick} {...restProps}>
+    <Button variant="outline" onClick={onClick} {...restProps}>
       {children}
     </Button>
   );
