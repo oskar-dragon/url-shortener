@@ -27,6 +27,7 @@ model Url {
   shortUrl    String   @id @unique @db.VarChar(7)
   longUrl     String   @db.VarChar(10000)
   dateCreated DateTime @default(now())
+  dateUpdated DateTime @updatedAt
   name        String?
   active      Boolean  @default(true)
 

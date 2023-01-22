@@ -76,10 +76,10 @@ function ConfirmationModal({
                   </div>
                 </div>
                 <div className="bg-neutral-50 px-4 py-3 flex flex-col sm:flex-row-reverse sm:px-6  gap-2 sm:gap-4">
-                  <Button size="sm" variant="blue" onClick={() => firstAction()}>
+                  <Button variant="blue" onClick={() => firstAction()}>
                     Copy and close
                   </Button>
-                  <Button size="sm" variant="light" onClick={() => secondAction()}>
+                  <Button variant="outline" onClick={() => secondAction()}>
                     Close
                   </Button>
                 </div>

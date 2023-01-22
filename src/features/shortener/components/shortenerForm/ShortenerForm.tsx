@@ -20,7 +20,7 @@ function ShortenerForm(): JSX.Element {
 
   function updateForm(formData: ShortenerFormFields) {
     mutate(formData, {
-      onError: () => toast.error('Sorry. This alias has already been used. Try a different one'),
+      onError: () => toast.error('Sorry. Something went wrong. Try again later.'),
       onSuccess: (data) => {
         setModalUrl(`${getOrigin()}/${data.shortUrl}`);
         setIsModalOpen(true);

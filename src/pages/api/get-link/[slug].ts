@@ -22,15 +22,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  // await prisma.url.update({
-  //   where: {
-  //     shortUrl: slug,
-  //   },
-
-  //   data: {
-  //     noOfVisits: data.noOfVisits + 1,
-  //   },
-  // });
+  await prisma.statistics.create({
+    data: {
+      slug,
+    },
+  });
 
   res.setHeader('Content-Type', 'application/json');
   res.setHeader('Access-Control-Allow-Origin', '*');

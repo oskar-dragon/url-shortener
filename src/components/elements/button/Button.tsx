@@ -36,9 +36,9 @@ const buttonStyles = cva(
         lightBlue: ['bg-royal-50', 'text-royal-700', 'border-stone-300', 'hover:bg-royal-50'],
       },
       size: {
-        xs: ['py-2', 'px-2.5'],
-        sm: ['py-2', 'px-3.5'],
-        md: ['py-2.5', 'px-4'],
+        xs: ['py-1', 'px-2.5'],
+        sm: ['py-1', 'px-3.5'],
+        md: ['py-2', 'px-4'],
         lg: ['py-2.5', 'px-4'],
         xl: ['py-3', 'px-5'],
         fullWidth: ['py-3', 'w-full'],
@@ -79,9 +79,9 @@ function Button({
       className={buttonStyles({ variant, size, className })}
       disabled={isDisabled || isLoading}
     >
-      {leftIcon && <span className="w-4 self-center text-current">{leftIcon}</span>}
+      {leftIcon && <span className="w-5 self-center text-current">{leftIcon}</span>}
       {children}
-      {rightIcon && <span className="w-4 self-center text-current">{leftIcon}</span>}
+      {rightIcon && <span className="w-5 self-center text-current">{leftIcon}</span>}
     </button>
   );
 }

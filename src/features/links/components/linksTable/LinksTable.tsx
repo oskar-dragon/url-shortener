@@ -1,7 +1,6 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/require-default-props */
 /* eslint-disable react/no-unstable-nested-components */
 import { Badge, Table, IconButton } from 'components/elements';
-import createTableDummyData, { type UrlData } from 'features/links/helpers/createTableDummyData';
 import { useMemo, useState } from 'react';
 import type { ColumnDef, SortingState } from '@tanstack/react-table';
 import {
@@ -13,16 +12,24 @@ import {
 } from '@tanstack/react-table';
 import { Checkbox, Pagination } from 'components';
 import parseCategories from 'features/links/helpers/parseCategories/parseCategories';
-import { capitalize } from 'utils';
+import { capitalize, formatDate, trpc } from 'utils';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/outline';
 import { cx } from 'class-variance-authority';
+import type { TableWithLinks } from 'features/links/types';
+import LinksTableEmptyState from '../linksTableEmptyState/LinksTableEmptyState';
 
-function LinksTable() {
-  const [dummyData] = useState(() => createTableDummyData(100));
+type LinskTableProps = {
+  className?: string;
+};
+
+function LinksTable({ className }: LinskTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  // const { data } = trpc.shortLink.getAllForUser.useQuery();
+  const { data, isLoading } = trpc.shortLink.getAllForUser.useQuery(undefined, {
+    select: (urls) =>
+      urls.map(({ active, ...rest }) => ({ ...rest, status: active ? 'active' : 'inactive' })),
+  });
 
-  const columns = useMemo<ColumnDef<UrlData>[]>(
+  const columns = useMemo<ColumnDef<TableWithLinks>[]>(
     () => [
       {
         id: 'select',
@@ -44,12 +51,12 @@ function LinksTable() {
         header: 'Link',
         accessorKey: 'urlName',
         cell: (info) => {
-          const { urlName, slug } = info.row.original;
+          const { name, shortUrl } = info.row.original;
 
           return (
             <div className="flex flex-col">
-              <span className="text-shades-900 font-medium">{urlName}</span>
-              <span>/{slug}</span>
+              <span className="text-shades-900 font-medium">{name}</span>
+              <span>/{shortUrl}</span>
             </div>
           );
         },
@@ -79,13 +86,13 @@ function LinksTable() {
         header: 'Date created',
         accessorKey: 'dateCreated',
         enableSorting: false,
-        cell: (info) => info.getValue(),
+        cell: (info) => formatDate(info.getValue() as Date, { dateStyle: 'medium' }),
       },
       {
         header: 'Date updated',
         accessorKey: 'dateUpdated',
         enableSorting: false,
-        cell: (info) => info.getValue(),
+        cell: (info) => formatDate(info.getValue() as Date, { dateStyle: 'medium' }),
       },
       {
         header: 'Category',
@@ -116,7 +123,7 @@ function LinksTable() {
 
   const table = useReactTable({
     columns,
-    data: dummyData,
+    data: data ?? [],
     getCoreRowModel: getCoreRowModel(),
     state: {
       sorting,
@@ -127,9 +134,25 @@ function LinksTable() {
     debugTable: true,
   });
 
+  if (isLoading) {
+    return (
+      <div className="border border-neutral-300 rounded-md overflow-hidden">
+        <div>Loading...</div>
+      </div>
+    );
+  }
+
+  if (data?.length === 0) {
+    return (
+      <div className="border border-neutral-300 rounded-md overflow-hidden">
+        <LinksTableEmptyState className="mx-auto my-5" />
+      </div>
+    );
+  }
+
   return (
-    <>
-      <Table>
+    <div className="border border-neutral-300 rounded-md overflow-hidden">
+      <Table className={className}>
         <Table.Wrapper>
           <Table.Thead>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -170,7 +193,7 @@ function LinksTable() {
         </Table.Wrapper>
       </Table>
       <Pagination
-        resultsCount={dummyData.length}
+        resultsCount={data?.length ?? 0}
         currentPage={table.getState().pagination.pageIndex + 1}
         totalPages={table.getPageCount()}
         onPageChange={(page) => table.setPageIndex(page - 1)}
@@ -179,7 +202,7 @@ function LinksTable() {
         canNextPage={table.getCanNextPage()}
         canPreviousPage={table.getCanPreviousPage()}
       />
-    </>
+    </div>
   );
 }
 
