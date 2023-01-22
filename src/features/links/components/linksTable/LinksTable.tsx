@@ -135,15 +135,23 @@ function LinksTable({ className }: LinskTableProps) {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="border border-neutral-300 rounded-md overflow-hidden">
+        <div>Loading...</div>
+      </div>
+    );
   }
 
   if (data?.length === 0) {
-    return <LinksTableEmptyState className="mx-auto my-5" />;
+    return (
+      <div className="border border-neutral-300 rounded-md overflow-hidden">
+        <LinksTableEmptyState className="mx-auto my-5" />
+      </div>
+    );
   }
 
   return (
-    <>
+    <div className="border border-neutral-300 rounded-md overflow-hidden">
       <Table className={className}>
         <Table.Wrapper>
           <Table.Thead>
@@ -194,7 +202,7 @@ function LinksTable({ className }: LinskTableProps) {
         canNextPage={table.getCanNextPage()}
         canPreviousPage={table.getCanPreviousPage()}
       />
-    </>
+    </div>
   );
 }
 

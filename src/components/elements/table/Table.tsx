@@ -5,7 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 const tableStyle = cva('block whitespace-nowrap overflow-x-auto overflow-y-hidden', {
   variants: {
     variant: {
-      primary: ['border', 'border-neutral-300', 'rounded-md'],
+      primary: [],
     },
   },
   defaultVariants: {
