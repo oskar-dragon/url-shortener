@@ -1,6 +1,6 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import Head from 'next/head';
-import { LinksHeader, LinksTable } from 'features/links';
+import { EditLinkFormModal, LinksHeader, LinksTable } from 'features/links';
 
 function Dashboard() {
   return (
@@ -10,8 +10,8 @@ function Dashboard() {
       </Head>
       <div>
         <LinksHeader />
-
         <LinksTable />
+        <EditLinkFormModal />
       </div>
     </>
   );

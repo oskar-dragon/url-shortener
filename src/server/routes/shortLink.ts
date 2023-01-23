@@ -6,6 +6,7 @@ import { addDetailedLinkSchema } from 'features/links';
 import { shortenerUrlOnly } from 'features/shortener';
 import generateShortUrl from 'server/helpers/generateShortUrl/generateShortUrl';
 import { prisma } from 'server/prisma';
+import { updateDetailedLinkSchema } from 'server/schema';
 import { router, publicProcedure, privateProcedure } from 'server/trpc';
 import logger from 'server/utils/logger';
 import { z } from 'zod';
@@ -122,6 +123,50 @@ export const shortLinkRouter = router({
     });
 
     return parsedUrls;
+  }),
+
+  updateOne: privateProcedure.input(updateDetailedLinkSchema).mutation(async ({ input }) => {
+    const { slug, name, active, categories } = input;
+
+    const categoryIds = categories?.map(({ value: categoryId }) => ({
+      categoryId,
+    }));
+
+    try {
+      if (categoryIds) {
+        await prisma.url.update({
+          where: {
+            shortUrl: slug,
+          },
+          data: {
+            name,
+            active,
+            categories: {
+              deleteMany: {
+                urlId: slug,
+              },
+              createMany: {
+                data: categoryIds,
+              },
+            },
+          },
+        });
+      } else {
+        await prisma.url.update({
+          where: {
+            shortUrl: slug,
+          },
+          data: {
+            name,
+            active,
+          },
+        });
+      }
+    } catch (error) {
+      if (error instanceof TRPCError) {
+        throw new TRPCError({ code: error.code, message: error.message });
+      }
+    }
   }),
 
   removeOne: publicProcedure

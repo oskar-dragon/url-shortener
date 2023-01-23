@@ -16,6 +16,7 @@ import { capitalize, formatDate, trpc } from 'utils';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/outline';
 import { cx } from 'class-variance-authority';
 import type { TableWithLinks } from 'features/links/types';
+import { useEditLinkModalStore } from 'features/links/stores';
 import LinksTableEmptyState from '../linksTableEmptyState/LinksTableEmptyState';
 
 type LinskTableProps = {
@@ -28,6 +29,7 @@ function LinksTable({ className }: LinskTableProps) {
     select: (urls) =>
       urls.map(({ active, ...rest }) => ({ ...rest, status: active ? 'active' : 'inactive' })),
   });
+  const openEditModal = useEditLinkModalStore((state) => state.open);
 
   const columns = useMemo<ColumnDef<TableWithLinks>[]>(
     () => [
@@ -108,11 +110,11 @@ function LinksTable({ className }: LinskTableProps) {
       {
         id: 'delete or edit',
         header: '',
-        accessorKey: 'id',
+        accessorKey: 'shortUrl',
         cell: (info) => (
           <div className="flex gap-4">
             <IconButton icon="trash" onClick={() => console.log(info.getValue())} />
-            <IconButton icon="pencil" onClick={() => console.log(info.getValue())} />
+            <IconButton icon="pencil" onClick={() => openEditModal(info.getValue() as string)} />
           </div>
         ),
       },
