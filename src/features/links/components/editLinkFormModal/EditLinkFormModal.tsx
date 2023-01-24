@@ -16,14 +16,18 @@ function EditLinkFormModal() {
   const uniqueUrl = trpc.shortLink.getOneForUser.useQuery(
     { slug: modalId },
     {
-      select: ({ active, name, categories, ...rest }) => ({
+      select: ({ active, name, categories }) => ({
         active,
-        name,
-        categories: categories.map((category) => category.category.name),
+        name: name ?? '',
+        categories: categories.map((category) => ({
+          label: category.category.name,
+          value: category.category.id,
+        })),
       }),
       enabled: !!modalId,
     },
   );
+
   const { mutate, isLoading } = trpc.shortLink.updateOne.useMutation({
     onSuccess() {
       closeModal();
@@ -40,46 +44,48 @@ function EditLinkFormModal() {
   }
 
   return (
-    <FormModal
-      schema={editDetailedLinkFormSchema}
-      isOpen={isModalOpen}
-      title="Edit link"
-      description="Make all necessary changes for this alias."
-      onSubmitText="Save changes"
-      onCancelText="Cancel"
-      onSubmit={(data) => handleLinkUpdate(data)}
-      onCancel={() => closeModal()}
-      defaultValues={uniqueUrl.data}
-    >
-      <div>
-        <div className="space-y-6 mb-4">
-          <Switch
-            variant="dark"
-            label="Active"
-            supportText="Link will be accessible for everyone"
-            name="active"
-          />
-          <FormInput
-            label="Name"
-            placeholder="Google"
-            id="name"
-            name="name"
-            isDisabled={isLoading}
-          />
-          <Divider />
-          {categories.isSuccess && (
-            <MultiSelect
-              placeholder="Type to pick a category"
-              isDisabled={isLoading}
-              label="Category"
-              options={categories.data}
-              id="categories"
-              name="categories"
+    uniqueUrl.isSuccess && (
+      <FormModal
+        schema={editDetailedLinkFormSchema}
+        isOpen={isModalOpen}
+        title="Edit link"
+        description="Make all necessary changes for this alias."
+        onSubmitText="Save changes"
+        onCancelText="Cancel"
+        onSubmit={(data) => handleLinkUpdate(data)}
+        onCancel={() => closeModal()}
+        defaultValues={uniqueUrl.data}
+      >
+        <div>
+          <div className="space-y-6 mb-4">
+            <Switch
+              variant="dark"
+              label="Active"
+              supportText="Link will be accessible for everyone"
+              name="active"
             />
-          )}
+            <FormInput
+              label="Name"
+              placeholder="Google"
+              id="name"
+              name="name"
+              isDisabled={isLoading}
+            />
+            <Divider />
+            {categories.isSuccess && (
+              <MultiSelect
+                placeholder="Type to pick a category"
+                isDisabled={isLoading}
+                label="Category"
+                options={categories.data}
+                id="categories"
+                name="categories"
+              />
+            )}
+          </div>
         </div>
-      </div>
-    </FormModal>
+      </FormModal>
+    )
   );
 }
 

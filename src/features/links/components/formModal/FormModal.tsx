@@ -4,18 +4,18 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Form } from 'components';
 import { useForm } from 'hooks';
 import type { TypeOf, ZodSchema } from 'zod';
-import type { SubmitHandler } from 'react-hook-form';
+import type { DeepPartial, SubmitHandler } from 'react-hook-form';
 
-type FormModalProps<T> = {
+type FormModalProps<T extends ZodSchema<any>> = {
   title: string;
   description: string;
   isOpen: boolean;
-  onSubmit: SubmitHandler<any>;
+  onSubmit: SubmitHandler<TypeOf<T>>;
   onSubmitText: string;
   onCancel: () => void;
   onCancelText: string;
   schema: T;
-  defaultValues: any;
+  defaultValues: DeepPartial<TypeOf<T>> | undefined;
   children: ReactNode;
 };
 
@@ -35,8 +35,6 @@ function FormModal<T extends ZodSchema<any>>({
     schema,
     defaultValues,
   });
-
-  console.log({ defaultValues });
 
   function handleClose() {
     form.reset();

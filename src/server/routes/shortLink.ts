@@ -141,6 +141,7 @@ export const shortLinkRouter = router({
               category: {
                 select: {
                   name: true,
+                  id: true,
                 },
               },
             },
