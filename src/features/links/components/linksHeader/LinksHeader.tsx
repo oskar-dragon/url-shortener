@@ -2,7 +2,7 @@ import { Button, Divider } from 'components/elements';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import addLinkSchema, { type AddDetailedLinkSchema } from 'features/links/types/addLinkForm';
 import { FormInput, MultiSelect } from 'components';
-import { trpc } from 'utils';
+import { trpc } from 'client';
 import { useAddLinkModalStore } from 'features/links/stores';
 import FormModal from '../formModal/FormModal';
 

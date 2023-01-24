@@ -4,7 +4,7 @@ import { ConfirmationModal, Form, FormInput } from 'components';
 import { Button } from 'components/elements';
 import type { ShortenerFormFields } from 'features/shortener/types/shortenerForm';
 import { shortenerUrlOnly } from 'features/shortener/types/shortenerForm';
-import { trpc } from 'utils/trpc';
+import { trpc } from 'client';
 import { getOrigin } from 'utils';
 import { copyToClipboard } from 'helpers';
 import { useForm } from 'hooks';

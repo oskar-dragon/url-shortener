@@ -12,7 +12,8 @@ import {
 } from '@tanstack/react-table';
 import { Checkbox, Pagination } from 'components';
 import parseCategories from 'features/links/helpers/parseCategories/parseCategories';
-import { capitalize, formatDate, trpc } from 'utils';
+import { capitalize, formatDate } from 'utils';
+import { trpc } from 'client';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/outline';
 import { cx } from 'class-variance-authority';
 import type { TableWithLinks } from 'features/links/types';
