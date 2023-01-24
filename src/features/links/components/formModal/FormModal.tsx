@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import React, { Fragment, type ReactNode } from 'react';
 import { Button } from 'components/elements';
 import { Dialog, Transition } from '@headlessui/react';
@@ -15,7 +16,7 @@ type FormModalProps<T extends ZodSchema<any>> = {
   onCancel: () => void;
   onCancelText: string;
   schema: T;
-  defaultValues: DeepPartial<TypeOf<T>> | undefined;
+  defaultValues?: DeepPartial<TypeOf<T>>;
   children: ReactNode;
 };
 
