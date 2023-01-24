@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { prisma } from 'server/prisma';
 import { privateProcedure, router } from 'server/trpc';
 
@@ -9,6 +10,10 @@ export const categoriesRouter = router({
         id: true,
       },
     });
+
+    if (!categories) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'No categories' });
+    }
 
     return categories;
   }),

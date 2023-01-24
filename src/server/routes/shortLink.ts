@@ -13,74 +13,67 @@ import { z } from 'zod';
 export const shortLinkRouter = router({
   createRandom: publicProcedure.input(shortenerUrlOnly).mutation(async ({ input }) => {
     const { url } = input;
-
     try {
       const randomSlug = await generateShortUrl();
-
       const createdUrlWithRandomSlug = await prisma.url.create({
         data: { shortUrl: randomSlug, longUrl: url },
       });
 
       return createdUrlWithRandomSlug;
     } catch (err) {
-      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Something went wrong' });
+      if (err instanceof TRPCError) {
+        throw new TRPCError({ code: err.code, message: err.message });
+      } else {
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Something went wrong' });
+      }
     }
   }),
   create: privateProcedure.input(addDetailedLinkSchema).mutation(async ({ input, ctx }) => {
     const { user } = ctx.session;
     const { url, slug, name, categories } = input;
 
-    let alias = slug as string;
+    try {
+      let alias = slug as string;
 
-    if (!slug) {
-      alias = await generateShortUrl();
-    }
+      if (!slug) {
+        alias = await generateShortUrl();
+      }
 
-    const urlInDB = await prisma.url.findUnique({
-      where: {
-        shortUrl: alias,
-      },
-    });
+      const categoryIds = categories?.map(({ value: categoryId }) => ({
+        categoryId,
+      }));
 
-    if (urlInDB) {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: 'Already exists',
-      });
-    }
+      if (categoryIds) {
+        return await prisma.url.create({
+          data: {
+            shortUrl: alias,
+            longUrl: url,
+            name,
+            userId: user.email,
+            categories: {
+              createMany: {
+                data: categoryIds,
+              },
+            },
+          },
+        });
+      }
 
-    const categoryIds = categories?.map(({ value: categoryId }) => ({
-      categoryId,
-    }));
-
-    if (categoryIds) {
-      const createdUrlWIthCategories = await prisma.url.create({
+      return await prisma.url.create({
         data: {
           shortUrl: alias,
           longUrl: url,
           name,
           userId: user.email,
-          categories: {
-            createMany: {
-              data: categoryIds,
-            },
-          },
         },
       });
-
-      return createdUrlWIthCategories;
+    } catch (error) {
+      if (error instanceof TRPCError) {
+        throw new TRPCError({ code: error.code, message: error.message });
+      } else {
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Something went wrong' });
+      }
     }
-
-    const createdUrlWithoutCategories = await prisma.url.create({
-      data: {
-        shortUrl: alias,
-        longUrl: url,
-        name,
-        userId: user.email,
-      },
-    });
-
-    return createdUrlWithoutCategories;
   }),
   getAllForUser: privateProcedure.query(async ({ ctx }) => {
     const { user } = ctx.session;
