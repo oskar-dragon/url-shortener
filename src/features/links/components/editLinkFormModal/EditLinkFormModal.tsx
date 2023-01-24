@@ -1,4 +1,4 @@
-import { FormInput, MultiSelect } from 'components';
+import { FormInput, MultiSelect, Switch } from 'components';
 import { Divider } from 'components/elements';
 import {
   editDetailedLinkFormSchema,
@@ -12,15 +12,32 @@ function EditLinkFormModal() {
   const isModalOpen = useEditLinkModalStore((state) => state.isOpen);
   const modalId = useEditLinkModalStore((store) => store.modalId);
   const closeModal = useEditLinkModalStore((state) => state.close);
-  const { mutate, isLoading } = trpc.shortLink.updateOne.useMutation();
-
-  function handleLinkUpdate(formData: EditDetailedLinkFormValues) {
-    mutate({ ...formData, active: true, slug: modalId });
-  }
-
+  const utils = trpc.useContext();
+  const uniqueUrl = trpc.shortLink.getOneForUser.useQuery(
+    { slug: modalId },
+    {
+      select: ({ active, name, categories, ...rest }) => ({
+        active,
+        name,
+        categories: categories.map((category) => category.category.name),
+      }),
+      enabled: !!modalId,
+    },
+  );
+  const { mutate, isLoading } = trpc.shortLink.updateOne.useMutation({
+    onSuccess() {
+      closeModal();
+      utils.shortLink.getAllForUser.invalidate();
+      utils.shortLink.getOneForUser.invalidate();
+    },
+  });
   const categories = trpc.categories.getAllCategories.useQuery(undefined, {
     select: (data) => data.map(({ id: value, name: label }) => ({ value, label })),
   });
+
+  function handleLinkUpdate(formData: EditDetailedLinkFormValues) {
+    mutate({ ...formData, slug: modalId });
+  }
 
   return (
     <FormModal
@@ -32,9 +49,16 @@ function EditLinkFormModal() {
       onCancelText="Cancel"
       onSubmit={(data) => handleLinkUpdate(data)}
       onCancel={() => closeModal()}
+      defaultValues={uniqueUrl.data}
     >
       <div>
         <div className="space-y-6 mb-4">
+          <Switch
+            variant="dark"
+            label="Active"
+            supportText="Link will be accessible for everyone"
+            name="active"
+          />
           <FormInput
             label="Name"
             placeholder="Google"

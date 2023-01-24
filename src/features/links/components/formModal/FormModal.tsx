@@ -15,6 +15,7 @@ type FormModalProps<T> = {
   onCancel: () => void;
   onCancelText: string;
   schema: T;
+  defaultValues: any;
   children: ReactNode;
 };
 
@@ -27,11 +28,15 @@ function FormModal<T extends ZodSchema<any>>({
   onCancelText,
   onCancel,
   schema,
+  defaultValues,
   children,
 }: FormModalProps<T>) {
   const form = useForm({
     schema,
+    defaultValues,
   });
+
+  console.log({ defaultValues });
 
   function handleClose() {
     form.reset();
@@ -40,6 +45,7 @@ function FormModal<T extends ZodSchema<any>>({
 
   function handleSubmit(data: TypeOf<T>) {
     onSubmit(data);
+    form.reset();
   }
 
   return (
@@ -84,7 +90,7 @@ function FormModal<T extends ZodSchema<any>>({
                     <Button type="submit" size="sm" variant="blue">
                       {onSubmitText}
                     </Button>
-                    <Button size="sm" variant="light" onClick={() => handleClose()}>
+                    <Button size="sm" variant="outline" onClick={() => handleClose()}>
                       {onCancelText}
                     </Button>
                   </div>

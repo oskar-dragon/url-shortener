@@ -11,7 +11,7 @@ const useEditLinkModalStore = create<AddLinkModalStore>((set) => ({
   isOpen: false,
   modalId: '',
   open: (id) => set({ isOpen: true, modalId: id }),
-  close: () => set({ isOpen: false }),
+  close: () => set({ isOpen: false, modalId: '' }),
 }));
 
 export default useEditLinkModalStore;

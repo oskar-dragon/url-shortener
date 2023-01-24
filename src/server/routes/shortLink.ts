@@ -125,6 +125,36 @@ export const shortLinkRouter = router({
     return parsedUrls;
   }),
 
+  getOneForUser: privateProcedure
+    .input(z.object({ slug: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const { user } = ctx.session;
+
+      const url = await prisma.url.findFirst({
+        where: {
+          shortUrl: input.slug,
+          userId: user.email,
+        },
+        include: {
+          categories: {
+            include: {
+              category: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!url) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Url not found' });
+      }
+
+      return url;
+    }),
+
   updateOne: privateProcedure.input(updateDetailedLinkSchema).mutation(async ({ input }) => {
     const { slug, name, active, categories } = input;
 

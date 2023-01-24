@@ -7,7 +7,7 @@ const root = cva(
   {
     variants: {
       variant: {
-        dark: ['bg-neutral-100', 'hover:bg-neutral-200', 'focus:bg-neutral-50'],
+        dark: ['bg-neutral-200', 'hover:bg-neutral-200', 'focus:bg-neutral-100'],
         light: ['bg-neutral-50', 'hover:bg-royal-100', 'focus:-bg-neutral-50'],
       },
       size: {
@@ -76,7 +76,7 @@ const labeltext = cva('text-md font-medium text-neutral-500', {
 
 type LabeltextProps = VariantProps<typeof labeltext>;
 
-const supportText = cva('text-neutral-500', {
+const supportTextStyle = cva('text-neutral-500', {
   variants: {
     size: {
       sm: ['text-sm'],
@@ -85,18 +85,30 @@ const supportText = cva('text-neutral-500', {
   },
 });
 
-type SupportTextProps = VariantProps<typeof supportText>;
+type SupportTextProps = VariantProps<typeof supportTextStyle>;
 
 type StylingProps = LabeltextProps & ThumbProps & RootProps & SupportTextProps;
 
 type SwitchProps = {
   label?: string;
+  supportText?: string;
   name?: string;
   value?: boolean;
+  isDisabled?: boolean;
   onChange?: (checked: boolean) => void;
 } & StylingProps;
 
-function Switch({ label, variant, size, name, value, onChange, ...restProps }: SwitchProps) {
+function Switch({
+  label,
+  supportText,
+  variant,
+  size,
+  name,
+  value,
+  isDisabled,
+  onChange,
+  ...restProps
+}: SwitchProps) {
   const [isEnabled, setIsEnabled] = React.useState(() => value);
 
   function toggleSwitch() {
@@ -112,6 +124,7 @@ function Switch({ label, variant, size, name, value, onChange, ...restProps }: S
     <HeadlessUISwitch.Group>
       <div className="flex align-top gap-3">
         <HeadlessUISwitch
+          disabled={isDisabled}
           checked={isEnabled}
           onChange={() => toggleSwitch()}
           name={name}
@@ -132,7 +145,7 @@ function Switch({ label, variant, size, name, value, onChange, ...restProps }: S
           <HeadlessUISwitch.Label passive className={labeltext({ size })}>
             {label}
           </HeadlessUISwitch.Label>
-          <span className={supportText({ size })}>{label}</span>
+          <span className={supportTextStyle({ size })}>{supportText}</span>
         </div>
       </div>
     </HeadlessUISwitch.Group>
@@ -142,7 +155,9 @@ function Switch({ label, variant, size, name, value, onChange, ...restProps }: S
 Switch.defaultProps = {
   label: '',
   name: '',
+  supportText: '',
   value: false,
+  isDisabled: false,
   onChange: () => {},
 };
 export default Switch;
