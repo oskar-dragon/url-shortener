@@ -11,7 +11,7 @@ type Option = {
 type MultiSelectProps<Opt> = {
   label?: string;
   options: Opt[];
-  defaultValue?: Opt[];
+  value?: Opt[];
   onChange?: (data: Opt[]) => void;
   onBlur?: (data: Opt[]) => void;
   id?: string;
@@ -23,7 +23,7 @@ type MultiSelectProps<Opt> = {
 function MultiSelect<T extends Option>({
   label,
   options,
-  defaultValue = [],
+  value = [],
   onChange = () => {},
   onBlur = () => {},
   id,
@@ -31,7 +31,8 @@ function MultiSelect<T extends Option>({
   isDisabled,
   placeholder,
 }: MultiSelectProps<T>) {
-  const [selectedValues, setSelectedValues] = useState<typeof options>(defaultValue);
+  const [selectedValues, setSelectedValues] = useState<typeof options>(value);
+
   const optionsToSelect = useMemo(
     () =>
       options.filter((option) =>
@@ -72,7 +73,7 @@ function MultiSelect<T extends Option>({
         id={id}
         name={name}
         options={optionsToSelect}
-        defaultValue={defaultValue}
+        defaultValue={value}
         onChange={(newValue) => addSelectedValue(newValue ?? undefined)}
       />
       <div className="mt-4 flex flex-wrap gap-2">

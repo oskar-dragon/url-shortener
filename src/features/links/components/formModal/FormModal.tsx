@@ -1,20 +1,22 @@
+/* eslint-disable react/require-default-props */
 import React, { Fragment, type ReactNode } from 'react';
 import { Button } from 'components/elements';
 import { Dialog, Transition } from '@headlessui/react';
 import { Form } from 'components';
 import { useForm } from 'hooks';
 import type { TypeOf, ZodSchema } from 'zod';
-import type { SubmitHandler } from 'react-hook-form';
+import type { DeepPartial, SubmitHandler } from 'react-hook-form';
 
-type FormModalProps<T> = {
+type FormModalProps<T extends ZodSchema<any>> = {
   title: string;
   description: string;
   isOpen: boolean;
-  onSubmit: SubmitHandler<any>;
+  onSubmit: SubmitHandler<TypeOf<T>>;
   onSubmitText: string;
   onCancel: () => void;
   onCancelText: string;
   schema: T;
+  defaultValues?: DeepPartial<TypeOf<T>>;
   children: ReactNode;
 };
 
@@ -27,10 +29,12 @@ function FormModal<T extends ZodSchema<any>>({
   onCancelText,
   onCancel,
   schema,
+  defaultValues,
   children,
 }: FormModalProps<T>) {
   const form = useForm({
     schema,
+    defaultValues,
   });
 
   function handleClose() {
@@ -40,6 +44,7 @@ function FormModal<T extends ZodSchema<any>>({
 
   function handleSubmit(data: TypeOf<T>) {
     onSubmit(data);
+    form.reset();
   }
 
   return (
@@ -84,7 +89,7 @@ function FormModal<T extends ZodSchema<any>>({
                     <Button type="submit" size="sm" variant="blue">
                       {onSubmitText}
                     </Button>
-                    <Button size="sm" variant="light" onClick={() => handleClose()}>
+                    <Button size="sm" variant="outline" onClick={() => handleClose()}>
                       {onCancelText}
                     </Button>
                   </div>

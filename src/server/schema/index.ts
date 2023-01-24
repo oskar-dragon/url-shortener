@@ -1,0 +1,1 @@
+export { updateDetailedLinkSchema } from './updateDetailedLinkSchema';
