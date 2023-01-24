@@ -120,7 +120,7 @@ function LinksTable({ className }: LinskTableProps) {
       },
     ],
 
-    [],
+    [openEditModal],
   );
 
   const table = useReactTable({

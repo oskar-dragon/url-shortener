@@ -33,7 +33,6 @@ function MultiSelect<T extends Option>({
 }: MultiSelectProps<T>) {
   const [selectedValues, setSelectedValues] = useState<typeof options>(value);
 
-  console.log(selectedValues);
   const optionsToSelect = useMemo(
     () =>
       options.filter((option) =>
