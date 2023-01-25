@@ -86,10 +86,10 @@ function FormModal<T extends ZodSchema<any>>({
                     {children}
                   </div>
                   <div className="bg-neutral-50 px-4 sm:px-8 py-3 flex flex-col sm:flex-row-reverse gap-2 sm-gap-4 text-center">
-                    <Button type="submit" size="sm" variant="blue">
+                    <Button type="submit" variant="blue">
                       {onSubmitText}
                     </Button>
-                    <Button size="sm" variant="outline" onClick={() => handleClose()}>
+                    <Button variant="outline" onClick={() => handleClose()}>
                       {onCancelText}
                     </Button>
                   </div>

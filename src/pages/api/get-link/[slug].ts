@@ -22,10 +22,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  await prisma.statistics.create({
-    data: {
-      slug,
+  await prisma.url.update({
+    where: {
+      shortUrl: slug,
     },
+    data: { numberOfVisits: data.numberOfVisits + 1 },
   });
 
   res.setHeader('Content-Type', 'application/json');

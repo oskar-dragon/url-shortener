@@ -34,6 +34,15 @@ const buttonStyles = cva(
           'disabled:bg-meutral-300',
         ],
         lightBlue: ['bg-royal-50', 'text-royal-700', 'border-stone-300', 'hover:bg-royal-50'],
+        red: [
+          'bg-error-600',
+          'text-white',
+          'hover:bg-error-500',
+          'focus:outline-none',
+          'focus:ring',
+          'focus:ring-red-300',
+          'disabled:bg-red-300',
+        ],
       },
       size: {
         xs: ['py-1', 'px-2.5'],

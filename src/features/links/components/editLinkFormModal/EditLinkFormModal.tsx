@@ -5,7 +5,7 @@ import {
   type EditDetailedLinkFormValues,
 } from 'features/links/constants';
 import { useEditLinkModalStore } from 'features/links/stores';
-import { trpc } from 'utils';
+import { trpc } from 'client';
 import FormModal from '../formModal/FormModal';
 
 function EditLinkFormModal() {

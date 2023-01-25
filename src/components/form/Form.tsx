@@ -1,4 +1,3 @@
-import { DevTool } from '@hookform/devtools';
 import type { Attributes, ComponentProps, ReactElement, ReactNode } from 'react';
 import { cloneElement, isValidElement } from 'react';
 import { deepMap } from 'react-children-utilities';
@@ -50,7 +49,6 @@ function Form<T extends FieldValues>({ form, onSubmit, children, ...restProps }:
       <form onSubmit={form.handleSubmit(onSubmit)} {...restProps}>
         <fieldset disabled={form.formState.isSubmitting}>{mappedChildren}</fieldset>
       </form>
-      <DevTool control={form.control} />
     </FormProvider>
   );
 }

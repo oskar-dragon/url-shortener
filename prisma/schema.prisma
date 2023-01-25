@@ -24,17 +24,17 @@ enum Role {
 }
 
 model Url {
-  shortUrl    String   @id @unique @db.VarChar(7)
-  longUrl     String   @db.VarChar(10000)
-  dateCreated DateTime @default(now())
-  dateUpdated DateTime @updatedAt
-  name        String?
-  active      Boolean  @default(true)
+  shortUrl       String   @id @unique @db.VarChar(7)
+  longUrl        String   @db.VarChar(10000)
+  dateCreated    DateTime @default(now())
+  dateUpdated    DateTime @updatedAt
+  name           String?
+  active         Boolean  @default(true)
+  numberOfVisits Int      @default(0)
 
   User   User?   @relation(fields: [userId], references: [email])
   userId String?
 
-  statistics Statistics[]
   categories CategoriesOnUrls[]
 
   @@index([userId])
@@ -58,14 +58,4 @@ model CategoriesOnUrls {
   @@id([urlId, categoryId])
   @@index([urlId])
   @@index([categoryId])
-}
-
-model Statistics {
-  id        String   @id @unique @default(uuid())
-  visitDate DateTime @default(now())
-
-  Url  Url    @relation(fields: [slug], references: [shortUrl])
-  slug String
-
-  @@index([slug])
 }

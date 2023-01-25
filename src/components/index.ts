@@ -10,3 +10,7 @@ export { default as MultiSelect } from './multiSelect/MultiSelect';
 export { default as Checkbox } from './checkbox/Checkbox';
 export { default as Pagination } from './pagination/Pagination';
 export { default as EmptyState } from './emptyState/EmptyState';
+
+// Types
+
+export { type ConfirmationModalProps } from './confirmationModal/ConfirmationModal';
