@@ -93,11 +93,6 @@ export const shortLinkRouter = router({
             },
           },
         },
-        _count: {
-          select: {
-            statistics: true,
-          },
-        },
       },
     });
 
@@ -106,12 +101,11 @@ export const shortLinkRouter = router({
     }
 
     const parsedUrls = urls.map((url) => {
-      const { _count, categories, userId, ...rest } = url;
+      const { categories, userId, ...rest } = url;
 
       return {
         ...rest,
         categories: categories.map((category) => category.category.name),
-        numberOfVisits: _count.statistics,
       };
     });
 
@@ -193,7 +187,7 @@ export const shortLinkRouter = router({
     }
   }),
 
-  removeOne: publicProcedure
+  deleteOne: publicProcedure
     .input(
       z.object({
         slug: z.string(),
@@ -203,13 +197,17 @@ export const shortLinkRouter = router({
       const { slug } = input;
 
       try {
+        await prisma.categoriesOnUrls.deleteMany({
+          where: {
+            urlId: slug,
+          },
+        });
+
         await prisma.url.delete({
           where: {
             shortUrl: slug,
           },
         });
-
-        return;
       } catch (err) {
         logger.error(err);
         if (err instanceof PrismaClientKnownRequestError) {

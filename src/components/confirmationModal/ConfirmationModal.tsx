@@ -20,7 +20,7 @@ const iconStyles = cva(
   },
 );
 
-type ConfirmationModalProps = {
+export type ConfirmationModalProps = {
   title: string;
   body: string;
   isOpen: boolean;
