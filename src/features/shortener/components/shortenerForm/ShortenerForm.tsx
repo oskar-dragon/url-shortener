@@ -53,9 +53,11 @@ function ShortenerForm(): JSX.Element {
         <ConfirmationModal
           title="Link created"
           body={`Your shortened link has been created: ${modalUrl}`}
-          isOpen={isModalOpen}
-          firstAction={() => handleCopyAndCloseModal()}
-          secondAction={() => handleCloseModal()}
+          isOpen={!isModalOpen}
+          primaryActionText="Copy and close"
+          secondaryActionText="Close"
+          primaryAction={() => handleCopyAndCloseModal()}
+          secondaryAction={() => handleCloseModal()}
         />
       </div>
     </Form>
