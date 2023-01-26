@@ -1,5 +1,5 @@
 import { Transition } from '@headlessui/react';
-import { Toaster as HotToast, resolveValue, type ToastType, ToastIcon } from 'react-hot-toast';
+import { Toaster as HotToast, resolveValue, type ToastType } from 'react-hot-toast';
 import { cva } from 'class-variance-authority';
 import {
   CheckCircleIcon,
@@ -23,23 +23,6 @@ const toasterStyle = cva('transform py-4 px-4 flex items-center bg-white rounded
     variant: 'default',
   },
 });
-
-function statusMap(type: ToastType) {
-  switch (type) {
-    case 'success': {
-      return 'Success';
-    }
-    case 'error': {
-      return 'Error';
-    }
-    case 'loading': {
-      return 'Loading';
-    }
-    default: {
-      return 'Info';
-    }
-  }
-}
 
 function componentMap(type: ToastType) {
   switch (type) {
