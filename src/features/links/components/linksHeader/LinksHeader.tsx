@@ -4,6 +4,7 @@ import addLinkSchema, { type AddDetailedLinkSchema } from 'features/links/types/
 import { FormInput, MultiSelect } from 'components';
 import { trpc } from 'client';
 import { useAddLinkModalStore } from 'features/links/stores';
+import { toast } from 'react-hot-toast';
 import FormModal from '../formModal/FormModal';
 
 function LinksHeader() {
@@ -15,7 +16,11 @@ function LinksHeader() {
   const { mutate, isLoading } = trpc.shortLink.create.useMutation({
     onSuccess() {
       closeModal();
+      toast.success('Link has been successfully created');
       utils.shortLink.getAllForUser.invalidate();
+    },
+    onError(error) {
+      toast.error(error.message);
     },
   });
 

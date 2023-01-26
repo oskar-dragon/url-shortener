@@ -6,6 +6,7 @@ import {
 } from 'features/links/constants';
 import { useEditLinkModalStore } from 'features/links/stores';
 import { trpc } from 'client';
+import { toast } from 'react-hot-toast';
 import FormModal from '../formModal/FormModal';
 
 function EditLinkFormModal() {
@@ -33,6 +34,9 @@ function EditLinkFormModal() {
       closeModal();
       utils.shortLink.getAllForUser.invalidate();
       utils.shortLink.getOneForUser.invalidate();
+    },
+    onError(error) {
+      toast.error(error.message);
     },
   });
   const categories = trpc.categories.getAllCategories.useQuery(undefined, {

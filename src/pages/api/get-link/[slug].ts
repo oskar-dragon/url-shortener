@@ -22,6 +22,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
+  if (!data.active) {
+    res.status(403).json({ message: 'short link is inactive' });
+  }
+
   await prisma.url.update({
     where: {
       shortUrl: slug,

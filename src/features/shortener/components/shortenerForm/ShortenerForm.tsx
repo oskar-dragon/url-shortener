@@ -23,7 +23,8 @@ function ShortenerForm(): JSX.Element {
       onError: () => toast.error('Sorry. Something went wrong. Try again later.'),
       onSuccess: (data) => {
         setModalUrl(`${getOrigin()}/${data.shortUrl}`);
-        setIsModalOpen(true);
+        setIsModalOpen(false);
+        toast.success('Link has been successfully updated');
       },
     });
   }
