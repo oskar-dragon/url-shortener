@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable no-underscore-dangle */
+import { Prisma } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { TRPCError } from '@trpc/server';
 import { addDetailedLinkSchema } from 'features/links';
@@ -21,12 +20,17 @@ export const shortLinkRouter = router({
       });
 
       return createdUrlWithRandomSlug;
-    } catch (err) {
-      if (err instanceof TRPCError) {
-        throw new TRPCError({ code: err.code, message: err.message });
-      } else {
-        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Something went wrong' });
+    } catch (error) {
+      logger.error(error);
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'Slug already exists. Please try a different one',
+          });
+        }
       }
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Something went wrong' });
     }
   }),
   create: privateProcedure.input(addDetailedLinkSchema).mutation(async ({ input, ctx }) => {
@@ -69,11 +73,16 @@ export const shortLinkRouter = router({
         },
       });
     } catch (error) {
-      if (error instanceof TRPCError) {
-        throw new TRPCError({ code: error.code, message: error.message });
-      } else {
-        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Something went wrong' });
+      logger.error(error);
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'Slug already exists. Please try a different one',
+          });
+        }
       }
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Something went wrong' });
     }
   }),
   getAllForUser: privateProcedure.query(async ({ ctx }) => {
@@ -137,6 +146,7 @@ export const shortLinkRouter = router({
       });
 
       if (!url) {
+        logger.error('Url not found');
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Url not found' });
       }
 
@@ -181,9 +191,8 @@ export const shortLinkRouter = router({
         });
       }
     } catch (error) {
-      if (error instanceof TRPCError) {
-        throw new TRPCError({ code: error.code, message: error.message });
-      }
+      logger.error(error);
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Could not update a url' });
     }
   }),
 
@@ -215,7 +224,6 @@ export const shortLinkRouter = router({
             throw new TRPCError({ code: 'NOT_FOUND', message: "URL doesn't exist" });
           }
         }
-
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Something went wrong' });
       }
     }),
