@@ -6,6 +6,24 @@ import {
   LinksHeader,
   LinksTable,
 } from 'features/links';
+import { createProxySSGHelpers } from '@trpc/react-query/ssg';
+import { appRouter } from 'server/routes/_app';
+import { createContext } from 'server/trpc';
+import SuperJSON from 'superjson';
+import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
+import type { GetServerSidePropsContext } from 'next';
+
+export async function getServerSideProps({ req, res }: GetServerSidePropsContext) {
+  const ssgHelper = createProxySSGHelpers({
+    router: appRouter,
+    ctx: await createContext({ req, res } as CreateNextContextOptions),
+    transformer: SuperJSON,
+  });
+
+  await ssgHelper.shortLink.getAllForUser.prefetch();
+
+  return { props: { trpcState: ssgHelper.dehydrate() } };
+}
 
 function Dashboard() {
   return (

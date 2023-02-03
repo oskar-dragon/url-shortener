@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest"
+    "test": "vitest",
+    "test:cov": "vitest --coverage"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -55,6 +56,7 @@
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.0.0",
     "@vitejs/plugin-react": "^2.2.0",
+    "@vitest/coverage-c8": "^0.28.3",
     "autoprefixer": "^10.4.13",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
@@ -73,6 +75,7 @@
     "typescript": "^4.9.4",
     "vite": "^3.2.3",
     "vite-tsconfig-paths": "^4.0.3",
-    "vitest": "^0.25.2"
+    "vitest": "^0.25.2",
+    "vitest-mock-extended": "^1.0.9"
   }
 }

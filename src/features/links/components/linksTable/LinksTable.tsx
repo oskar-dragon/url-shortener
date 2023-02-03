@@ -54,6 +54,7 @@ function LinksTable({ className }: LinskTableProps) {
       {
         header: 'Link',
         accessorKey: 'urlName',
+        enableGlobalFilter: true,
         cell: (info) => {
           const { name, shortUrl } = info.row.original;
 

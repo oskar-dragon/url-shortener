@@ -4,32 +4,23 @@ import { TRPCError } from '@trpc/server';
 import { addDetailedLinkSchema } from 'features/links';
 import { shortenerUrlOnly } from 'features/shortener';
 import generateShortUrl from 'server/helpers/generateShortUrl/generateShortUrl';
-import { prisma } from 'server/prisma';
 import { updateDetailedLinkSchema } from 'server/schema';
 import { router, publicProcedure, privateProcedure } from 'server/trpc';
 import logger from 'server/utils/logger';
 import { z } from 'zod';
 
 export const shortLinkRouter = router({
-  createRandom: publicProcedure.input(shortenerUrlOnly).mutation(async ({ input }) => {
+  createRandom: publicProcedure.input(shortenerUrlOnly).mutation(async ({ input, ctx }) => {
     const { url } = input;
     try {
       const randomSlug = await generateShortUrl();
-      const createdUrlWithRandomSlug = await prisma.url.create({
+      const createdUrlWithRandomSlug = await ctx.prisma.url.create({
         data: { shortUrl: randomSlug, longUrl: url },
       });
 
       return createdUrlWithRandomSlug;
     } catch (error) {
       logger.error(error);
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          throw new TRPCError({
-            code: 'FORBIDDEN',
-            message: 'Slug already exists. Please try a different one',
-          });
-        }
-      }
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Something went wrong' });
     }
   }),
@@ -49,7 +40,7 @@ export const shortLinkRouter = router({
       }));
 
       if (categoryIds) {
-        return await prisma.url.create({
+        return await ctx.prisma.url.create({
           data: {
             shortUrl: alias,
             longUrl: url,
@@ -64,7 +55,7 @@ export const shortLinkRouter = router({
         });
       }
 
-      return await prisma.url.create({
+      return await ctx.prisma.url.create({
         data: {
           shortUrl: alias,
           longUrl: url,
@@ -88,7 +79,7 @@ export const shortLinkRouter = router({
   getAllForUser: privateProcedure.query(async ({ ctx }) => {
     const { user } = ctx.session;
 
-    const urls = await prisma.url.findMany({
+    const urls = await ctx.prisma.url.findMany({
       where: {
         userId: user.email,
       },
@@ -126,7 +117,7 @@ export const shortLinkRouter = router({
     .query(async ({ input, ctx }) => {
       const { user } = ctx.session;
 
-      const url = await prisma.url.findFirst({
+      const url = await ctx.prisma.url.findFirst({
         where: {
           shortUrl: input.slug,
           userId: user.email,
@@ -153,7 +144,7 @@ export const shortLinkRouter = router({
       return url;
     }),
 
-  updateOne: privateProcedure.input(updateDetailedLinkSchema).mutation(async ({ input }) => {
+  updateOne: privateProcedure.input(updateDetailedLinkSchema).mutation(async ({ input, ctx }) => {
     const { slug, name, active, categories } = input;
 
     const categoryIds = categories?.map(({ value: categoryId }) => ({
@@ -162,7 +153,7 @@ export const shortLinkRouter = router({
 
     try {
       if (categoryIds) {
-        await prisma.url.update({
+        await ctx.prisma.url.update({
           where: {
             shortUrl: slug,
           },
@@ -180,7 +171,7 @@ export const shortLinkRouter = router({
           },
         });
       } else {
-        await prisma.url.update({
+        await ctx.prisma.url.update({
           where: {
             shortUrl: slug,
           },
@@ -202,17 +193,17 @@ export const shortLinkRouter = router({
         slug: z.string(),
       }),
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const { slug } = input;
 
       try {
-        await prisma.categoriesOnUrls.deleteMany({
+        await ctx.prisma.categoriesOnUrls.deleteMany({
           where: {
             urlId: slug,
           },
         });
 
-        await prisma.url.delete({
+        await ctx.prisma.url.delete({
           where: {
             shortUrl: slug,
           },
