@@ -6,9 +6,7 @@ import {
   LinksHeader,
   LinksTable,
 } from 'features/links';
-import { trpc } from 'client';
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
-import type { RouterOutput } from 'client/types';
 import { appRouter } from 'server/routes/_app';
 import { createContext } from 'server/trpc';
 import SuperJSON from 'superjson';

@@ -10,8 +10,8 @@ import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
  */
 
 type CreateContextOptions = {
-  session?: Session | null | undefined;
-  prisma?: PrismaClient;
+  session: Session | null | undefined;
+  prisma: PrismaClient;
 };
 
 export function createContextInner(opts: CreateContextOptions) {
