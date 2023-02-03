@@ -1,10 +1,9 @@
 import { TRPCError } from '@trpc/server';
-import { prisma } from 'server/prisma';
-import { privateProcedure, router } from 'server/trpc';
+import { publicProcedure, router } from 'server/trpc';
 
 export const categoriesRouter = router({
-  getAllCategories: privateProcedure.query(async () => {
-    const categories = await prisma.category.findMany({
+  getAllCategories: publicProcedure.query(async ({ ctx }) => {
+    const categories = await ctx.prisma.category.findMany({
       select: {
         name: true,
         id: true,
